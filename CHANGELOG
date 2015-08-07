@@ -1,3 +1,10 @@
+2015-08-07 Hoat Le <hoatle@teracy.com>
+    Version: 0.6.11
+
+    - Bugfixes:
+        * Fixes empty url with route decorator
+
+
 2013-11-19 Freedom Dumlao <freedomdumlao@gmail.com>
 
     Version 0.6.8

@@ -8,7 +8,7 @@
     :license: BSD, see LICENSE for more details.
 """
 
-__version__ = "0.6.8"
+__version__ = "0.6.11"
 
 import sys
 import functools
