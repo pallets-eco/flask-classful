@@ -39,3 +39,10 @@ Flask_Classy.egg-info/*
 .DS_Store
 
 docs/_build*
+
+## https://github.com/github/gitignore/blob/master/Global/IntelliJ.gitignore
+
+*.iml
+*.ipr
+*.iws
+.idea/

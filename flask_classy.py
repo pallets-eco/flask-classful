@@ -234,8 +234,8 @@ class FlaskView(object):
         route_base = cls.get_route_base()
         if route_base:
             rule_parts.append(route_base)
-
-        rule_parts.append(rule)
+        if len(rule) > 0:  # the case of rule='' empty string
+            rule_parts.append(rule)
         ignored_rule_args = ['self']
         if hasattr(cls, 'base_args'):
             ignored_rule_args += cls.base_args

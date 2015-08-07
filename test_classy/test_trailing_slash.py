@@ -52,7 +52,7 @@ def test_routed_method():
 def test_trailing_index():
     resp = client.get("/trailing")
     eq_(b"Index", resp.data)
-    
+
 def test_trailing_get():
     resp = client.get("/trailing/1234")
     eq_(b"Get 1234", resp.data)
