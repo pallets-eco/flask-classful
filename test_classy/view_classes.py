@@ -294,6 +294,10 @@ class TrailingSlashView(FlaskView):
     def patch(self, id):
         return "Patch " + id
 
+    # def post(self):
+    #     return "Post"
+
+    @route('', methods=['POST'])
     def post(self):
         return "Post"
 
