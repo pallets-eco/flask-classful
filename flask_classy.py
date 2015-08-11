@@ -8,7 +8,7 @@
     :license: BSD, see LICENSE for more details.
 """
 
-__version__ = "0.6.11"
+__version__ = "0.7.0-dev0"
 
 import sys
 import functools
@@ -347,9 +347,3 @@ def get_true_argspec(method):
 
 class DecoratorCompatibilityError(Exception):
     pass
-
-
-
-
-
-

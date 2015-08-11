@@ -40,10 +40,10 @@ def test_inherited_base_route():
 
 
 def test_decorated_inherited_mixitup():
-    resp = client.get("/decoratedinheritance/mixitup/")
+    resp = client.get("/decorated-inheritance/mixitup/")
     eq_(b"Mix It Up", resp.data)
 
 
 def test_decorated_inheritance_get():
-    resp = client.get("/decoratedinheritance/1234")
+    resp = client.get("/decorated-inheritance/1234")
     eq_(b"Decorated Inheritance Get 1234", resp.data)

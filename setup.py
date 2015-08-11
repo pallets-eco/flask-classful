@@ -8,7 +8,7 @@ from setuptools import setup
 
 setup(
     name='Flask-Classy',
-    version='0.6.11',
+    version='0.7.0-dev0',
     url='https://github.com/apiguy/flask-classy',
     license='BSD',
     author='Freedom Dumlao',

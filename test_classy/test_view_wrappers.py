@@ -39,9 +39,9 @@ def test_decorated_view():
 
 
 def test_before_request_returns():
-    resp = client.get("/beforerequestreturns/")
+    resp = client.get("/before-request-returns/")
     eq_(b"BEFORE", resp.data)
 
 def test_before_view_returns():
-    resp = client.get("/beforeviewreturns/")
+    resp = client.get("/before-view-returns/")
     eq_(b"BEFORE", resp.data)
