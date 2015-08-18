@@ -50,6 +50,14 @@ class FlaskView(object):
     route_base = None
     route_prefix = None
     trailing_slash = True
+    special_methods = {
+        "get": ["GET"],
+        "put": ["PUT"],
+        "patch": ["PATCH"],
+        "post": ["POST"],
+        "delete": ["DELETE"],
+        "index": ["GET"],
+    }
 
     @classmethod
     def register(cls, app, route_base=None, subdomain=None, route_prefix=None,
@@ -96,7 +104,6 @@ class FlaskView(object):
 
 
         members = get_interesting_members(FlaskView, cls)
-        special_methods = ["get", "put", "patch", "post", "delete", "index"]
 
         for name, value in members:
             proxy = cls.make_proxy_method(name)
@@ -120,11 +127,8 @@ class FlaskView(object):
 
                         app.add_url_rule(rule, endpoint, proxy, subdomain=subdomain, **options)
 
-                elif name in special_methods:
-                    if name in ["get", "index"]:
-                        methods = ["GET"]
-                    else:
-                        methods = [name.upper()]
+                elif name in cls.special_methods:
+                    methods = cls.special_methods[name]
 
                     rule = cls.build_rule("/", value)
                     if not cls.trailing_slash:
@@ -277,23 +281,30 @@ class FlaskView(object):
     def get_route_base(cls):
         """Returns the route base to use for the current class."""
 
-        first_cap_re = re.compile('(.)([A-Z][a-z]+)')
-        all_cap_re = re.compile('([a-z0-9])([A-Z])')
-        def dashify(name):
-            s1 = first_cap_re.sub(r'\1-\2', name)
-            return all_cap_re.sub(r'\1-\2', s1).lower()
-
         if cls.route_base is not None:
             route_base = cls.route_base
             base_rule = parse_rule(route_base)
             cls.base_args = [r[2] for r in base_rule]
         else:
-            if cls.__name__.endswith("View"):
-                route_base = dashify(cls.__name__[:-4])
-            else:
-                route_base = dashify(cls.__name__)
+            route_base = cls.default_route_base()
 
         return route_base.strip("/")
+
+    @classmethod
+    def default_route_base(cls):
+        first_cap_re = re.compile('(.)([A-Z][a-z]+)')
+        all_cap_re = re.compile('([a-z0-9])([A-Z])')
+
+        def dashify(name): #TODO(hoatle): refactor this
+            s1 = first_cap_re.sub(r'\1-\2', name)
+            return all_cap_re.sub(r'\1-\2', s1).lower()
+
+        if cls.__name__.endswith("View"):
+            route_base = dashify(cls.__name__[:-4])
+        else:
+            route_base = dashify(cls.__name__)
+
+        return route_base
 
 
     @classmethod
