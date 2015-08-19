@@ -48,11 +48,8 @@ Installation
 
 Install the extension with::
 
-    $ pip install flask-classy
+    $ pip install git+https://github.com/teracyhq/flask-classy.git@develop#egg=flask-classy
 
-or if you're kickin' it old-school::
-    
-    $ easy_install flask-classy
 
 Let's see how it works
 ----------------------
