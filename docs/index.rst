@@ -558,7 +558,7 @@ Before and After
 ----------------
 
 Hey, remember that time when you made that big ol' `Flask` app and then
-had those ``@app.before_reqeust`` and ``@app.after_request``
+had those ``@app.before_request`` and ``@app.after_request``
 decorated methods? Remember how you only wanted some of them to run for
 certain views so you had all those ``if view == the_one_I_care_about:``
 statements and stuff?
@@ -645,7 +645,7 @@ The View Wrappin' Method List
 Just to be certain, let's go ahead and review the methods you can write to
 wrap your views:
 
-**before_request(self, name, *args, *kwargs)**
+**before_request(self, name, *args, **kwargs)**
     Will be called before any view in this ``FlaskView`` is called.
 
     :name:       The name of the view that's about to be called.
@@ -795,6 +795,51 @@ the ``FlaskView`` subclass::
 
 As you can see here, specifying the subdomain to the register method will
 override the explicit subdomain attribute set inside the class.
+
+
+Adding Resource Representations (Get real classy and put on a top hat)
+----------------------------------------------------------------------
+So, you want to use Flask-Classy to make a RESTful API. Not a problem, we got
+you covered. Say you want your API to be able to respond to requests with JSON.
+All you have to do is create a class that defines how to serialize and deserialize
+the data, add it to the `representations` variable on your `FlaskView`.
+
+Here's the code for the JSON Response class::
+
+    # representations.py
+    
+    import json
+    from flask import make_response
+
+    def output_json(data, code, headers=None):
+        content_type = 'application/json'
+        dumped = json.dumps(data)
+        response = make_response(dumped, code)
+        if headers:
+            headers.extend({'Content-Type': content_type})
+        else:
+            headers = {'Content-Type': content_type}
+        response.headers.extend(headers)
+
+        return response
+
+
+::
+
+The go ahead and add this new resource representation to your `FlaskView`::
+
+    # views.py
+
+    from flask.ext.classy import FlaskView
+    from representations import output_json
+
+    class CoolJSONView(FlaskView):
+        representations = {'application/json': output_json}
+
+        def index(self):
+            return {'This is JSON': 'How Cool is that'}
+
+::
 
 
 Questions?

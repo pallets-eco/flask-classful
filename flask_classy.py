@@ -8,7 +8,7 @@
     :license: BSD, see LICENSE for more details.
 """
 
-__version__ = "0.6.11"
+__version__ = "0.7.0"
 
 import sys
 import functools
@@ -46,9 +46,18 @@ class FlaskView(object):
     """
 
     decorators = []
+    representations = {}
     route_base = None
     route_prefix = None
     trailing_slash = True
+    special_methods = {
+        "get": ["GET"],
+        "put": ["PUT"],
+        "patch": ["PATCH"],
+        "post": ["POST"],
+        "delete": ["DELETE"],
+        "index": ["GET"],
+    }
 
     @classmethod
     def register(cls, app, route_base=None, subdomain=None, route_prefix=None,
@@ -93,9 +102,7 @@ class FlaskView(object):
             cls.orig_trailing_slash = cls.trailing_slash
             cls.trailing_slash = trailing_slash
 
-
         members = get_interesting_members(FlaskView, cls)
-        special_methods = ["get", "put", "patch", "post", "delete", "index"]
 
         for name, value in members:
             proxy = cls.make_proxy_method(name)
@@ -119,11 +126,8 @@ class FlaskView(object):
 
                         app.add_url_rule(rule, endpoint, proxy, subdomain=subdomain, **options)
 
-                elif name in special_methods:
-                    if name in ["get", "index"]:
-                        methods = ["GET"]
-                    else:
-                        methods = [name.upper()]
+                elif name in cls.special_methods:
+                    methods = cls.special_methods[name]
 
                     rule = cls.build_rule("/", value)
                     if not cls.trailing_slash:
@@ -198,8 +202,30 @@ class FlaskView(object):
                     return response
 
             response = view(**request.view_args)
+            code, headers = 200, {}
+            if isinstance(response, tuple):
+                response, code, headers = unpack(response)
+
             if not isinstance(response, Response):
-                response = make_response(response)
+                if not cls.representations:
+                    # No representations defined, then the default is to just output
+                    # what the view function returned as a response
+                    # TODO(hoatle): handle code, headers?
+                    response = make_response(response)
+                else:
+                    # Return the representation that best matches the representations
+                    # in the Accept header
+                    resp_representation = request.accept_mimetypes.best_match(
+                        cls.representations.keys())
+
+                    if resp_representation:
+                        response = cls.representations[resp_representation](response, code, headers)
+                    else:
+                        # Nothing adequate found, make the response any one of the representations
+                        # defined
+                        # TODO(hoatle): or just make_response?
+                        response = cls.representations[list(cls.representations.keys())[0]](
+                            response, code, headers)
 
             after_view_name = "after_" + name
             if hasattr(i, after_view_name):
@@ -241,10 +267,14 @@ class FlaskView(object):
             ignored_rule_args += cls.base_args
 
         if method:
-            args = get_true_argspec(method)[0]
-            for arg in args:
+            argspec = get_true_argspec(method)
+            args = argspec[0]
+            query_params = argspec[3] # All default args that should be ignored
+            for i, arg in enumerate(args):
                 if arg not in ignored_rule_args:
-                    rule_parts.append("<%s>" % arg)
+                    if not query_params or len(args) - i > len(query_params):
+                        # This is not optional param, so it's not query argument
+                        rule_parts.append("<%s>" % arg)
 
         result = "/%s" % "/".join(rule_parts)
         return re.sub(r'(/)\1+', r'\1', result)
@@ -259,12 +289,25 @@ class FlaskView(object):
             base_rule = parse_rule(route_base)
             cls.base_args = [r[2] for r in base_rule]
         else:
-            if cls.__name__.endswith("View"):
-                route_base = cls.__name__[:-4].lower()
-            else:
-                route_base = cls.__name__.lower()
+            route_base = cls.default_route_base()
 
         return route_base.strip("/")
+
+    @classmethod
+    def default_route_base(cls):
+        first_cap_re = re.compile('(.)([A-Z][a-z]+)')
+        all_cap_re = re.compile('([a-z0-9])([A-Z])')
+
+        def dashify(name): #TODO(hoatle): refactor this
+            s1 = first_cap_re.sub(r'\1-\2', name)
+            return all_cap_re.sub(r'\1-\2', s1).lower()
+
+        if cls.__name__.endswith("View"):
+            route_base = dashify(cls.__name__[:-4])
+        else:
+            route_base = dashify(cls.__name__)
+
+        return route_base
 
 
     @classmethod
@@ -316,11 +359,25 @@ def get_true_argspec(method):
             return true_argspec
 
 
+def unpack(value):
+    """Return a three tuple of data, code, and headers"""
+    if not isinstance(value, tuple):
+        return value, 200, {}
+
+    try:
+        data, code, headers = value
+        return data, code, headers
+    except ValueError:
+        pass
+
+    try:
+        data, code = value
+        return data, code, {}
+    except ValueError:
+        pass
+
+    return value, 200, {}
+
+
 class DecoratorCompatibilityError(Exception):
     pass
-
-
-
-
-
-
