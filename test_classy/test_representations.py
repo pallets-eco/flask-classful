@@ -4,25 +4,19 @@ import json
 from nose.tools import *
 
 
-class JsonResource(object):
+def output_json(data, code, headers=None):
     content_type = 'application/json'
+    dumped = json.dumps(data)
+    response = make_response(dumped, code)
+    if headers:
+        headers.extend({'Content-Type': content_type})
+    else:
+        headers = {'Content-Type': content_type}
+    response.headers.extend(headers)
 
-    def output(self, data, code, headers=None):
-        dumped = json.dumps(data)
-        response = make_response(dumped, code)
-        if headers:
-            headers.extend({'Content-Type': self.content_type})
-        else:
-            headers = {'Content-Type': self.content_type}
-        response.headers.extend(headers)
-
-        return response
+    return response
 
 
-    def input(self, data):
-        loaded = loads(data)
-        
-        return loaded
 
 # Test Responses
 response_1 = {
@@ -67,7 +61,7 @@ data = {'input_required': 'required'}
 
 
 class RepresentationView(FlaskView):
-    representations = {'application/json': JsonResource()}
+    representations = {'application/json': output_json}
     base_args = ['fields']
 
 

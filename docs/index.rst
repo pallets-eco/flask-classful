@@ -811,25 +811,18 @@ Here's the code for the JSON Response class::
     import json
     from flask import make_response
 
-    class JsonResource(object):
+    def output_json(data, code, headers=None):
         content_type = 'application/json'
+        dumped = json.dumps(data)
+        response = make_response(dumped, code)
+        if headers:
+            headers.extend({'Content-Type': content_type})
+        else:
+            headers = {'Content-Type': content_type}
+        response.headers.extend(headers)
 
-        def output(self, data, code, headers=None):
-            dumped = json.dumps(data)
-            response = make_response(dumped, code)
-            if headers:
-                headers.extend({'Content-Type': self.content_type})
-            else:
-                headers = {'Content-Type': self.content_type}
-            response.headers.extend(headers)
+        return response
 
-            return response
-
-
-        def input(self, data):
-            loaded = loads(data)
-            
-            return loaded
 
 ::
 
@@ -838,10 +831,10 @@ The go ahead and add this new resource representation to your `FlaskView`::
     # views.py
 
     from flask.ext.classy import FlaskView
-    from representations import JsonResource
+    from representations import output_json
 
     class CoolJSONView(FlaskView):
-        representations = {'application/json': JsonResource()}
+        representations = {'application/json': output_json}
 
         def index(self):
             return {'This is JSON': 'How Cool is that'}

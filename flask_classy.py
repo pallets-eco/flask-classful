@@ -102,7 +102,6 @@ class FlaskView(object):
             cls.orig_trailing_slash = cls.trailing_slash
             cls.trailing_slash = trailing_slash
 
-
         members = get_interesting_members(FlaskView, cls)
 
         for name, value in members:
@@ -203,26 +202,30 @@ class FlaskView(object):
                     return response
 
             response = view(**request.view_args)
+            code, headers = 200, {}
             if isinstance(response, tuple):
-                code = response[1]
-                response = response[0]
-            else:
-                code = 200
+                response, code, headers = unpack(response)
+
             if not isinstance(response, Response):
                 if not cls.representations:
                     # No representations defined, then the default is to just output
                     # what the view function returned as a response
+                    # TODO(hoatle): handle code, headers?
                     response = make_response(response)
                 else:
                     # Return the representation that best matches the representations
                     # in the Accept header
-                    resp_representation = request.accept_mimetypes.best_match(cls.representations.keys())
+                    resp_representation = request.accept_mimetypes.best_match(
+                        cls.representations.keys())
+
                     if resp_representation:
-                        response = cls.representations[resp_representation].output(response, code)
+                        response = cls.representations[resp_representation](response, code, headers)
                     else:
-                        # Nothing adequate found, make the response any one of the representations defined
-                        response = cls.representations[list(cls.representations.keys())[0]].output(
-                                        response, code)
+                        # Nothing adequate found, make the response any one of the representations
+                        # defined
+                        # TODO(hoatle): or just make_response?
+                        response = cls.representations[list(cls.representations.keys())[0]](
+                            response, code, headers)
 
             after_view_name = "after_" + name
             if hasattr(i, after_view_name):
@@ -354,6 +357,26 @@ def get_true_argspec(method):
         true_argspec = get_true_argspec(inner_method)
         if true_argspec:
             return true_argspec
+
+
+def unpack(value):
+    """Return a three tuple of data, code, and headers"""
+    if not isinstance(value, tuple):
+        return value, 200, {}
+
+    try:
+        data, code, headers = value
+        return data, code, headers
+    except ValueError:
+        pass
+
+    try:
+        data, code = value
+        return data, code, {}
+    except ValueError:
+        pass
+
+    return value, 200, {}
 
 
 class DecoratorCompatibilityError(Exception):
