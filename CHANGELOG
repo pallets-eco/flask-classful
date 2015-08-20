@@ -1,3 +1,16 @@
+2015-08-20 Hoat Le <hoatle@teracy.com>
+    Version: 0.7.0
+
+    - Features:
+        * add representations support for better serialization
+
+    - Improvements:
+       * move some attributes, methods to outer scope for overriding
+
+    - Bugfixes:
+        * Fixes docs typos
+
+
 2015-08-07 Hoat Le <hoatle@teracy.com>
     Version: 0.6.11
 

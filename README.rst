@@ -40,7 +40,7 @@ For example, `Flask-Classy` will automatically generate routes based on the meth
 in your views, and makes it super simple to override those routes
 using Flask's familiar decorator syntax.
 
-.. _Flask-Classy: http://github.com/apiguy/flask-classy
+.. _Flask-Classy: http://github.com/teracyhq/flask-classy
 .. _Flask: http://flask.pocoo.org/
 
 Installation
@@ -48,7 +48,7 @@ Installation
 
 Install the extension with::
 
-    $ pip install git+https://github.com/teracyhq/flask-classy.git@develop#egg=flask-classy
+    $ pip install git+https://github.com/teracyhq/flask-classy.git@v0.7.0#egg=flask-classy
 
 
 Let's see how it works
@@ -795,8 +795,8 @@ override the explicit subdomain attribute set inside the class.
 Questions?
 ----------
 
-Feel free to ping me on twitter @apiguy, or head on over to the
-github repo at http://github.com/apiguy/flask-classy so you can join
+Feel free to ping me on twitter @teracyhq, or head on over to the
+github repo at http://github.com/teracyhq/flask-classy so you can join
 the fun.
 
 
