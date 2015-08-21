@@ -14,7 +14,7 @@ before_script:
 script:
 - make test
 after_script:
-- sudo pip install -r docs/requirements.txt --use-mirrors
+- pip install -r docs/requirements.txt --use-mirrors
 - cd docs
 - make setup_gh_pages
 - make generate
