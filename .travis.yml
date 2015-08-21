@@ -1,8 +1,37 @@
 language: python
 python:
-  - "2.6"
-  - "2.7"
-  - "3.3"
-install:
-  - "python setup.py install"
-script: nosetests
+- '2.6'
+- '2.7'
+- '3.3'
+- '3.4'
+
+before_script:
+- git config --global user.name "Teracy Bot"
+- git config --global user.email "teracy.com@gmail.com"
+- export REPO_URL_GITHUB="https://$GH_TOKEN@github.com/$GH_REPO.git"
+- . ./.travis/setup.sh
+- echo $DEPLOY_HTML_DIR
+
+script:
+- make test
+
+after_script:
+- sudo pip install -r docs/requirements.txt --use-mirrors
+- cd docs
+- make setup_gh_pages
+- make generate
+- make deploy
+
+after_success:
+- coveralls
+- make check-style
+
+notifications:
+  slack:
+    on_success: change
+    secure: CkrarcR2syf+Eu9TbVX7Hdnz++/OzV8TrPxX01Ok6lIz45ItjFby3HohdGiv/LdqAF91qP6cHzoADByoAAIDyExjsfJimMDtLfX6ZWAq8/WBS0g8bqpBv7s0ydPNB51DgzJNRh7adVExT3dhqO4XKcKmgL5UIOTLcouopB/cCn6/p6/B4l9I7AccHPRcPfsxgQnyUQPjpe2tyg/kpr0OHn+jdsiv0aTF9vmC1hSr/h3vTNDjp10jwW8XLaZIYUvATmwwXbADDB4DOAuVHtBV92bmDSwyZiBV7hqU9mqqVSdkDoHp/6nGBtJpsgaGEvPESCm2LdJrvfJNg+goYrmbaIr07kuISvbEjQxTX2MPsxTJy0Qmre9Ki6yXlJ/rSxAo2G6FMAUiqpKVV86L3g9Sway7Ovp5ihlZoJGMcA79y8WYAuSDN6PjY9GVksXiWr0cKFzBf/sBRTS4Zn60JLJSDA57KPny6DITN0WrMQFzc0hVVLINRjUhR4Nwn8P1TZVMGN+LRCOGj1/8MTgiZA9JaQbhjoWng+1M5f7BE9NKgOVVXn1+F2EI+ik+tiMpFfyinUPdgHS3SnVkd7Ja7dI1YG4MuJiCqS5WnEGXCu0xCOKbM2JyUtfnsw/IgsLnZ52G9+eI9W8Qq0GQ8S95Z4qsniZo49tU9g5bSKiN5rKiUSY=
+
+env:
+  global:
+  - GH_REPO="teracyhq/flask-classy"
+  - secure: RRuVUR28ZIgAVEZLe6ktknxHRFpfBNWkwWPaTXwP1xfgydzp4Akwlu3uxlCWO4GlJ4OA+0WaNSvOUd3inJYbO+wWWU0IfQ6Hw8E/ebXY9LHsowXsDDv+cbCNxD4jBE0tdEu4T23EMqjux+t2AqVLF7tGtU4BpKGPjNcZXe5uYV1inxJDqRWnkE/zp1Okez1XXoSpBrVy2g8VzLpmPxdihuLF95Oyu5Vzbzzvub2o/cauuBFQPJN/+SaZFV5vlX5+MJrmUnXi1QL7xS2f8ByOqjhqI3sD7Hf8EcE69LIQFFKKXxAs8Z2KPNKreeV7i/3dE9DmEQ8uczoXJjHK1uXuKHgy5+uXtbnqZ9pkPoDLve+/KkwD6U8hvKe1YwlCMB7s4lTQW/ksrTPBimwFCO5xIW+aLSCTGfvnTTUB+mZVort9y7nRd8KSHWLrzypq44Bf+lDG5EG++LGeKf9LZoQ1LYbZRefpn9qNQQgi+ksSnnCgEzf1wqdSX3bAx9dn+hnoXajaaL0W4ZLyKiIpsAu8npmBVfORkwuMRUVg0UVeS1EnvUdIdiokbuk229bNE0IAR8JbxnieRb4xrl5IMJzdw0hT7qtu7mgTOVx4Ztww84Jw4I0llxNukC0h3FaHW0XDRGluKdiEfJCwbmrs/SVpUoLPu9uzIuw/U0ZEnw0ry64=
