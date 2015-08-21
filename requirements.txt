@@ -1,8 +1,10 @@
 Flask
 
+# test
 nose
 tox
 
+# code style, coverage
 coverage
 flake8
 pylint

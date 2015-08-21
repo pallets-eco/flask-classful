@@ -845,8 +845,8 @@ The go ahead and add this new resource representation to your `FlaskView`::
 Questions?
 ----------
 
-Feel free to ping me on twitter @apiguy, or head on over to the
-github repo at http://github.com/apiguy/flask-classy so you can join
+Feel free to ping me on twitter @teracyhq, or head on over to the
+github repo at http://github.com/teracyhq/flask-classy so you can join
 the fun.
 
 
