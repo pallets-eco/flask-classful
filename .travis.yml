@@ -13,6 +13,7 @@ before_script:
 - echo $DEPLOY_HTML_DIR
 install:
 - python setup.py install
+- make resolve
 script:
 - make test
 after_script:
