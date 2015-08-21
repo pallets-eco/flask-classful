@@ -1,3 +1,8 @@
 Flask
+
 nose
 tox
+
+coverage
+flake8
+pylint

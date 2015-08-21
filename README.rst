@@ -4,6 +4,12 @@ Flask-Classy
 ..  image:: https://travis-ci.org/teracyhq/flask-classy.svg?branch=develop
     :target: https://travis-ci.org/teracyhq/flask-classy
 
+
+..  image:: https://coveralls.io/repos/teracyhq/flask-classy/badge.svg?branch=develop&service=github
+    :target: https://coveralls.io/github/teracyhq/flask-classy?branch=develop
+
+
+
 .. module:: flask.ext.classy
 
 Flask-Classy is an extension that adds class-based views to Flask.
