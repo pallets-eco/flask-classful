@@ -11,6 +11,8 @@ before_script:
 - export REPO_URL_GITHUB="https://$GH_TOKEN@github.com/$GH_REPO.git"
 - . ./.travis/setup.sh
 - echo $DEPLOY_HTML_DIR
+install:
+- python setup.py install
 script:
 - make test
 after_script:
