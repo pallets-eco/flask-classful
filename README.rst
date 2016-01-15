@@ -48,7 +48,7 @@ Installation
 
 Install the extension with::
 
-    $ pip install git+https://github.com/teracyhq/flask-classy.git@v0.7.0#egg=flask-classy
+    $ pip install git+https://github.com/teracyhq/flask-classy.git@v0.7.1#egg=flask-classy
 
 
 Let's see how it works
