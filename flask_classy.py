@@ -212,7 +212,7 @@ class FlaskView(object):
                     # No representations defined, then the default is to just output
                     # what the view function returned as a response
                     # TODO(hoatle): handle code, headers?
-                    response = make_response(response)
+                    response = make_response(response, code, headers)
                 else:
                     # Return the representation that best matches the representations
                     # in the Accept header
