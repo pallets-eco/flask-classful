@@ -10,7 +10,7 @@ Flask-Classy
 
 
 
-.. module:: flask.ext.classy
+.. module:: flask_classy
 
 Flask-Classy is an extension that adds class-based views to Flask.
 But why?
@@ -29,7 +29,7 @@ behavior. It's also made testing really nifty too.
 ``flask.views`` to do that?"
 
 Well, yes and no. While ``flask.views.MethodView`` does
-provide some of the functionality of ``flask.ext.classy.FlaskView``
+provide some of the functionality of ``flask_classy.FlaskView``
 it doesn't quite complete the picture by supporting methods that
 aren't part of the typical CRUD operations for a given resource, or
 make it easy for me to override the route rules for particular view.
@@ -65,7 +65,7 @@ when you see it being used. Let's go ahead and create a little app to
 see how Flask-Classy works::
 
     from flask import Flask
-    from flask.ext.classy import FlaskView
+    from flask_classy import FlaskView
 
     # we'll make a list to hold some quotes for our app
     quotes = [
@@ -147,7 +147,7 @@ so that everyone knows what a treat they are in for.
 
 ::
 
-    from flask.ext.classy import FlaskView, route
+    from flask_classy import FlaskView, route
 
 ::
 
@@ -584,7 +584,7 @@ No doubt it's an inspired thought, but in this case it was a tragic
 oversight. You realize now how lucky it was that you chose to use
 `Flask-Classy` because adding tracking is going to be a snap::
 
-    from flask.ext.classy import FlaskView
+    from flask_classy import FlaskView
     from made_up_tracking import track_it
 
     class WidgetsView(FlaskView):
@@ -620,7 +620,7 @@ sure it gets run only before that view. (as you have guessed by now,
 
 ::
 
-    from flask.ext.classy import FlaskView
+    from flask_classy import FlaskView
     from made_up_tracking import track_it
 
     class WidgetsView(FlaskView):
@@ -733,7 +733,7 @@ want to support at the same time you're registering your views::
 
     # views.py
 
-    from flask.ext.classy import FlaskView
+    from flask_classy import FlaskView
 
     class CoolApiView(FlaskView):
 
@@ -767,7 +767,7 @@ the ``FlaskView`` subclass::
 
     # views.py
 
-    from flask.ext.classy import FlaskView
+    from flask_classy import FlaskView
 
     class CoolApiView(FlaskView):
         subdomain = "api"
@@ -808,11 +808,11 @@ the fun.
 
 API
 ---
-.. autoclass:: flask.ext.classy.FlaskView
+.. autoclass:: flask_classy.FlaskView
     :members:
 
 
-.. autofunction:: flask.ext.classy.route
+.. autofunction:: flask_classy.route
 
 ----
 
