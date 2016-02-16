@@ -7,15 +7,12 @@ from nose.tools import *
 def output_json(data, code, headers=None):
     content_type = 'application/json'
     dumped = json.dumps(data)
-    response = make_response(dumped, code)
     if headers:
-        headers.extend({'Content-Type': content_type})
+        headers.update({'Content-Type': content_type})
     else:
         headers = {'Content-Type': content_type}
-    response.headers.extend(headers)
-
+    response = make_response(dumped, code, headers)
     return response
-
 
 
 # Test Responses
@@ -56,8 +53,8 @@ response_delete = {
     'input_required': 'DELETE'
 }
 
-headers = [('Content-Type', 'application/json')]
-data = {'input_required': 'required'}
+input_headers = [('Content-Type', 'application/json')]
+input_data = {'input_required': 'required'}
 
 
 class RepresentationView(FlaskView):
@@ -72,10 +69,10 @@ class RepresentationView(FlaskView):
         return response_get
 
     def put(self, obj_id):
-        return response_put
+        return response_put, 403
 
     def post(self):
-        return response_post
+        return response_post, 404, {'say': 'hello'}
 
     def delete(self, obj_id):
         return response_delete
@@ -94,11 +91,14 @@ def test_get_representation():
     eq_(json.dumps(response_get), resp.data.decode('ascii'))
 
 def test_post_representation():
-    resp = client.post("/representation/", headers=headers, data=json.dumps(data))
+    resp = client.post("/representation/", headers=input_headers, data=json.dumps(input_data))
+    eq_(resp.status_code, 404, 'should return 404 status code')
+    eq_(resp.headers['say'], 'hello')
     eq_(json.dumps(response_post), resp.data.decode('ascii'))
 
 def test_put_representation():
-    resp = client.put("/representation/1", headers=headers, data=json.dumps(data))
+    resp = client.put("/representation/1", headers=input_headers, data=json.dumps(input_data))
+    eq_(resp.status_code, 403, 'should return 403 status code')
     eq_(json.dumps(response_put), resp.data.decode('ascii'))
 
 def test_delete_representation():

@@ -13,10 +13,10 @@ class BasicView(FlaskView):
         return "Index"
 
     def get(self, obj_id):
-        return "Get " + obj_id
+        return "Get " + obj_id, 404
 
     def put(self, id):
-        return "Put " + id
+        return "Put " + id, 403, {'say': 'hello'}
 
     def patch(self, id):
         return "Patch " + id

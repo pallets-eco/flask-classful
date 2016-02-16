@@ -810,15 +810,12 @@ Here's the code for the JSON Response class::
     def output_json(data, code, headers=None):
         content_type = 'application/json'
         dumped = json.dumps(data)
-        response = make_response(dumped, code)
         if headers:
-            headers.extend({'Content-Type': content_type})
+            headers.update({'Content-Type': content_type})
         else:
             headers = {'Content-Type': content_type}
-        response.headers.extend(headers)
-
+        response = make_response(dumped, code, headers)
         return response
-
 
 ::
 
