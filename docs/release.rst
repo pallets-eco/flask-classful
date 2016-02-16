@@ -3,6 +3,13 @@ Release Steps
 
 Follow: http://dev.teracy.org/docs/release_process.html
 
+Next iteration
+--------------
+
+Update next iteration for develop branch:
+- flask_classy.py
+- docs/conf.py
+
 CHANGELOG
 ---------
 
