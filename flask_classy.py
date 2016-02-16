@@ -8,7 +8,8 @@
     :license: BSD, see LICENSE for more details.
 """
 
-__version__ = "0.7.1"
+__version__ = "0.8.0"
+
 
 import sys
 import functools
@@ -210,8 +211,7 @@ class FlaskView(object):
                 if not cls.representations:
                     # No representations defined, then the default is to just output
                     # what the view function returned as a response
-                    # TODO(hoatle): handle code, headers?
-                    response = make_response(response)
+                    response = make_response(response, code, headers)
                 else:
                     # Return the representation that best matches the representations
                     # in the Accept header

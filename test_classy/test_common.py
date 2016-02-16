@@ -14,10 +14,13 @@ def test_index():
 
 def test_get():
     resp = client.get("/basic/1234")
+    eq_(resp.status_code, 404)
     eq_(b"Get 1234", resp.data)
 
 def test_put():
     resp = client.put("/basic/1234")
+    eq_(resp.status_code, 403)
+    eq_(resp.headers['say'], 'hello')
     eq_(b"Put 1234", resp.data)
 
 def test_patch():

@@ -1,10 +1,26 @@
+2016-02-16 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.8.0
+    
+    - Improvements:
+        * Use code and headers in make_response()
+        * Update travis-ci build script
+        * Import flask_classy instead of flask.ext.classy on docs
+        * Add more tests
+
+
 2016-01-15 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
     Version: 0.7.1
 
     - Bugfixes:
         * Fix setup.py for the right version specification
 
 2015-08-20 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
     Version: 0.7.0
 
     - Features:
@@ -18,6 +34,8 @@
 
 
 2015-08-07 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
     Version: 0.6.11
 
     - Bugfixes:
@@ -25,6 +43,7 @@
 
 
 2013-11-19 Freedom Dumlao <freedomdumlao@gmail.com>
+---------------------------------------------------
 
     Version 0.6.8
 
@@ -37,6 +56,7 @@
         * Thanks to reddit user akaGrim for reporting the issue!
 
 2013-11-8 Freedom Dumlao <freedomdumlao@gmail.com>
+--------------------------------------------------
 
     Version 0.6.7
 
@@ -45,6 +65,7 @@
 
 
 2013-10-22 Freedom Dumlao <freedomdumlao@gmail.com>
+---------------------------------------------------
 
     Version 0.6.6
 
@@ -54,6 +75,7 @@
 
 
 2013-10-22 Freedom Dumlao <freedomdumlao@gmail.com>
+---------------------------------------------------
 
     Version 0.6.4
 
@@ -72,6 +94,7 @@
 
 
 2013-6-13 Freedom Dumlao <freedomdumlao@gmail.com>
+--------------------------------------------------
 
     Version 0.6.3
 
@@ -88,6 +111,7 @@
         * Thanks to Ivan Kleshnin, who reported the bug.
 
 2013-6-10 Freedom Dumlao <freedomdumlao@gmail.com>
+--------------------------------------------------
 
     Version 0.6.1
 
@@ -99,6 +123,7 @@
 
 
 2013-6-5 Freedom Dumlao <freedomdumlao@gmail.com>
+-------------------------------------------------
 
     Version 0.6
 
@@ -129,6 +154,7 @@
 
 
 2012-11-29  Freedom Dumlao <freedomdumlao@gmail.com>
+----------------------------------------------------
 
     Version 0.5.2
 
@@ -138,6 +164,7 @@
           (Thanks to @maxcountryman)
 
 2012-11-20  Freedom Dumlao <freedomdumlao@gmail.com>
+----------------------------------------------------
 
     Version 0.5.1
 
@@ -148,6 +175,7 @@
           (Thanks to Mark Grey for reporting.)
 
 2012-11-18  Freedom Dumlao <freedomdumlao@gmail.com>
+----------------------------------------------------
 
     Version 0.5
 
@@ -172,6 +200,7 @@
           but "id" in the special methods.
 
 2012-11-11  Freedom Dumlao <freedomdumlao@gmail.com>
+----------------------------------------------------
 
     Version 0.4.3
 
@@ -182,12 +211,14 @@
         * Fixed a bug that caused blueprint subdomains to be ignored
 
 2012-11-05  Freedom Dumlao <freedomdumlao@gmail.com>
+----------------------------------------------------
 
     Version 0.4
 
     * Added support for subdomains
 
 2012-11-1   Freedom Dumlao  <freedomdumlao@gmail.com>
+-----------------------------------------------------
 
     Version 0.3.4
 
