@@ -25,6 +25,14 @@ update this line for the right version:
   $ pip install git+https://github.com/teracyhq/flask-classy.git@develop#egg=flask-classy
 
 
+docs/index.rst
+--------------
+
+update this line for the right version:
+::
+  $ pip install git+https://github.com/teracyhq/flask-classy.git@develop#egg=flask-classy
+
+
 docs/conf.py
 ------------
 
