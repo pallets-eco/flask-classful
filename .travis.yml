@@ -38,8 +38,8 @@ install:
 script:
 - make test
 after_script:
-- if [[ $TRAVIS_PYTHON_VERSION == $MOST_TESTED_PYTHON_VERSION && $Flask == $FLASK_LATEST ]]; then pip install
-  -r docs/requirements.txt && cd docs && make setup_gh_pages && make generate && make deploy; fi
+- if [[ ! -z ${DEPLOY_HTML_DIR+x} && $TRAVIS_PYTHON_VERSION == $MOST_TESTED_PYTHON_VERSION && $Flask == $FLASK_LATEST ]]; then
+  pip install -r docs/requirements.txt && cd docs && make setup_gh_pages && make generate && make deploy; fi
 after_success:
 - if [[ $TRAVIS_PYTHON_VERSION == $MOST_TESTED_PYTHON_VERSION && $Flask == $FLASK_LATEST ]]; then pip install
   --quiet python-coveralls && make report-coverage && coveralls; fi
