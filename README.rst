@@ -12,6 +12,13 @@ Flask-Classful
 
 .. module:: flask_classful
 
+Note::
+
+    This is a fork of original `Flask-Classy` for continuing its development since the original
+    project was not updated for a long time. For more information, see:
+    https://github.com/apiguy/flask-classy/issues/80
+
+
 Flask-Classful is an extension that adds class-based views to Flask.
 But why?
 
