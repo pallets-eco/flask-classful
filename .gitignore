@@ -34,7 +34,7 @@ pip-log.txt
 
 # Distribution
 dist/*
-Flask_Classy.egg-info/*
+Flask_Classful.egg-info/*
 
 # Mac stuff
 .DS_Store

@@ -1,6 +1,6 @@
 """
-Flask-Classy
--------------
+Flask-Classful
+--------------
 
 Class based views for Flask
 """
@@ -32,15 +32,15 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 
 
 setup(
-    name='Flask-Classy',
-    version=find_version('flask_classy.py'),
-    url='https://github.com/teracyhq/flask-classy',
+    name='Flask-Classful',
+    version=find_version('flask_classful.py'),
+    url='https://github.com/teracyhq/flask-classful',
     license='BSD',
-    author='Freedom Dumlao',
-    author_email='freedomdumlao@gmail.com',
+    author='Freedom Dumlao & Teracy, Inc',
+    author_email='teracyhq@teracy.com',
     description='Class based views for Flask',
     long_description=__doc__,
-    py_modules=['flask_classy'],
+    py_modules=['flask_classful'],
     zip_safe=False,
     include_package_data=True,
     platforms='any',
@@ -63,5 +63,5 @@ setup(
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ],
-    test_suite='test_classy'
+    test_suite='test_classful'
 )

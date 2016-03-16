@@ -1,4 +1,4 @@
-from flask_classy import get_interesting_members, FlaskView
+from flask_classful import get_interesting_members, FlaskView
 from .view_classes import VariedMethodsView, SubVariedMethodsView
 from nose.tools import *
 

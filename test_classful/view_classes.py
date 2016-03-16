@@ -1,4 +1,4 @@
-from flask_classy import FlaskView, route
+from flask_classful import FlaskView, route
 from functools import wraps
 
 VALUE1 = "value1"

@@ -1,18 +1,18 @@
-Flask-Classy
-=============
+Flask-Classful
+==============
 
-..  image:: https://travis-ci.org/teracyhq/flask-classy.svg?branch=develop
-    :target: https://travis-ci.org/teracyhq/flask-classy
-
-
-..  image:: https://coveralls.io/repos/teracyhq/flask-classy/badge.svg?branch=develop&service=github
-    :target: https://coveralls.io/github/teracyhq/flask-classy?branch=develop
+..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=develop
+    :target: https://travis-ci.org/teracyhq/flask-classful
 
 
+..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
+    :target: https://coveralls.io/github/teracyhq/flask-classful?branch=develop
 
-.. module:: flask_classy
 
-Flask-Classy is an extension that adds class-based views to Flask.
+
+.. module:: flask_classful
+
+Flask-Classful is an extension that adds class-based views to Flask.
 But why?
 
 I ❤ Flask. Like a lot. But sometimes projects get a little big
@@ -29,7 +29,7 @@ behavior. It's also made testing really nifty too.
 ``flask.views`` to do that?"
 
 Well, yes and no. While ``flask.views.MethodView`` does
-provide some of the functionality of ``flask_classy.FlaskView``
+provide some of the functionality of ``flask_classful.FlaskView``
 it doesn't quite complete the picture by supporting methods that
 aren't part of the typical CRUD operations for a given resource, or
 make it easy for me to override the route rules for particular view.
@@ -37,24 +37,28 @@ And while ``flask.views.View`` does add some context, it requires
 a class for each view instead of letting me group very similar
 views for the same resource into a single class.
 
-"But my projects aren't that big. Can Flask-Classy do
+"But my projects aren't that big. Can Flask-Classful do
 anything else for me besides making a big project easier to manage?"
 
 Why yes. It does help a bit with some other things.
 
-For example, `Flask-Classy` will automatically generate routes based on the methods
+For example, `Flask-Classful` will automatically generate routes based on the methods
 in your views, and makes it super simple to override those routes
 using Flask's familiar decorator syntax.
 
-.. _Flask-Classy: http://github.com/teracyhq/flask-classy
+.. _Flask-Classful: http://github.com/teracyhq/flask-classful
 .. _Flask: http://flask.pocoo.org/
 
 Installation
 ------------
 
-Install the extension with::
+Install the latest extension with::
 
-    $ pip install git+https://github.com/teracyhq/flask-classy.git@develop#egg=flask-classy
+    $ pip install flask-classful
+
+Or install the bleeding edge development version with::
+
+    $ pip install git+https://github.com/teracyhq/flask-classful.git@develop#egg=flask-classful
 
 
 Let's see how it works
@@ -62,10 +66,10 @@ Let's see how it works
 
 If you're like me, you probably get a better idea of how to use something
 when you see it being used. Let's go ahead and create a little app to
-see how Flask-Classy works::
+see how Flask-Classful works::
 
     from flask import Flask
-    from flask_classy import FlaskView
+    from flask_classful import FlaskView
 
     # we'll make a list to hold some quotes for our app
     quotes = [
@@ -130,7 +134,7 @@ So by now you must be keenly aware of the fact that you have not defined a
 single route, but yet routing is obviously taking place. "Is this voodoo?"
 you ask?
 
-Not at all. Flask-Classy will automatically create routes for any method
+Not at all. Flask-Classful will automatically create routes for any method
 in a FlaskView that doesn't begin with an underscore character.
 You can still define your own routes of course, and we'll look at that next.
 
@@ -147,7 +151,7 @@ so that everyone knows what a treat they are in for.
 
 ::
 
-    from flask_classy import FlaskView, route
+    from flask_classful import FlaskView, route
 
 ::
 
@@ -180,12 +184,12 @@ you're saying, "but how do I change that? What if I want my views at the
 root?" Well, person, I have an answer for you.
 
 
-Flask-Classy's way of talking about "routes"
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Flask-Classful's way of talking about "routes"
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 OK, So I don't want to start inventing a new language (actually I'd love to
 invent a new language, just not right now...) for talking about URLs, but
-since Flask-Classy gives you a lot of flexibility in customizing your routes
+since Flask-Classful gives you a lot of flexibility in customizing your routes
 we might as well make sure we're talking about the same things when we talk
 about what you can do.
 
@@ -354,7 +358,7 @@ Special method names
 --------------------
 
 So I guess I have to break the narrative a bit here so I can take some
-time to talk about `Flask-Classy`'s special method names.
+time to talk about `Flask-Classful`'s special method names.
 
 Here's the thing. `FlaskView` is smart. No, not solving differential
 equations smart, but let's just say it knows how to put the round peg
@@ -441,7 +445,7 @@ Once you've got your `FlaskView` registered, you'll probably want to be able
 to get the urls for it in your templates and redirects and whatnot. Flask
 ships with the awesome `url_for` function that does an excellent job of
 turning a function name into a url that maps to it. You can use `url_for`
-with Flask-Classy by using the format "<Class name>:<method name>". Let's
+with Flask-Classful by using the format "<Class name>:<method name>". Let's
 look at an example::
 
     class DuckyView(FlaskView):
@@ -543,7 +547,7 @@ FlaskView's too.::
 But what about when you want to add a decorator to every method in your
 `FlaskView`? All you need to do is add a `decorators` attribute to the
 class definition with a list of decorators you want applied to every
-method and `Flask-Classy` will take care of the rest::
+method and `Flask-Classful` will take care of the rest::
 
     class WhataGreatView(FlaskView):
         decorators = [login_required]
@@ -566,7 +570,7 @@ statements and stuff?
 
 **Yuck.**
 
-I've been there too, and I think you might like how `Flask-Classy`
+I've been there too, and I think you might like how `Flask-Classful`
 addresses this very touchy issue. ``FlaskView`` will look for wrapper
 methods when your request is being processed so that you can create more
 fine grained "before and after" processing methods.
@@ -575,16 +579,16 @@ Wrap all the views in a FlaskView
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 So there you are, eating a delicious Strawberry Frosted Pop Tart one
-morning, thinking about the awesome `Flask-Classy` app you deployed the
+morning, thinking about the awesome `Flask-Classful` app you deployed the
 night before during one of your late night hackathons and it hits you:
 
 *"Tracking! I need to track those widgets!"*
 
 No doubt it's an inspired thought, but in this case it was a tragic
 oversight. You realize now how lucky it was that you chose to use
-`Flask-Classy` because adding tracking is going to be a snap::
+`Flask-Classful` because adding tracking is going to be a snap::
 
-    from flask_classy import FlaskView
+    from flask_classful import FlaskView
     from made_up_tracking import track_it
 
     class WidgetsView(FlaskView):
@@ -604,7 +608,7 @@ oversight. You realize now how lucky it was that you chose to use
 
 Whew. Crisis averted, am I right? So you go about your day and at lunch time
 you hit your favorite Bacon Sandwich place and start daydreaming about your
-life as a rockstar `Flask-Classy` consultant when suddenly:
+life as a rockstar `Flask-Classful` consultant when suddenly:
 
 *"I really only care about when widgets are created and retrieved!"*
 
@@ -612,15 +616,15 @@ Wrap only specific views
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 Yep, you've got a granularity problem. Not to worry though because
-`Flask-Classy` is happy to let you know that it has *smart* wrapper methods
+`Flask-Classful` is happy to let you know that it has *smart* wrapper methods
 too. Let's say for example you wanted to run something before the ``index`` view
-runs? Just create a method called ``before_index`` and `Flask-Classy` will make
+runs? Just create a method called ``before_index`` and `Flask-Classful` will make
 sure it gets run only before that view. (as you have guessed by now,
 ``after_index`` will be run only after the index view).
 
 ::
 
-    from flask_classy import FlaskView
+    from flask_classful import FlaskView
     from made_up_tracking import track_it
 
     class WidgetsView(FlaskView):
@@ -702,11 +706,11 @@ term *reliable*.
 Subdomains (getting advanced 'n stuff)
 --------------------------------------
 
-By now, you've built a few hundred `Flask` apps using `Flask-Classy`
+By now, you've built a few hundred `Flask` apps using `Flask-Classful`
 and you probably think you're an expert. But not until you've tried
 the snazzy `Subdomains` feature my friend.
 
-Flask-Classy allows you to specify a subdomain to be used when
+Flask-Classful allows you to specify a subdomain to be used when
 registering routes for your FlaskViews. While the usefulness of this
 feature is probably apparent to many of you, let's go ahead and take a
 look at one of the many facilitative use cases.
@@ -718,8 +722,8 @@ it using ``api`` at the root of the path like ``socool.biz/api``. The
 only catch, of course, is that you have api clients still using that
 old path based method. What is a hard working developer like you to do?
 
-Thanks to `Flask` and `Flask-Classy` you have some options. There are two
-easy ways you can choose from to tell `Flask-Classy` which subdomains your
+Thanks to `Flask` and `Flask-Classful` you have some options. There are two
+easy ways you can choose from to tell `Flask-Classful` which subdomains your
 ``FlaskView`` should respond to.
 
 Let's see both methods so you can choose which one works best for your
@@ -733,7 +737,7 @@ want to support at the same time you're registering your views::
 
     # views.py
 
-    from flask_classy import FlaskView
+    from flask_classful import FlaskView
 
     class CoolApiView(FlaskView):
 
@@ -767,7 +771,7 @@ the ``FlaskView`` subclass::
 
     # views.py
 
-    from flask_classy import FlaskView
+    from flask_classful import FlaskView
 
     class CoolApiView(FlaskView):
         subdomain = "api"
@@ -802,18 +806,19 @@ Questions?
 ----------
 
 Feel free to ping me on twitter @teracyhq, or head on over to the
-github repo at http://github.com/teracyhq/flask-classy so you can join
+github repo at http://github.com/teracyhq/flask-classful so you can join
 the fun.
 
 
 API
 ---
-.. autoclass:: flask_classy.FlaskView
+.. autoclass:: flask_classful.FlaskView
     :members:
 
 
-.. autofunction:: flask_classy.route
+.. autofunction:: flask_classful.route
 
 ----
+© Copyright 2016 by Teracy, Inc, `Follow us @teracyhq <https://twitter.com/teracyhq>`_
 
 © Copyright 2013 by Freedom Dumlao, `Follow Me @apiguy <https://twitter.com/APIguy>`_
