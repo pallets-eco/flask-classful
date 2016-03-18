@@ -51,7 +51,7 @@ https://github.com/apiguy/flask-classy/issues/80
 If you switch from ``Flask-Classy`` to ``Flask-Classful``, you just need to update the module import,
 the APIs are the same for both.
 
-``from flask.ext.class_classy`` => ``from flask_classful`` (recommended) or ``from flask.ext.class_classy``
+``from flask.ext.flask_classy`` => ``from flask_classful`` (recommended) or ``from flask.ext.flask_classy``
 
 ``from flask_classy`` => ``from flask_classful``
 
