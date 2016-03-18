@@ -156,7 +156,8 @@ the fun.
 License
 -------
 
-BSD License::
+BSD License
+::
 
     Copyright (c) 2016 by Teracy, Inc. and individual contributors.
     All rights reserved.
