@@ -90,7 +90,7 @@ endif
 #if REPO_URL_GITHUB was NOT defined by travis-ci
 ifndef REPO_URL_GITHUB
 # Configure your right github project repo
-REPO_URL       = git@github.com:teracyhq/flask-classy.git
+REPO_URL       = git@github.com:teracyhq/flask-classful.git
 endif
 
 ## -- Heroku Deployment Config -- ##

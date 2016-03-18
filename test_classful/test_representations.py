@@ -1,5 +1,5 @@
 from flask import Flask, make_response
-from flask_classy import FlaskView
+from flask_classful import FlaskView
 import json
 from nose.tools import *
 

@@ -7,7 +7,7 @@ Next iteration
 --------------
 
 Update next iteration for develop branch:
-- flask_classy.py
+- flask_classful.py
 - docs/conf.py
 
 CHANGELOG
@@ -16,11 +16,12 @@ CHANGELOG
 update the change log
 
 
-flask_classy.py
----------------
+flask_classful.py
+-----------------
 
 update this line for the right version:
 ::
+
   __version__ = "0.7.0-dev0"
 
 
@@ -29,7 +30,7 @@ README.rst
 
 update this line for the right version:
 ::
-  $ pip install git+https://github.com/teracyhq/flask-classy.git@develop#egg=flask-classy
+  $ pip install git+https://github.com/teracyhq/flask-classful.git@develop#egg=flask-classful
 
 
 docs/index.rst
@@ -37,7 +38,7 @@ docs/index.rst
 
 update this line for the right version:
 ::
-  $ pip install git+https://github.com/teracyhq/flask-classy.git@develop#egg=flask-classy
+  $ pip install git+https://github.com/teracyhq/flask-classful.git@develop#egg=flask-classful
 
 
 docs/conf.py
