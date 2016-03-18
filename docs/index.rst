@@ -33,12 +33,30 @@ anything else for me besides making a big project easier to manage?"
 
 Why yes. It does help a bit with some other things.
 
-For example, `Flask-Classful` will automatically generate routes based on the methods
+For example, ``Flask-Classful`` will automatically generate routes based on the methods
 in your views, and makes it super simple to override those routes
 using Flask's familiar decorator syntax.
 
 .. _Flask-Classful: http://github.com/teracyhq/flask-classful
 .. _Flask: http://flask.pocoo.org/
+
+
+About Flask-Classful vs Flask-Classy and how to migrate
+-------------------------------------------------------
+
+This is a fork of original ``Flask-Classy`` for continuing its development since the original
+project was not updated for a long time. For more information, see:
+https://github.com/apiguy/flask-classy/issues/80
+
+If you switch from ``Flask-Classy`` to ``Flask-Classful``, you just need to update the module import,
+the APIs are the same for both.
+
+``from flask.ext.class_classy`` => ``from flask_classful`` (recommended) or ``from flask.ext.class_classy``
+
+``from flask_classy`` => ``from flask_classful``
+
+You can switch back to ``flask_classy`` if you like by doing the reverse.
+
 
 Installation
 ------------
