@@ -25,22 +25,6 @@ update this line for the right version:
   __version__ = "0.7.0-dev0"
 
 
-README.rst
-----------
-
-update this line for the right version:
-::
-  $ pip install git+https://github.com/teracyhq/flask-classful.git@develop#egg=flask-classful
-
-
-docs/index.rst
---------------
-
-update this line for the right version:
-::
-  $ pip install git+https://github.com/teracyhq/flask-classful.git@develop#egg=flask-classful
-
-
 docs/conf.py
 ------------
 
