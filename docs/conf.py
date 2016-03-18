@@ -40,8 +40,8 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # General information about the project.
-project = u'Flask Classy'
-copyright = u'2013, Freedom Dumlao'
+project = u'Flask Classful'
+copyright = u'2013, Freedom Dumlao & 2016, Teracy, Inc'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -215,8 +215,8 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    ('index', 'flaskclassy', u'Flask Classy Documentation',
-     [u'Freedom Dumlao'], 1)
+    ('index', 'flaskclassful', u'Flask Classful Documentation',
+     [u'Freedom Dumlao & Teracy, Inc'], 1)
 ]
 
 # If true, show URL addresses after external links.
@@ -229,8 +229,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-  ('index', 'FlaskClassy', u'Flask Classy Documentation',
-   u'Freedom Dumlao', 'FlaskClassy', 'One line description of project.',
+  ('index', 'FlaskClassful', u'Flask Classful Documentation',
+   u'Freedom Dumlao & Teracy, Inc', 'FlaskClassful', 'One line description of project.',
    'Miscellaneous'),
 ]
 
