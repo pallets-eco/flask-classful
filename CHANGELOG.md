@@ -1,3 +1,12 @@
+2016-03-18 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.9.0
+    
+    - Improvements:
+        * Rename flask-classy to flask-classful for pypi publish and development
+
+
 2016-02-16 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
