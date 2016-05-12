@@ -180,10 +180,6 @@ class FlaskView(object):
         i = cls()
         view = getattr(i, name)
 
-        if cls.decorators:
-            for decorator in cls.decorators:
-                view = decorator(view)
-
         @functools.wraps(view)
         def proxy(**forgettable_view_args):
             # Always use the global request object's view_args, because they
@@ -237,6 +233,11 @@ class FlaskView(object):
                 response = i.after_request(name, response)
 
             return response
+
+        # Decorate the proxy which is a function rather than the view which is a bound instance method
+        if cls.decorators:
+            for decorator in cls.decorators:
+                proxy = decorator(proxy)
 
         return proxy
 
