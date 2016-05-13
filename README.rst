@@ -7,23 +7,37 @@ Flask-Classful
 ..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
     :target: https://coveralls.io/github/teracyhq/flask-classful?branch=develop
 
-.. image:: https://www.quantifiedcode.com/api/v1/project/1f655f7956a24d9fbf787ec149cbcf5a/badge.svg
+..  image:: https://img.shields.io/pypi/v/Flask-Classful.svg?maxAge=2592000
+    :target: https://pypi.python.org/pypi/Flask-Classful
+    :alt: 'Latest PyPI release'
+
+..  image:: https://img.shields.io/pypi/pyversions/Flask-Classful.svg?maxAge=2592000
+    :target: https://pypi.python.org/pypi/Flask-Classful
+    :alt: 'Supported Python versions'
+
+|
+
+..  image:: https://www.quantifiedcode.com/api/v1/project/1f655f7956a24d9fbf787ec149cbcf5a/badge.svg
     :target: https://www.quantifiedcode.com/app/project/1f655f7956a24d9fbf787ec149cbcf5a
     :alt: Code issues
 
-.. image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=sprint-current&title=Current%20Sprint
+..  image:: https://img.shields.io/github/issues/teracyhq/flask-classful.svg
+    :target: https://waffle.io/teracyhq/flask-classful
+    :alt: Open Issues
+
+..  image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=sprint-current&title=Current%20Sprint
     :target: https://waffle.io/teracyhq/flask-classful
     :alt: 'Current Sprint'
 
-.. image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=in%20progress&title=In%20Progress
+..  image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=in%20progress&title=In%20Progress
     :target: https://waffle.io/teracyhq/flask-classful
     :alt: 'In Progress'
 
-.. image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=under-review&title=Under%20Review
+..  image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=under-review&title=Under%20Review
     :target: https://waffle.io/teracyhq/flask-classful
     :alt: 'Under Review'
 
-.. image:: https://graphs.waffle.io/teracyhq/flask-classful/throughput.svg
+..  image:: https://graphs.waffle.io/teracyhq/flask-classful/throughput.svg
     :target: https://waffle.io/teracyhq/flask-classful/metrics/throughput
     :alt: 'Throughput Graph'
 
