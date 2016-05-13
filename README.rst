@@ -4,11 +4,28 @@ Flask-Classful
 ..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=develop
     :target: https://travis-ci.org/teracyhq/flask-classful
 
-
 ..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
     :target: https://coveralls.io/github/teracyhq/flask-classful?branch=develop
 
+.. image:: https://www.quantifiedcode.com/api/v1/project/1f655f7956a24d9fbf787ec149cbcf5a/badge.svg
+    :target: https://www.quantifiedcode.com/app/project/1f655f7956a24d9fbf787ec149cbcf5a
+    :alt: Code issues
 
+.. image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=sprint-current&title=Current%20Sprint
+    :target: https://waffle.io/teracyhq/flask-classful
+    :alt: 'Current Sprint'
+
+.. image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=in%20progress&title=In%20Progress
+    :target: https://waffle.io/teracyhq/flask-classful
+    :alt: 'In Progress'
+
+.. image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=under-review&title=Under%20Review
+    :target: https://waffle.io/teracyhq/flask-classful
+    :alt: 'Under Review'
+
+.. image:: https://graphs.waffle.io/teracyhq/flask-classful/throughput.svg
+    :target: https://waffle.io/teracyhq/flask-classful/metrics/throughput
+    :alt: 'Throughput Graph'
 
 Note::
 
