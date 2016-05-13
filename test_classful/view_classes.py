@@ -1,3 +1,4 @@
+from flask import jsonify
 from flask_classful import FlaskView, route
 from functools import wraps
 
@@ -334,4 +335,35 @@ class OverrideInheritedTrailingSlashView(TrailingSlashView):
         return "Index"
 
 
+class JSONifyTestView(FlaskView):
+    route_base = '/jsonify'
+    trailing_slash = False
+
+    def index(self):
+        return jsonify(dict(
+            success=True
+        )), 200
+
+    def post(self):
+        return jsonify(dict(
+            success=True
+        )), 201
+
+    @route('/not-found', methods=['GET'])
+    def not_found(self):
+        return jsonify(dict(
+            success=False
+        )), 404
+
+    @route('/custom-header', methods=['GET'])
+    def custom_header(self):
+        return jsonify(dict(
+            success=True
+        )), 418, {'X-TEAPOT': '1'}
+
+    @route('/normal')
+    def normal_jsonify(self):
+        return jsonify(dict(
+            success=True
+        ))
 

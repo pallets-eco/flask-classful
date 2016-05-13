@@ -204,11 +204,13 @@ class FlaskView(object):
                     return response
 
             response = view(**request.view_args)
-            code, headers = 200, {}
+            code, headers = None, None
+
             if isinstance(response, tuple):
                 response, code, headers = unpack(response)
 
             if not isinstance(response, Response):
+
                 if not cls.representations:
                     # No representations defined, then the default is to just output
                     # what the view function returned as a response
@@ -227,6 +229,12 @@ class FlaskView(object):
                         # TODO(hoatle): or just make_response?
                         response = cls.representations[list(cls.representations.keys())[0]](
                             response, code, headers)
+
+            # If the header or code is set, regenerate the response
+            elif any(x is not None for x in (code, headers)):
+                # A response can be passed into `make_response` and it will set
+                # the key appropriately
+                response = make_response(response, code, headers)
 
             after_view_name = "after_" + name
             if hasattr(i, after_view_name):
