@@ -10,6 +10,13 @@ Update next iteration for develop branch:
 - flask_classful.py
 - docs/conf.py
 
+README
+------
+
+update the README.rst file
+
+
+
 CHANGELOG
 ---------
 
