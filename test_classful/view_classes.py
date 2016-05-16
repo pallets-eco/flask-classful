@@ -32,7 +32,7 @@ class BasicView(FlaskView):
         return "Custom Method"
 
     def custom_method_with_params(self, p_one, p_two):
-        return "Custom Method %s %s" % (p_one, p_two,)
+        return "Custom Method {0!s} {1!s}".format(p_one, p_two)
 
     @route("/routed/")
     def routed_method(self):
@@ -100,7 +100,7 @@ class VarBaseView(FlaskView):
 
     @route('/local/<route_local>', methods=['GET'])
     def with_route_arg(self, route, route_local):
-        return "%s %s" % (route, route_local)
+        return "{0!s} {1!s}".format(route, route_local)
 
 class BeforeRequestView(FlaskView):
 
@@ -309,7 +309,7 @@ class TrailingSlashView(FlaskView):
         return "Custom Method"
 
     def custom_method_with_params(self, p_one, p_two):
-        return "Custom Method %s %s" % (p_one, p_two,)
+        return "Custom Method {0!s} {1!s}".format(p_one, p_two)
 
     @route("/routed/")
     def routed_method(self):

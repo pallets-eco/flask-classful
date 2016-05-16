@@ -124,7 +124,7 @@ class FlaskView(object):
                         elif len(value._rule_cache[name]) == 1:
                             endpoint = route_name
                         else:
-                            endpoint = "%s_%d" % (route_name, idx,)
+                            endpoint = "{0!s}_{1:d}".format(route_name, idx)
 
                         app.add_url_rule(rule, endpoint, proxy, subdomain=subdomain, **options)
 
@@ -137,13 +137,13 @@ class FlaskView(object):
                     app.add_url_rule(rule, route_name, proxy, methods=methods, subdomain=subdomain)
 
                 else:
-                    route_str = '/%s/' % name
+                    route_str = '/{0!s}/'.format(name)
                     if not cls.trailing_slash:
                         route_str = route_str.rstrip('/')
                     rule = cls.build_rule(route_str, value)
                     app.add_url_rule(rule, route_name, proxy, subdomain=subdomain)
             except DecoratorCompatibilityError:
-                raise DecoratorCompatibilityError("Incompatible decorator detected on %s in class %s" % (name, cls.__name__))
+                raise DecoratorCompatibilityError("Incompatible decorator detected on {0!s} in class {1!s}".format(name, cls.__name__))
 
         if hasattr(cls, "orig_route_base"):
             cls.route_base = cls.orig_route_base
@@ -283,9 +283,9 @@ class FlaskView(object):
                 if arg not in ignored_rule_args:
                     if not query_params or len(args) - i > len(query_params):
                         # This is not optional param, so it's not query argument
-                        rule_parts.append("<%s>" % arg)
+                        rule_parts.append("<{0!s}>".format(arg))
 
-        result = "/%s" % "/".join(rule_parts)
+        result = "/{0!s}".format("/".join(rule_parts))
         return re.sub(r'(/)\1+', r'\1', result)
 
 
@@ -326,7 +326,7 @@ class FlaskView(object):
 
         :param method_name: the method name to use when building a route name
         """
-        return cls.__name__ + ":%s" % method_name
+        return cls.__name__ + ":{0!s}".format(method_name)
 
 
 def get_interesting_members(base_class, cls):
