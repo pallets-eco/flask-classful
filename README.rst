@@ -1,17 +1,21 @@
 Flask-Classful
 ==============
 
-..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=master
+..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=develop
     :target: https://travis-ci.org/teracyhq/flask-classful
 
-..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=master&service=github
+..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
     :target: https://coveralls.io/github/teracyhq/flask-classful?branch=master
 
 ..  image:: https://img.shields.io/pypi/v/Flask-Classful.svg?maxAge=2592000
     :target: https://pypi.python.org/pypi/Flask-Classful
     :alt: 'Latest PyPI release'
 
-..  image:: https://img.shields.io/pypi/pyversions/Flask-Classful.svg?maxAge=2592000
+..  image:: https://img.shields.io/pypi/wheel/flask-classful.svg?maxAge=2592000
+    :target: https://pypi.python.org/pypi/Flask-Classful
+    :alt: 'Wheel Supported'
+
+..  image:: https://img.shields.io/pypi/pyversions/flask-classful.svg?maxAge=2592000
     :target: https://pypi.python.org/pypi/Flask-Classful
     :alt: 'Supported Python versions'
 
