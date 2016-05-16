@@ -1,11 +1,11 @@
 Flask-Classful
 ==============
 
-..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=develop
+..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=master
     :target: https://travis-ci.org/teracyhq/flask-classful
 
-..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
-    :target: https://coveralls.io/github/teracyhq/flask-classful?branch=develop
+..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=master&service=github
+    :target: https://coveralls.io/github/teracyhq/flask-classful?branch=master
 
 ..  image:: https://img.shields.io/pypi/v/Flask-Classful.svg?maxAge=2592000
     :target: https://pypi.python.org/pypi/Flask-Classful
@@ -19,7 +19,7 @@ Flask-Classful
 
 ..  image:: https://www.quantifiedcode.com/api/v1/project/1f655f7956a24d9fbf787ec149cbcf5a/badge.svg
     :target: https://www.quantifiedcode.com/app/project/1f655f7956a24d9fbf787ec149cbcf5a
-    :alt: Code issues
+    :alt: Code Issues
 
 ..  image:: https://img.shields.io/github/issues/teracyhq/flask-classful.svg
     :target: https://waffle.io/teracyhq/flask-classful
