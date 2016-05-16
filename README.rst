@@ -4,6 +4,10 @@ Flask-Classful
 ..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=develop
     :target: https://travis-ci.org/teracyhq/flask-classful
 
+..  image:: https://badges.gitter.im/teracyhq/flask-classful.svg
+    :alt: Join the chat at https://gitter.im/teracyhq/flask-classful
+    :target: https://gitter.im/teracyhq/flask-classful?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
 ..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
     :target: https://coveralls.io/github/teracyhq/flask-classful?branch=master
 
