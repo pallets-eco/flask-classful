@@ -1,11 +1,14 @@
+import json
+
 from flask import Flask, Blueprint
-from .view_classes import BasicView, IndexView
+from .view_classes import BasicView, IndexView, JSONifyTestView
 from nose.tools import *
 
 app = Flask("blueprints")
 bp = Blueprint("bptest", "bptest")
 BasicView.register(bp)
 IndexView.register(bp)
+JSONifyTestView.register(bp)
 app.register_blueprint(bp)
 
 client = app.test_client()
@@ -74,5 +77,33 @@ def test_bp_url_prefix():
     eq_(b"Index", resp.data)
 
 
+def test_jsonify_normal_index():
+    resp = client.get('/jsonify')
+    eq_(resp.status_code, 200)
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=True))
 
 
+def test_jsonify_post_custom_status_code():
+    resp = client.post('/jsonify')
+    eq_(resp.status_code, 201)
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=True))
+
+
+def test_jsonify_not_found():
+    resp = client.get('/jsonify/not-found')
+    eq_(resp.status_code, 404)
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=False))
+
+
+def test_custom_header():
+    resp = client.get('/jsonify/custom-header')
+    eq_(resp.status_code, 418)
+    eq_(resp.headers['X-TEAPOT'], '1')
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=True))
+
+
+def test_normal_jsonify():
+    resp = client.get('/jsonify/normal')
+    eq_(resp.status_code, 200)
+    eq_(resp.headers is not None, True)
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=True))
