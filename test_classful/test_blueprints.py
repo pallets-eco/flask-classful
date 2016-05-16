@@ -76,29 +76,34 @@ def test_bp_url_prefix():
     resp = client.get('/foo/')
     eq_(b"Index", resp.data)
 
+
 def test_jsonify_normal_index():
     resp = client.get('/jsonify')
     eq_(resp.status_code, 200)
-    eq_(json.loads(resp.data), dict(success=True))
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=True))
+
 
 def test_jsonify_post_custom_status_code():
     resp = client.post('/jsonify')
     eq_(resp.status_code, 201)
-    eq_(json.loads(resp.data), dict(success=True))
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=True))
+
 
 def test_jsonify_not_found():
     resp = client.get('/jsonify/not-found')
     eq_(resp.status_code, 404)
-    eq_(json.loads(resp.data), dict(success=False))
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=False))
+
 
 def test_custom_header():
     resp = client.get('/jsonify/custom-header')
     eq_(resp.status_code, 418)
     eq_(resp.headers['X-TEAPOT'], '1')
-    eq_(json.loads(resp.data), dict(success=True))
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=True))
+
 
 def test_normal_jsonify():
     resp = client.get('/jsonify/normal')
     eq_(resp.status_code, 200)
-    eq_(resp.headers != None, True)
-    eq_(json.loads(resp.data), dict(success=True))
+    eq_(resp.headers is not None, True)
+    eq_(json.loads(resp.data.decode('utf-8')), dict(success=True))
