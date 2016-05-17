@@ -387,7 +387,7 @@ class DecoratedBoldListView(FlaskView):
 
     def get(self, id):
         '''Get an individual resource'''
-        return 'Get {}'.format(id)
+        return 'Get {0!s}'.format(id)
 
     def index(self):
         '''Get the index'''
@@ -401,7 +401,7 @@ class DecoratedBoldItalicsListView(FlaskView):
 
     def get(self, id):
         '''Get an individual resource'''
-        return 'Get {}'.format(id)
+        return 'Get {0!s}'.format(id)
 
     def index(self):
         '''Get the index'''
@@ -426,7 +426,7 @@ class DecoratedListMemberView(FlaskView):
     @make_paragraph_decorator
     def get(self, id):
         '''Get an individual resource'''
-        return 'Get {}'.format(id)
+        return 'Get {0!s}'.format(id)
 
     def index(self):
         '''Get the index'''
@@ -458,7 +458,7 @@ class DecoratedListFunctionAttributesView(FlaskView):
     @make_bold_decorator
     def get(self, id):
         '''Get an individual resource'''
-        return 'Get {}'.format(id)
+        return 'Get {0!s}'.format(id)
 
     def index(self):
         '''Get the index'''
@@ -476,7 +476,7 @@ class DecoratedListMemberFunctionAttributesView(FlaskView):
     @make_bold_decorator
     def get(self, id):
         '''Get an individual resource'''
-        return 'Get {}'.format(id)
+        return 'Get {0!s}'.format(id)
 
     @eggs_attribute_decorator('scrambled')
     def index(self):
