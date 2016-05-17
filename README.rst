@@ -4,11 +4,50 @@ Flask-Classful
 ..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=develop
     :target: https://travis-ci.org/teracyhq/flask-classful
 
+..  image:: https://badges.gitter.im/teracyhq/flask-classful.svg
+    :alt: Join the chat at https://gitter.im/teracyhq/flask-classful
+    :target: https://gitter.im/teracyhq/flask-classful?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 ..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
-    :target: https://coveralls.io/github/teracyhq/flask-classful?branch=develop
+    :target: https://coveralls.io/github/teracyhq/flask-classful?branch=master
 
+..  image:: https://img.shields.io/pypi/v/Flask-Classful.svg?maxAge=2592000
+    :target: https://pypi.python.org/pypi/Flask-Classful
+    :alt: 'Latest PyPI release'
 
+..  image:: https://img.shields.io/pypi/wheel/flask-classful.svg?maxAge=2592000
+    :target: https://pypi.python.org/pypi/Flask-Classful
+    :alt: 'Wheel Supported'
+
+..  image:: https://img.shields.io/pypi/pyversions/flask-classful.svg?maxAge=2592000
+    :target: https://pypi.python.org/pypi/Flask-Classful
+    :alt: 'Supported Python versions'
+
+|
+
+..  image:: https://www.quantifiedcode.com/api/v1/project/1f655f7956a24d9fbf787ec149cbcf5a/badge.svg
+    :target: https://www.quantifiedcode.com/app/project/1f655f7956a24d9fbf787ec149cbcf5a
+    :alt: Code Issues
+
+..  image:: https://img.shields.io/github/issues/teracyhq/flask-classful.svg
+    :target: https://waffle.io/teracyhq/flask-classful
+    :alt: Open Issues
+
+..  image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=sprint-current&title=Current%20Sprint
+    :target: https://waffle.io/teracyhq/flask-classful
+    :alt: 'Current Sprint'
+
+..  image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=in%20progress&title=In%20Progress
+    :target: https://waffle.io/teracyhq/flask-classful
+    :alt: 'In Progress'
+
+..  image:: https://badge.waffle.io/teracyhq/flask-classful.svg?label=under-review&title=Under%20Review
+    :target: https://waffle.io/teracyhq/flask-classful
+    :alt: 'Under Review'
+
+..  image:: https://graphs.waffle.io/teracyhq/flask-classful/throughput.svg
+    :target: https://waffle.io/teracyhq/flask-classful/metrics/throughput
+    :alt: 'Throughput Graph'
 
 Note::
 

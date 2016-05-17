@@ -1,4 +1,4 @@
-from flask import Response
+from flask import jsonify
 from flask_classful import FlaskView, route
 from functools import wraps
 
@@ -32,7 +32,7 @@ class BasicView(FlaskView):
         return "Custom Method"
 
     def custom_method_with_params(self, p_one, p_two):
-        return "Custom Method %s %s" % (p_one, p_two,)
+        return "Custom Method {0!s} {1!s}".format(p_one, p_two)
 
     @route("/routed/")
     def routed_method(self):
@@ -100,7 +100,7 @@ class VarBaseView(FlaskView):
 
     @route('/local/<route_local>', methods=['GET'])
     def with_route_arg(self, route, route_local):
-        return "%s %s" % (route, route_local)
+        return "{0!s} {1!s}".format(route, route_local)
 
 class BeforeRequestView(FlaskView):
 
@@ -309,7 +309,7 @@ class TrailingSlashView(FlaskView):
         return "Custom Method"
 
     def custom_method_with_params(self, p_one, p_two):
-        return "Custom Method %s %s" % (p_one, p_two,)
+        return "Custom Method {0!s} {1!s}".format(p_one, p_two)
 
     @route("/routed/")
     def routed_method(self):
@@ -333,6 +333,39 @@ class OverrideInheritedTrailingSlashView(TrailingSlashView):
 
     def index(self):
         return "Index"
+
+
+class JSONifyTestView(FlaskView):
+    route_base = '/jsonify'
+    trailing_slash = False
+
+    def index(self):
+        return jsonify(dict(
+            success=True
+        )), 200
+
+    def post(self):
+        return jsonify(dict(
+            success=True
+        )), 201
+
+    @route('/not-found', methods=['GET'])
+    def not_found(self):
+        return jsonify(dict(
+            success=False
+        )), 404
+
+    @route('/custom-header', methods=['GET'])
+    def custom_header(self):
+        return jsonify(dict(
+            success=True
+        )), 418, {'X-TEAPOT': '1'}
+
+    @route('/normal')
+    def normal_jsonify(self):
+        return jsonify(dict(
+            success=True
+        ))
 
 
 def make_bold_decorator(fn):

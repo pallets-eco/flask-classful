@@ -9,7 +9,7 @@
     :license: BSD, see LICENSE for more details.
 """
 
-__version__ = "0.10.0-dev0"
+__version__ = "0.11.0-dev0"
 
 
 import sys
@@ -124,7 +124,7 @@ class FlaskView(object):
                         elif len(value._rule_cache[name]) == 1:
                             endpoint = route_name
                         else:
-                            endpoint = "%s_%d" % (route_name, idx,)
+                            endpoint = "{0!s}_{1:d}".format(route_name, idx)
 
                         app.add_url_rule(rule, endpoint, proxy, subdomain=subdomain, **options)
 
@@ -137,13 +137,13 @@ class FlaskView(object):
                     app.add_url_rule(rule, route_name, proxy, methods=methods, subdomain=subdomain)
 
                 else:
-                    route_str = '/%s/' % name
+                    route_str = '/{0!s}/'.format(name)
                     if not cls.trailing_slash:
                         route_str = route_str.rstrip('/')
                     rule = cls.build_rule(route_str, value)
                     app.add_url_rule(rule, route_name, proxy, subdomain=subdomain)
             except DecoratorCompatibilityError:
-                raise DecoratorCompatibilityError("Incompatible decorator detected on %s in class %s" % (name, cls.__name__))
+                raise DecoratorCompatibilityError("Incompatible decorator detected on {0!s} in class {1!s}".format(name, cls.__name__))
 
         if hasattr(cls, "orig_route_base"):
             cls.route_base = cls.orig_route_base
@@ -215,11 +215,13 @@ class FlaskView(object):
                     return response
 
             response = view(**request.view_args)
-            code, headers = 200, {}
+            code, headers = None, None
+
             if isinstance(response, tuple):
                 response, code, headers = unpack(response)
 
             if not isinstance(response, Response):
+
                 if not cls.representations:
                     # No representations defined, then the default is to just output
                     # what the view function returned as a response
@@ -238,6 +240,12 @@ class FlaskView(object):
                         # TODO(hoatle): or just make_response?
                         response = cls.representations[list(cls.representations.keys())[0]](
                             response, code, headers)
+
+            # If the header or code is set, regenerate the response
+            elif any(x is not None for x in (code, headers)):
+                # A response can be passed into `make_response` and it will set
+                # the key appropriately
+                response = make_response(response, code, headers)
 
             after_view_name = "after_" + name
             if hasattr(i, after_view_name):
@@ -287,9 +295,9 @@ class FlaskView(object):
                 if arg not in ignored_rule_args:
                     if not query_params or len(args) - i > len(query_params):
                         # This is not optional param, so it's not query argument
-                        rule_parts.append("<%s>" % arg)
+                        rule_parts.append("<{0!s}>".format(arg))
 
-        result = "/%s" % "/".join(rule_parts)
+        result = "/{0!s}".format("/".join(rule_parts))
         return re.sub(r'(/)\1+', r'\1', result)
 
 
@@ -330,7 +338,7 @@ class FlaskView(object):
 
         :param method_name: the method name to use when building a route name
         """
-        return cls.__name__ + ":%s" % method_name
+        return cls.__name__ + ":{0!s}".format(method_name)
 
 
 def get_interesting_members(base_class, cls):
