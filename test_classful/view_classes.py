@@ -171,13 +171,6 @@ def func_decorator(f):
         return f(*args, **kwargs)
     return decorated_view
 
-def wraps_decorator(f):
-    @wraps(f)
-    def decorated_view(*args, **kwargs):
-      return f(*args, **kwargs)
-    return decorated_view
-
-
 def params_decorator(p_1, p_2):
     def decorator(f):
        @wraps(f)
@@ -185,7 +178,6 @@ def params_decorator(p_1, p_2):
            return f(*args, **kwargs)
        return decorated_function
     return decorator
-
 
 def recursive_decorator(f):
     @wraps(f)
@@ -196,7 +188,6 @@ def recursive_decorator(f):
     def foo():
         return 'bar'
     decorated_view.foo = foo
-
     return decorated_view
 
 def more_recursive(stop_type):
@@ -205,7 +196,6 @@ def more_recursive(stop_type):
             return func(*args, **kw)
         return _recursive
     return _inner
-
 
 class DecoratedView(FlaskView):
     @func_decorator
@@ -227,7 +217,6 @@ class DecoratedView(FlaskView):
     @params_decorator(get_value(), "value")
     def delete(self, obj_id):
         return "Params Decorator Delete " + obj_id
-
 
     @more_recursive(None)
     def get_some(self):
@@ -253,7 +242,6 @@ class DecoratedView(FlaskView):
     @recursive_decorator
     def anotherval(self, val):
         return "Anotherval " + val
-
 
 
 class InheritanceView(BasicView):
