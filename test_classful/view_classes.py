@@ -1,3 +1,4 @@
+from flask import Response
 from flask_classful import FlaskView, route
 from functools import wraps
 
@@ -334,4 +335,103 @@ class OverrideInheritedTrailingSlashView(TrailingSlashView):
         return "Index"
 
 
+def make_bold_decorator(fn):
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        return '<b>' + fn(*args, **kwargs) + '</b>'
+    return inner
 
+
+def make_italics_decorator(fn):
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        return '<i>' + fn(*args, **kwargs) + '</i>'
+    return inner
+
+
+def make_paragraph_decorator(fn):
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        return '<p>' + fn(*args, **kwargs) + '</p>'
+    return inner
+
+
+class DecoratedBoldListView(FlaskView):
+    route_base = '/decorated_bold_list_view/'
+    decorators = [make_bold_decorator]
+
+    def get(self, id):
+        return 'Get %s'%id
+
+    def index(self):
+        return 'Index'
+
+
+class DecoratedBoldItalicsListView(FlaskView):
+    route_base = '/decorated_bold_italics_list_view/'
+    decorators = [make_bold_decorator, make_italics_decorator]
+
+    def get(self, id):
+        return 'Get %s'%id
+
+    def index(self):
+        return 'Index'
+
+
+class DecoratedListMemberView(FlaskView):
+    route_base = '/decorated_list_member_view/'
+    decorators = [
+        # Third Decorator
+        make_bold_decorator,
+
+        # Second Decorator
+        make_italics_decorator
+    ]
+
+    # First decorator
+    @make_paragraph_decorator
+    def get(self, id):
+        return 'Get %s'%id
+
+    def index(self):
+        return 'Index'
+
+
+def eggs_attribute_decorator(eggs_style):
+    def decorator(f):
+        # Apply the style to the function
+        f._eggs = eggs_style
+
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+
+class DecoratedListFunctionAttributesView(FlaskView):
+    route_base = '/decorated_list_function_attributes_view/'
+    decorators = [
+        make_italics_decorator,
+        eggs_attribute_decorator('scrambled')
+    ]
+
+    @make_bold_decorator
+    def get(self, id):
+        return 'Get %s'%id
+
+    def index(self):
+        return 'Index'
+
+
+class DecoratedListMemberFunctionAttributesView(FlaskView):
+    route_base = '/decorated_list_member_function_attributes_view/'
+    decorators = [make_italics_decorator]
+
+    @make_bold_decorator
+    def get(self, id):
+        return 'Get %s'%id
+
+    @eggs_attribute_decorator('scrambled')
+    def index(self):
+        return 'Index'
