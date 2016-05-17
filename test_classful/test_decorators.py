@@ -68,18 +68,21 @@ def test_params_decorator_delete():
 
 
 def test_decorator_bold_list_get():
+    '''Tests that the get route is wrapped in bold'''
     resp = client.get('/decorated_bold_list_view/1234')
     ok_(b'<b>' in resp.data)
     ok_(b'</b>' in resp.data)
 
 
 def test_decorator_bold_list_index():
+    '''Tests that the index route is wrapped in bold'''
     resp = client.get('/decorated_bold_list_view/')
     ok_(b'<b>' in resp.data)
     ok_(b'</b>' in resp.data)
 
 
 def test_decorator_bold_italics_list_get():
+    '''Tests that the get route is wrapped in bold and italics'''
     resp = client.get('/decorated_bold_italics_list_view/1234')
     ok_(b'<i>' in resp.data)
     ok_(b'</i>' in resp.data)
@@ -88,6 +91,7 @@ def test_decorator_bold_italics_list_get():
 
 
 def test_decorator_bold_italics_list_index():
+    '''Tests that the index route is wrapped in bold and italics'''
     resp = client.get('/decorated_bold_italics_list_view/')
     ok_(b'<i>' in resp.data)
     ok_(b'</i>' in resp.data)
@@ -96,6 +100,10 @@ def test_decorator_bold_italics_list_index():
 
 
 def test_decorator_list_member_index():
+    '''
+    Tests that the index route is wrapped in bold,
+    italics and paragraph
+    '''
     resp = client.get('/decorated_list_member_view/')
     ok_(b'<i>' in resp.data)
     ok_(b'</i>' in resp.data)
@@ -106,9 +114,8 @@ def test_decorator_list_member_index():
 
 
 def test_decorator_list_member_get():
+    '''Tests the ordering of decorators'''
     resp = client.get('/decorated_list_member_view/1234')
-
-    # The order should match how functions are decorated
     eq_(b'<b>', resp.data[:3])
     eq_(b'<i>', resp.data[3:6])
     eq_(b'<p>', resp.data[6:9])
@@ -117,31 +124,31 @@ def test_decorator_list_member_get():
     eq_(b'</b>', resp.data[-4:])
 
 
-# Verify list of decorators with attributes modify all functions in FlaskView
 def test_decorator_list_function_attributes_get():
+    '''Verify list of decorators with attributes modify all functions in FlaskView'''
     resp = client.get('/decorated_list_function_attributes_view/1234')
     ok_(b'Get 1234' in resp.data)
     ok_(hasattr(app.view_functions['DecoratedListFunctionAttributesView:get'], 'eggs'))
     eq_('scrambled', app.view_functions['DecoratedListFunctionAttributesView:get'].eggs)
 
 
-# Verify list of decorators with attributes modify all functions in FlaskView
 def test_decorator_list_function_attributes_index():
+    '''Verify list of decorators with attributes modify all functions in FlaskView'''
     resp = client.get('/decorated_list_function_attributes_view/')
     ok_(b'Index' in resp.data)
     ok_(hasattr(app.view_functions['DecoratedListFunctionAttributesView:index'], 'eggs'))
     eq_('scrambled', app.view_functions['DecoratedListFunctionAttributesView:index'].eggs)
 
 
-# Verify decorator with attributes does not modify other members
 def test_decorator_list_member_function_attributes_get():
+    '''Verify decorator with attributes does not modify other members'''
     resp = client.get('/decorated_list_member_function_attributes_view/4321')
     ok_(b'Get 4321' in resp.data)
     eq_(hasattr(app.view_functions['DecoratedListMemberFunctionAttributesView:get'], 'eggs'), False)
 
 
-# Verify decorator with attributes modify decorated memeber functions
 def test_decorator_list_member_function_attributes_index():
+    '''Verify decorator with attributes modify decorated memeber functions'''
     resp = client.get('/decorated_list_member_function_attributes_view/')
     ok_(b'Index' in resp.data)
     eq_(hasattr(app.view_functions['DecoratedListMemberFunctionAttributesView:index'], 'eggs'), True)
