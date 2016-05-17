@@ -119,22 +119,22 @@ def test_decorator_list_member_get():
 
 # Verify list of decorators with attributes modify all functions in FlaskView
 def test_decorator_list_function_attributes_get():
-    ok_(hasattr(app.view_functions['DecoratedListFunctionAttributesView:get'], '_eggs'))
-    eq_('scrambled', app.view_functions['DecoratedListFunctionAttributesView:get']._eggs)
+    ok_(hasattr(app.view_functions['DecoratedListFunctionAttributesView:get'], 'eggs'))
+    eq_('scrambled', app.view_functions['DecoratedListFunctionAttributesView:get'].eggs)
 
 
 # Verify list of decorators with attributes modify all functions in FlaskView
 def test_decorator_list_function_attributes_index():
-    ok_(hasattr(app.view_functions['DecoratedListFunctionAttributesView:index'], '_eggs'))
-    eq_('scrambled', app.view_functions['DecoratedListFunctionAttributesView:index']._eggs)
+    ok_(hasattr(app.view_functions['DecoratedListFunctionAttributesView:index'], 'eggs'))
+    eq_('scrambled', app.view_functions['DecoratedListFunctionAttributesView:index'].eggs)
 
 
 # Verify decorator with attributes does not modify other members
 def test_decorator_list_member_function_attributes_get():
-    eq_(hasattr(app.view_functions['DecoratedListMemberFunctionAttributesView:get'], '_eggs'), False)
+    eq_(hasattr(app.view_functions['DecoratedListMemberFunctionAttributesView:get'], 'eggs'), False)
 
 
 # Verify decorator with attributes modify decorated memeber functions
 def test_decorator_list_member_function_attributes_index():
-    eq_(hasattr(app.view_functions['DecoratedListMemberFunctionAttributesView:index'], '_eggs'), True)
-    eq_('scrambled', app.view_functions['DecoratedListMemberFunctionAttributesView:index']._eggs)
+    eq_(hasattr(app.view_functions['DecoratedListMemberFunctionAttributesView:index'], 'eggs'), True)
+    eq_('scrambled', app.view_functions['DecoratedListMemberFunctionAttributesView:index'].eggs)
