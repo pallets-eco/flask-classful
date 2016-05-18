@@ -10,12 +10,6 @@ Update next iteration for develop branch:
 - flask_classful.py
 - docs/conf.py
 
-README
-------
-
-update the README.rst file
-
-
 
 CHANGELOG
 ---------
@@ -41,3 +35,8 @@ update these lines for the right versions:
   version = '0.7'
   # The full version, including alpha/beta/rc tags.
   release = '0.7.0'
+
+Upload the tagged version to PyPI
+---------------------------------
+
+Follow: http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/

@@ -1,3 +1,13 @@
+2016-05-18 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.11.0
+
+    - Improvements:
+        * enhance 3rd party decorators #14
+
+Details: https://github.com/teracyhq/flask-classful/issues?q=milestone%3A0.11.0+is%3Aclosed
+
 2016-05-16 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
