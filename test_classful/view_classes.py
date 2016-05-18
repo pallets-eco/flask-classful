@@ -4,8 +4,10 @@ from functools import wraps
 
 VALUE1 = "value1"
 
+
 def get_value():
     return VALUE1
+
 
 class BasicView(FlaskView):
 
@@ -55,11 +57,13 @@ class BasicView(FlaskView):
     def custom_http_method(self):
         return "Custom HTTP Method"
 
+
 class SubdomainAttributeView(FlaskView):
     subdomain = "sub1"
 
     def index(self):
         return "Index"
+
 
 class SubdomainRouteView(FlaskView):
 
@@ -67,11 +71,13 @@ class SubdomainRouteView(FlaskView):
     def index(self):
         return "Index"
 
+
 class IndexView(FlaskView):
     route_base = "/"
 
     def index(self):
         return "Index"
+
 
 class RouteBaseView(FlaskView):
     route_base = "/base-routed/"
@@ -79,11 +85,13 @@ class RouteBaseView(FlaskView):
     def index(self):
         return "Index"
 
+
 class RoutePrefixView(FlaskView):
     route_prefix = "/my_prefix/"
 
     def index(self):
         return "Index"
+
 
 class VarBaseView(FlaskView):
     route_base = "/var-base-route/<route>"
@@ -102,6 +110,7 @@ class VarBaseView(FlaskView):
     def with_route_arg(self, route, route_local):
         return "{0!s} {1!s}".format(route, route_local)
 
+
 class BeforeRequestView(FlaskView):
 
     def before_request(self, name):
@@ -109,6 +118,7 @@ class BeforeRequestView(FlaskView):
 
     def index(self):
         return self.response
+
 
 class BeforeViewView(FlaskView):
 
@@ -118,6 +128,7 @@ class BeforeViewView(FlaskView):
     def index(self):
         return self.response
 
+
 class BeforeRequestReturnsView(FlaskView):
 
     def before_request(self, name):
@@ -125,6 +136,7 @@ class BeforeRequestReturnsView(FlaskView):
 
     def index(self):
         return "Should never see this"
+
 
 class BeforeViewReturnsView(FlaskView):
 
@@ -134,6 +146,7 @@ class BeforeViewReturnsView(FlaskView):
     def index(self):
         return "Should never see this"
 
+
 class AfterViewView(FlaskView):
 
     def after_index(self, response):
@@ -142,6 +155,7 @@ class AfterViewView(FlaskView):
     def index(self):
         return "Index"
 
+
 class AfterRequestView(FlaskView):
 
     def after_request(self, name, response):
@@ -149,6 +163,7 @@ class AfterRequestView(FlaskView):
 
     def index(self):
         return "Index"
+
 
 class VariedMethodsView(FlaskView):
 
@@ -163,13 +178,16 @@ class VariedMethodsView(FlaskView):
     def class_method(cls):
         return "Class Method"
 
+
 class SubVariedMethodsView(VariedMethodsView):
     pass
+
 
 def func_decorator(f):
     def decorated_view(*args, **kwargs):
         return f(*args, **kwargs)
     return decorated_view
+
 
 def params_decorator(p_1, p_2):
     def decorator(f):
@@ -189,6 +207,7 @@ def recursive_decorator(f):
         return 'bar'
     decorated_view.foo = foo
     return decorated_view
+
 
 def more_recursive(stop_type):
     def _inner(func):
@@ -357,7 +376,7 @@ class JSONifyTestView(FlaskView):
 
 
 def make_bold_decorator(fn):
-    '''Wraps a view function with Bold'''
+    """Wraps a view function with Bold"""
     @wraps(fn)
     def inner(*args, **kwargs):
         return '<b>' + fn(*args, **kwargs) + '</b>'
@@ -365,7 +384,7 @@ def make_bold_decorator(fn):
 
 
 def make_italics_decorator(fn):
-    '''Wraps a view function with Italics'''
+    """Wraps a view function with Italics"""
     @wraps(fn)
     def inner(*args, **kwargs):
         return '<i>' + fn(*args, **kwargs) + '</i>'
@@ -373,7 +392,7 @@ def make_italics_decorator(fn):
 
 
 def make_paragraph_decorator(fn):
-    '''Wraps a view function with Paragraph'''
+    """Wraps a view function with Paragraph"""
     @wraps(fn)
     def inner(*args, **kwargs):
         return '<p>' + fn(*args, **kwargs) + '</p>'
@@ -381,38 +400,38 @@ def make_paragraph_decorator(fn):
 
 
 class DecoratedBoldListView(FlaskView):
-    '''View class that applies bold to every route'''
+    """View class that applies bold to every route"""
     route_base = '/decorated_bold_list_view/'
     decorators = [make_bold_decorator]
 
     def get(self, id):
-        '''Get an individual resource'''
+        """Get an individual resource"""
         return 'Get {0!s}'.format(id)
 
     def index(self):
-        '''Get the index'''
+        """Get the index"""
         return 'Index'
 
 
 class DecoratedBoldItalicsListView(FlaskView):
-    '''View class that applies bold and italics to every route'''
+    """View class that applies bold and italics to every route"""
     route_base = '/decorated_bold_italics_list_view/'
     decorators = [make_bold_decorator, make_italics_decorator]
 
     def get(self, id):
-        '''Get an individual resource'''
+        """Get an individual resource"""
         return 'Get {0!s}'.format(id)
 
     def index(self):
-        '''Get the index'''
+        """Get the index"""
         return 'Index'
 
 
 class DecoratedListMemberView(FlaskView):
-    '''
+    """
     View class that decorators to every route and a decorator
     to an individual route
-    '''
+    """
     route_base = '/decorated_list_member_view/'
     decorators = [
         # Third Decorator
@@ -425,18 +444,19 @@ class DecoratedListMemberView(FlaskView):
     # First decorator
     @make_paragraph_decorator
     def get(self, id):
-        '''Get an individual resource'''
+        """Get an individual resource"""
         return 'Get {0!s}'.format(id)
 
     def index(self):
-        '''Get the index'''
+        """Get the index"""
         return 'Index'
 
 
 def eggs_attribute_decorator(eggs_style):
-    '''Appplies the eggs style attribute to the function'''
+    """Applies the eggs style attribute to the function"""
     def decorator(f):
         f.eggs = eggs_style
+
         @wraps(f)
         def decorated_function(*args, **kwargs):
             return f(*args, **kwargs)
@@ -445,10 +465,10 @@ def eggs_attribute_decorator(eggs_style):
 
 
 class DecoratedListFunctionAttributesView(FlaskView):
-    '''
+    """
     View class that applies an attribute to a function via a
     decorator in the decorator list
-    '''
+    """
     route_base = '/decorated_list_function_attributes_view/'
     decorators = [
         make_italics_decorator,
@@ -457,28 +477,28 @@ class DecoratedListFunctionAttributesView(FlaskView):
 
     @make_bold_decorator
     def get(self, id):
-        '''Get an individual resource'''
+        """Get an individual resource"""
         return 'Get {0!s}'.format(id)
 
     def index(self):
-        '''Get the index'''
+        """Get the index"""
         return 'Index'
 
 
 class DecoratedListMemberFunctionAttributesView(FlaskView):
-    '''
+    """
     View class that applies an attribute to a function via a
     decorator on the memeber function
-    '''
+    """
     route_base = '/decorated_list_member_function_attributes_view/'
     decorators = [make_italics_decorator]
 
     @make_bold_decorator
     def get(self, id):
-        '''Get an individual resource'''
+        """Get an individual resource"""
         return 'Get {0!s}'.format(id)
 
     @eggs_attribute_decorator('scrambled')
     def index(self):
-        '''Get the index'''
+        """Get the index"""
         return 'Index'

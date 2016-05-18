@@ -167,7 +167,6 @@ class FlaskView(object):
         endpoint = options.pop('endpoint', None)
         return subdomain, endpoint, options,
 
-
     @classmethod
     def make_proxy_method(cls, name):
         """Creates a proxy function that can be used by Flasks routing. The
@@ -190,7 +189,7 @@ class FlaskView(object):
         view = make_func(view)
 
         # Now apply the class decorator list in reverse order
-        # to match memeber decorator order
+        # to match member decorator order
         if cls.decorators:
             for decorator in reversed(cls.decorators):
                 view = decorator(view)
