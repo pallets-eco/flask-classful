@@ -171,13 +171,6 @@ def func_decorator(f):
         return f(*args, **kwargs)
     return decorated_view
 
-def wraps_decorator(f):
-    @wraps(f)
-    def decorated_view(*args, **kwargs):
-      return f(*args, **kwargs)
-    return decorated_view
-
-
 def params_decorator(p_1, p_2):
     def decorator(f):
        @wraps(f)
@@ -185,7 +178,6 @@ def params_decorator(p_1, p_2):
            return f(*args, **kwargs)
        return decorated_function
     return decorator
-
 
 def recursive_decorator(f):
     @wraps(f)
@@ -196,7 +188,6 @@ def recursive_decorator(f):
     def foo():
         return 'bar'
     decorated_view.foo = foo
-
     return decorated_view
 
 def more_recursive(stop_type):
@@ -205,7 +196,6 @@ def more_recursive(stop_type):
             return func(*args, **kw)
         return _recursive
     return _inner
-
 
 class DecoratedView(FlaskView):
     @func_decorator
@@ -227,7 +217,6 @@ class DecoratedView(FlaskView):
     @params_decorator(get_value(), "value")
     def delete(self, obj_id):
         return "Params Decorator Delete " + obj_id
-
 
     @more_recursive(None)
     def get_some(self):
@@ -253,7 +242,6 @@ class DecoratedView(FlaskView):
     @recursive_decorator
     def anotherval(self, val):
         return "Anotherval " + val
-
 
 
 class InheritanceView(BasicView):
@@ -367,3 +355,130 @@ class JSONifyTestView(FlaskView):
             success=True
         ))
 
+
+def make_bold_decorator(fn):
+    '''Wraps a view function with Bold'''
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        return '<b>' + fn(*args, **kwargs) + '</b>'
+    return inner
+
+
+def make_italics_decorator(fn):
+    '''Wraps a view function with Italics'''
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        return '<i>' + fn(*args, **kwargs) + '</i>'
+    return inner
+
+
+def make_paragraph_decorator(fn):
+    '''Wraps a view function with Paragraph'''
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        return '<p>' + fn(*args, **kwargs) + '</p>'
+    return inner
+
+
+class DecoratedBoldListView(FlaskView):
+    '''View class that applies bold to every route'''
+    route_base = '/decorated_bold_list_view/'
+    decorators = [make_bold_decorator]
+
+    def get(self, id):
+        '''Get an individual resource'''
+        return 'Get {0!s}'.format(id)
+
+    def index(self):
+        '''Get the index'''
+        return 'Index'
+
+
+class DecoratedBoldItalicsListView(FlaskView):
+    '''View class that applies bold and italics to every route'''
+    route_base = '/decorated_bold_italics_list_view/'
+    decorators = [make_bold_decorator, make_italics_decorator]
+
+    def get(self, id):
+        '''Get an individual resource'''
+        return 'Get {0!s}'.format(id)
+
+    def index(self):
+        '''Get the index'''
+        return 'Index'
+
+
+class DecoratedListMemberView(FlaskView):
+    '''
+    View class that decorators to every route and a decorator
+    to an individual route
+    '''
+    route_base = '/decorated_list_member_view/'
+    decorators = [
+        # Third Decorator
+        make_bold_decorator,
+
+        # Second Decorator
+        make_italics_decorator
+    ]
+
+    # First decorator
+    @make_paragraph_decorator
+    def get(self, id):
+        '''Get an individual resource'''
+        return 'Get {0!s}'.format(id)
+
+    def index(self):
+        '''Get the index'''
+        return 'Index'
+
+
+def eggs_attribute_decorator(eggs_style):
+    '''Appplies the eggs style attribute to the function'''
+    def decorator(f):
+        f.eggs = eggs_style
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            return f(*args, **kwargs)
+        return decorated_function
+    return decorator
+
+
+class DecoratedListFunctionAttributesView(FlaskView):
+    '''
+    View class that applies an attribute to a function via a
+    decorator in the decorator list
+    '''
+    route_base = '/decorated_list_function_attributes_view/'
+    decorators = [
+        make_italics_decorator,
+        eggs_attribute_decorator('scrambled')
+    ]
+
+    @make_bold_decorator
+    def get(self, id):
+        '''Get an individual resource'''
+        return 'Get {0!s}'.format(id)
+
+    def index(self):
+        '''Get the index'''
+        return 'Index'
+
+
+class DecoratedListMemberFunctionAttributesView(FlaskView):
+    '''
+    View class that applies an attribute to a function via a
+    decorator on the memeber function
+    '''
+    route_base = '/decorated_list_member_function_attributes_view/'
+    decorators = [make_italics_decorator]
+
+    @make_bold_decorator
+    def get(self, id):
+        '''Get an individual resource'''
+        return 'Get {0!s}'.format(id)
+
+    @eggs_attribute_decorator('scrambled')
+    def index(self):
+        '''Get the index'''
+        return 'Index'

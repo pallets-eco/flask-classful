@@ -180,8 +180,19 @@ class FlaskView(object):
         i = cls()
         view = getattr(i, name)
 
+        # Since the view is a bound instance method, first make it an actual function
+        # So function attributes work correctly
+        def make_func(fn):
+            @functools.wraps(fn)
+            def inner(*args, **kwargs):
+                return fn(*args, **kwargs)
+            return inner
+        view = make_func(view)
+
+        # Now apply the class decorator list in reverse order
+        # to match memeber decorator order
         if cls.decorators:
-            for decorator in cls.decorators:
+            for decorator in reversed(cls.decorators):
                 view = decorator(view)
 
         @functools.wraps(view)
@@ -245,6 +256,7 @@ class FlaskView(object):
                 response = i.after_request(name, response)
 
             return response
+
 
         return proxy
 
