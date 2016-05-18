@@ -11,8 +11,8 @@ Flask-Classful
 ..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
     :target: https://coveralls.io/github/teracyhq/flask-classful?branch=master
 
-..  image:: https://img.shields.io/pypi/v/Flask-Classful.svg?maxAge=2592000
-    :target: https://pypi.python.org/pypi/Flask-Classful
+..  image:: https://badge.fury.io/py/flask-classful.svg
+    :target: https://badge.fury.io/py/flask-classful
     :alt: 'Latest PyPI release'
 
 ..  image:: https://img.shields.io/pypi/wheel/flask-classful.svg?maxAge=2592000
