@@ -39,4 +39,12 @@ update these lines for the right versions:
 Upload the tagged version to PyPI
 ---------------------------------
 
-Follow: http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/
+```
+$ git checkout vX.X.X
+$ python setup.py sdist bdist_wheel --universal
+$ twine upload dist/*
+```
+
+Ref:
+- http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/
+- https://github.com/pypa/twine
