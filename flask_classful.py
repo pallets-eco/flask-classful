@@ -328,7 +328,7 @@ class FlaskView(object):
         if hasattr(cls, 'base_args'):
             ignored_rule_args += cls.base_args
 
-        if method:
+        if method and getattr(cls, 'inspect_args', True):
             argspec = get_true_argspec(method)
             args = argspec[0]
             query_params = argspec[3]  # All default args should be ignored
