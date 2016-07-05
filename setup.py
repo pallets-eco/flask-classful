@@ -37,7 +37,7 @@ setup(
     url='https://github.com/teracyhq/flask-classful',
     license='BSD',
     author='Freedom Dumlao & Teracy, Inc',
-    author_email='teracyhq@teracy.com',
+    author_email='hq@teracy.com',
     description='Class based views for Flask',
     long_description=__doc__,
     py_modules=['flask_classful'],
