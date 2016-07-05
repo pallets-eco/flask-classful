@@ -9,7 +9,7 @@ Flask-Classful
     :target: https://gitter.im/teracyhq/flask-classful?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 
 ..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
-    :target: https://coveralls.io/github/teracyhq/flask-classful?branch=master
+    :target: https://coveralls.io/github/teracyhq/flask-classful?branch=develop
 
 ..  image:: https://badge.fury.io/py/flask-classful.svg
     :target: https://badge.fury.io/py/flask-classful
