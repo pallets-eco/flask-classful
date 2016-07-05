@@ -11,8 +11,8 @@ Update next iteration for develop branch:
 - docs/conf.py
 
 
-CHANGELOG
----------
+CHANGELOG.md
+------------
 
 update the change log
 

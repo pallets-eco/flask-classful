@@ -1,3 +1,14 @@
+2016-07-05 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.12.0
+
+    - Bugfixes:
+        * Special methods should work with Python 3.5 type hints #25
+
+Details: https://github.com/teracyhq/flask-classful/issues?q=milestone%3A0.12.0+is%3Aclosed
+
+
 2016-05-18 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
