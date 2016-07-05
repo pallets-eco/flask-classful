@@ -52,6 +52,7 @@ class FlaskView(object):
     route_base = None
     route_prefix = None
     trailing_slash = True
+    method_dashified = False # TODO(hoatle): make True as default instead, this is not a compatible change
     special_methods = {
         "get": ["GET"],
         "put": ["PUT"],
@@ -63,7 +64,7 @@ class FlaskView(object):
 
     @classmethod
     def register(cls, app, route_base=None, subdomain=None, route_prefix=None,
-                 trailing_slash=None):
+                 trailing_slash=None, method_dashified=None):
         """Registers a FlaskView class for use with a specific instance of a
         Flask app. Any methods not prefixes with an underscore are candidates
         to be routed and will have routes registered when this method is
@@ -81,6 +82,10 @@ class FlaskView(object):
         :param route_prefix: A prefix to be applied to all routes registered
                              for this class. Precedes route_base. Overrides
                              the class' route_prefix if it has been set.
+        :param trailing_slash: An option to put trailing slashes at the end of routes
+                               without parameters.
+        :param method_dashified: An option to dashify method name from some_route to /some-route/
+                                 route instead of default /some_route/
         """
 
         if cls is FlaskView:
@@ -103,6 +108,10 @@ class FlaskView(object):
         if trailing_slash is not None:
             cls.orig_trailing_slash = cls.trailing_slash
             cls.trailing_slash = trailing_slash
+
+        if method_dashified is not None:
+            cls.orig_method_dashified = cls.method_dashified
+            cls.method_dashified = method_dashified
 
         members = get_interesting_members(FlaskView, cls)
 
@@ -137,6 +146,8 @@ class FlaskView(object):
                     app.add_url_rule(rule, route_name, proxy, methods=methods, subdomain=subdomain)
 
                 else:
+                    if cls.method_dashified is True:
+                        name = _dashify_underscore(name)
                     route_str = '/{0!s}/'.format(name)
                     if not cls.trailing_slash:
                         route_str = route_str.rstrip('/')
@@ -156,6 +167,10 @@ class FlaskView(object):
         if hasattr(cls, "orig_trailing_slash"):
             cls.trailing_slash = cls.orig_trailing_slash
             del cls.orig_trailing_slash
+
+        if hasattr(cls, "orig_method_dashified"):
+            cls.method_dashified = cls.orig_method_dashified
+            del cls.orig_method_dashified
 
     @classmethod
     def parse_options(cls, options):
@@ -315,17 +330,11 @@ class FlaskView(object):
 
     @classmethod
     def default_route_base(cls):
-        first_cap_re = re.compile('(.)([A-Z][a-z]+)')
-        all_cap_re = re.compile('([a-z0-9])([A-Z])')
-
-        def dashify(name): #TODO(hoatle): refactor this
-            s1 = first_cap_re.sub(r'\1-\2', name)
-            return all_cap_re.sub(r'\1-\2', s1).lower()
 
         if cls.__name__.endswith("View"):
-            route_base = dashify(cls.__name__[:-4])
+            route_base = _dashify_uppercase(cls.__name__[:-4])
         else:
-            route_base = dashify(cls.__name__)
+            route_base = _dashify_uppercase(cls.__name__)
 
         return route_base
 
@@ -338,6 +347,18 @@ class FlaskView(object):
         :param method_name: the method name to use when building a route name
         """
         return cls.__name__ + ":{0!s}".format(method_name)
+
+
+def _dashify_uppercase(name):
+    """convert somethingWithUppercase into something-with-uppercase"""
+    first_cap_re = re.compile('(.)([A-Z][a-z]+)') # better to define this once
+    all_cap_re = re.compile('([a-z0-9])([A-Z])')
+    s1 = first_cap_re.sub(r'\1-\2', name)
+    return all_cap_re.sub(r'\1-\2', s1).lower()
+
+def _dashify_underscore(name):
+    """convert something_with_underscore into something-with-underscore"""
+    return '-'.join(re.split('_', name))
 
 
 def get_interesting_members(base_class, cls):

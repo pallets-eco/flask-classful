@@ -1,5 +1,3 @@
-import sys
-
 import json
 from flask import Flask
 from flask_classful import FlaskView, route

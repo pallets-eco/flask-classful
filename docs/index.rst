@@ -513,7 +513,7 @@ view method in your `FlaskView` like this::
 `FlaskView` will generate a route like this:
 
 ============ ================================
-**rule**      /some/my_view/
+**rule**      /root/my_view/
 **endpoint**  SomeView:my_view
 **method**    GET
 ============ ================================
@@ -540,6 +540,25 @@ too. If you were to define another view like this::
     One important thing to note, is that `FlaskView` does not type your
     parameters, so if you want or need them you'll need to define the
     route yourself using the `@route` decorator.
+
+Sometimes that you need to use `my-view` instead of default `my_view` generated route, you can
+use `method_dashified` attribute when defining the view class or when registering the view with the
+app. For example::
+
+    class SomeView(FlaskView):
+        route_base = "root"
+        method_dashified = True
+
+        def my_view(self):
+            return "Check out my view!"
+
+`FlaskView` will generate a route like this:
+
+============ ================================
+**rule**      /root/my-view/
+**endpoint**  SomeView:my_view
+**method**    GET
+============ ================================
 
 
 Decorating Tips
