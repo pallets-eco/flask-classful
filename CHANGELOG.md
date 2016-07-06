@@ -1,3 +1,14 @@
+2016-07-07 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.13.0
+
+    - Features:
+        * Should support route generation configuration for dashifying method names #26
+
+Details: https://github.com/teracyhq/flask-classful/milestone/7?closed=1
+
+
 2016-07-05 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
