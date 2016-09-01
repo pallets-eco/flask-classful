@@ -141,7 +141,7 @@ class FlaskView(object):
                     methods = cls.special_methods[name]
 
                     rule = cls.build_rule("/", value)
-                    if not cls.trailing_slash:
+                    if not cls.trailing_slash and rule != '/':
                         rule = rule.rstrip("/")
                     app.add_url_rule(rule, route_name, proxy, methods=methods, subdomain=subdomain)
 
