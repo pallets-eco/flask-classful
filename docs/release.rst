@@ -46,5 +46,5 @@ $ twine upload dist/*
 ```
 
 Ref:
-- http://python-packaging-user-guide.readthedocs.io/en/latest/distributing/
+- http://python-packaging-user-guide.readthedocs.io/distributing/
 - https://github.com/pypa/twine
