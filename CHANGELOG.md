@@ -1,3 +1,14 @@
+2016-09-03 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.13.1
+
+    - Bugfixes:
+        * route_base and trailing_slash conflict. #31
+
+Details: https://github.com/teracyhq/flask-classful/issues?q=milestone%3A0.13.1+is%3Aclosed
+
+
 2016-07-07 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
