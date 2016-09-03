@@ -1,5 +1,5 @@
 from flask import Flask
-from .view_classes import BasicView, TrailingSlashView, InheritedTrailingSlashView, OverrideInheritedTrailingSlashView
+from .view_classes import BasicView, TrailingSlashView, InheritedTrailingSlashView, OverrideInheritedTrailingSlashView, IndexView
 from nose.tools import *
 
 app = Flask('trailing_slash')
@@ -7,6 +7,7 @@ BasicView.register(app, trailing_slash=False)
 TrailingSlashView.register(app)
 InheritedTrailingSlashView.register(app)
 OverrideInheritedTrailingSlashView.register(app)
+IndexView.register(app, trailing_slash=False)
 
 client = app.test_client()
 
@@ -103,3 +104,9 @@ def test_inherited_trailing_slash_override():
     resp = client.get("/override/trailing/")
     eq_(b"Index", resp.data)
 
+
+# IndexView route_base '/' and trailing slash False
+
+def test_index_trailing_slash():
+    resp = client.get("/")
+    eq_(b"Index", resp.data)
