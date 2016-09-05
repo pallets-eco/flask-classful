@@ -16,7 +16,8 @@ import sys
 import functools
 import inspect
 from werkzeug.routing import parse_rule
-from flask import request, Response, make_response
+from flask import request, make_response
+from flask.wrappers import ResponseBase
 import re
 
 _py2 = sys.version_info[0] == 2
@@ -234,7 +235,7 @@ class FlaskView(object):
             if isinstance(response, tuple):
                 response, code, headers = unpack(response)
 
-            if not isinstance(response, Response):
+            if not isinstance(response, ResponseBase):
 
                 if not cls.representations:
                     # No representations defined, then the default is to just output

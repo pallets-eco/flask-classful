@@ -1,4 +1,4 @@
-from flask import Flask, make_response
+from flask import Flask, make_response, redirect
 from flask_classful import FlaskView
 import json
 from nose.tools import *
@@ -77,6 +77,9 @@ class RepresentationView(FlaskView):
     def delete(self, obj_id):
         return response_delete
 
+    def redirect(self):
+        return redirect("http://google.com")
+
 app = Flask("representations")
 RepresentationView.register(app)
 
@@ -104,3 +107,8 @@ def test_put_representation():
 def test_delete_representation():
     resp = client.delete("/representation/1")
     eq_(json.dumps(response_delete), resp.data.decode('ascii'))
+
+def test_skip_representation_matching_if_response_is_returned():
+    resp = client.get("/representation/redirect/")
+    assert resp.status_code == 302
+    assert resp.location == "http://google.com"
