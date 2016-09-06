@@ -15,6 +15,7 @@ __version__ = "0.14.0-dev0"
 import sys
 import functools
 import inspect
+from uuid import UUID
 from werkzeug.routing import parse_rule
 from flask import request, make_response
 from flask.wrappers import ResponseBase
@@ -61,6 +62,13 @@ class FlaskView(object):
         "post": ["POST"],
         "delete": ["DELETE"],
         "index": ["GET"],
+    }
+    # supported type hints used to determine url variable converters
+    type_hints = {
+        str: 'string',
+        int: 'int',
+        float: 'float',
+        UUID: 'uuid',
     }
 
     @classmethod
@@ -306,12 +314,19 @@ class FlaskView(object):
             argspec = get_true_argspec(method)
             args = argspec[0]
             query_params = argspec[3] # All default args that should be ignored
+            annotations = getattr(argspec, 'annotations', {})
             for i, arg in enumerate(args):
                 if arg not in ignored_rule_args:
                     if not query_params or len(args) - i > len(query_params):
                         # This is not optional param, so it's not query argument
-                        rule_parts.append("<{0!s}>".format(arg))
-
+                        rule_part = "<{0!s}>".format(arg)
+                        if not _py2:
+                            # in py3, try to determine url variable converters
+                            # from possible type hints
+                            type_str = cls.type_hints.get(annotations.get(arg))
+                            if type_str:
+                                rule_part = "<{}:{}>".format(type_str, arg)
+                        rule_parts.append(rule_part)
         result = "/{0!s}".format("/".join(rule_parts))
         return re.sub(r'(/)\1+', r'\1', result)
 
