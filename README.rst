@@ -11,6 +11,10 @@ Flask-Classful
 ..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
     :target: https://coveralls.io/github/teracyhq/flask-classful?branch=develop
 
+.. image:: https://codeclimate.com/github/teracyhq/flask-classful/badges/gpa.svg
+   :target: https://codeclimate.com/github/teracyhq/flask-classful
+   :alt: Code Climate
+
 ..  image:: https://badge.fury.io/py/flask-classful.svg
     :target: https://badge.fury.io/py/flask-classful
     :alt: 'Latest PyPI release'
