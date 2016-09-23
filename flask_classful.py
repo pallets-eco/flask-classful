@@ -9,9 +9,6 @@
     :license: BSD, see LICENSE for more details.
 """
 
-__version__ = "0.14.0-dev0"
-
-
 import sys
 import functools
 import inspect
@@ -22,6 +19,8 @@ from flask.wrappers import ResponseBase
 import re
 
 _py2 = sys.version_info[0] == 2
+
+__version__ = "0.14.0-dev0"
 
 
 def route(rule, **options):
@@ -34,7 +33,7 @@ def route(rule, **options):
         # Put the rule cache on the method itself instead of globally
         if not hasattr(f, '_rule_cache') or f._rule_cache is None:
             f._rule_cache = {f.__name__: [(rule, options)]}
-        elif not f.__name__ in f._rule_cache:
+        elif f.__name__ not in f._rule_cache:
             f._rule_cache[f.__name__] = [(rule, options)]
         else:
             f._rule_cache[f.__name__].append((rule, options))
@@ -54,7 +53,9 @@ class FlaskView(object):
     route_base = None
     route_prefix = None
     trailing_slash = True
-    method_dashified = False # TODO(hoatle): make True as default instead, this is not a compatible change
+    # TODO(hoatle): make method_dashified=True as default instead,
+    # this is not a compatible change
+    method_dashified = False
     special_methods = {
         "get": ["GET"],
         "put": ["PUT"],
@@ -91,14 +92,16 @@ class FlaskView(object):
         :param route_prefix: A prefix to be applied to all routes registered
                              for this class. Precedes route_base. Overrides
                              the class' route_prefix if it has been set.
-        :param trailing_slash: An option to put trailing slashes at the end of routes
-                               without parameters.
-        :param method_dashified: An option to dashify method name from some_route to /some-route/
-                                 route instead of default /some_route/
+        :param trailing_slash: An option to put trailing slashes at the end of
+                               routes without parameters.
+        :param method_dashified: An option to dashify method name from
+                                 some_route to /some-route/ route instead of
+                                 default /some_route/
         """
 
         if cls is FlaskView:
-            raise TypeError("cls must be a subclass of FlaskView, not FlaskView itself")
+            raise TypeError(
+                "cls must be a subclass of FlaskView, not FlaskView itself")
 
         if route_base:
             cls.orig_route_base = cls.route_base
@@ -144,7 +147,9 @@ class FlaskView(object):
                         else:
                             endpoint = "{0!s}_{1:d}".format(route_name, idx)
 
-                        app.add_url_rule(rule, endpoint, proxy, subdomain=subdomain, **options)
+                        app.add_url_rule(
+                            rule, endpoint, proxy,
+                            subdomain=subdomain, **options)
 
                 elif name in cls.special_methods:
                     methods = cls.special_methods[name]
@@ -152,7 +157,9 @@ class FlaskView(object):
                     rule = cls.build_rule("/", value)
                     if not cls.trailing_slash and rule != '/':
                         rule = rule.rstrip("/")
-                    app.add_url_rule(rule, route_name, proxy, methods=methods, subdomain=subdomain)
+                    app.add_url_rule(
+                        rule, route_name, proxy,
+                        methods=methods, subdomain=subdomain)
 
                 else:
                     if cls.method_dashified is True:
@@ -161,9 +168,12 @@ class FlaskView(object):
                     if not cls.trailing_slash:
                         route_str = route_str.rstrip('/')
                     rule = cls.build_rule(route_str, value)
-                    app.add_url_rule(rule, route_name, proxy, subdomain=subdomain)
+                    app.add_url_rule(
+                        rule, route_name, proxy, subdomain=subdomain)
             except DecoratorCompatibilityError:
-                raise DecoratorCompatibilityError("Incompatible decorator detected on {0!s} in class {1!s}".format(name, cls.__name__))
+                raise DecoratorCompatibilityError(
+                    "Incompatible decorator detected on {0!s} in class {1!s}"
+                    .format(name, cls.__name__))
 
         if hasattr(cls, "orig_route_base"):
             cls.route_base = cls.orig_route_base
@@ -203,7 +213,8 @@ class FlaskView(object):
         i = cls()
         view = getattr(i, name)
 
-        # Since the view is a bound instance method, first make it an actual function
+        # Since the view is a bound instance method,
+        # first make it an actual function
         # So function attributes work correctly
         def make_func(fn):
             @functools.wraps(fn)
@@ -246,23 +257,26 @@ class FlaskView(object):
             if not isinstance(response, ResponseBase):
 
                 if not cls.representations:
-                    # No representations defined, then the default is to just output
-                    # what the view function returned as a response
+                    # No representations defined, then the default is to just
+                    # output what the view function returned as a response
                     response = make_response(response, code, headers)
                 else:
-                    # Return the representation that best matches the representations
-                    # in the Accept header
+                    # Return the representation that best matches the
+                    # representations in the Accept header
                     resp_representation = request.accept_mimetypes.best_match(
                         cls.representations.keys())
 
                     if resp_representation:
-                        response = cls.representations[resp_representation](response, code, headers)
+                        response = cls.representations[
+                            resp_representation
+                        ](response, code, headers)
                     else:
-                        # Nothing adequate found, make the response any one of the representations
-                        # defined
+                        # Nothing adequate found, make the response any one of
+                        # the representations defined
                         # TODO(hoatle): or just make_response?
-                        response = cls.representations[list(cls.representations.keys())[0]](
-                            response, code, headers)
+                        response = cls.representations[
+                            list(cls.representations.keys())[0]
+                        ](response, code, headers)
 
             # If the header or code is set, regenerate the response
             elif any(x is not None for x in (code, headers)):
@@ -279,7 +293,6 @@ class FlaskView(object):
                 response = i.after_request(name, response)
 
             return response
-
 
         return proxy
 
@@ -313,12 +326,12 @@ class FlaskView(object):
         if method:
             argspec = get_true_argspec(method)
             args = argspec[0]
-            query_params = argspec[3] # All default args that should be ignored
+            query_params = argspec[3]  # All default args should be ignored
             annotations = getattr(argspec, 'annotations', {})
             for i, arg in enumerate(args):
                 if arg not in ignored_rule_args:
                     if not query_params or len(args) - i > len(query_params):
-                        # This is not optional param, so it's not query argument
+                        # This isn't optional param, so it's not query argument
                         rule_part = "<{0!s}>".format(arg)
                         if not _py2:
                             # in py3, try to determine url variable converters
@@ -329,7 +342,6 @@ class FlaskView(object):
                         rule_parts.append(rule_part)
         result = "/{0!s}".format("/".join(rule_parts))
         return re.sub(r'(/)\1+', r'\1', result)
-
 
     @classmethod
     def get_route_base(cls):
@@ -354,7 +366,6 @@ class FlaskView(object):
 
         return route_base
 
-
     @classmethod
     def build_route_name(cls, method_name):
         """Creates a unique route name based on the combination of the class
@@ -367,10 +378,11 @@ class FlaskView(object):
 
 def _dashify_uppercase(name):
     """convert somethingWithUppercase into something-with-uppercase"""
-    first_cap_re = re.compile('(.)([A-Z][a-z]+)') # better to define this once
+    first_cap_re = re.compile('(.)([A-Z][a-z]+)')  # better to define this once
     all_cap_re = re.compile('([a-z0-9])([A-Z])')
     s1 = first_cap_re.sub(r'\1-\2', name)
     return all_cap_re.sub(r'\1-\2', s1).lower()
+
 
 def _dashify_underscore(name):
     """convert something_with_underscore into something-with-underscore"""
@@ -385,14 +397,21 @@ def get_interesting_members(base_class, cls):
     all_members = inspect.getmembers(cls, predicate=predicate)
     return [member for member in all_members
             if not member[0] in base_members
-            and ((hasattr(member[1], "__self__") and not member[1].__self__ in inspect.getmro(cls)) if _py2 else True)
+            and (
+                (hasattr(member[1], "__self__")
+                 and not member[1].__self__ in inspect.getmro(cls))
+                if _py2 else True
+            )
             and not member[0].startswith("_")
             and not member[0].startswith("before_")
             and not member[0].startswith("after_")]
 
 
 def get_true_argspec(method):
-    """Drills through layers of decorators attempting to locate the actual argspec for the method."""
+    """
+    Drills through layers of decorators attempting to locate the actual argspec
+    for the method.
+    """
 
     try:
         argspec = inspect.getargspec(method)
@@ -412,8 +431,8 @@ def get_true_argspec(method):
         inner_method = cell.cell_contents
         if inner_method is method:
             continue
-        if not inspect.isfunction(inner_method) \
-            and not inspect.ismethod(inner_method):
+        if not inspect.isfunction(inner_method)\
+           and not inspect.ismethod(inner_method):
             continue
         true_argspec = get_true_argspec(inner_method)
         if true_argspec:

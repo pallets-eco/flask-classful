@@ -1,11 +1,11 @@
-from flask import Flask, url_for
+from flask import Flask
 from .view_classes import DecoratedView
 from .view_classes import DecoratedBoldListView
 from .view_classes import DecoratedBoldItalicsListView
 from .view_classes import DecoratedListMemberView
 from .view_classes import DecoratedListFunctionAttributesView
 from .view_classes import DecoratedListMemberFunctionAttributesView
-from nose.tools import *
+from nose.tools import eq_
 
 app = Flask("decorated")
 DecoratedView.register(app)
@@ -131,21 +131,33 @@ def test_decorator_list_member_get():
 
 
 def test_decorator_list_function_attributes_get():
-    """Verify list of decorators with attributes modify all functions in FlaskView"""
+    """
+    Verify list of decorators with attributes modify all functions in FlaskView
+    """
     resp = client.get('/decorated_list_function_attributes_view/1234')
     eq_(b'Get 1234' in resp.data, True)
     eq_(b'<i><b>Get 1234</b></i>', resp.data)
-    eq_(hasattr(app.view_functions['DecoratedListFunctionAttributesView:get'], 'eggs'), True)
-    eq_('scrambled', app.view_functions['DecoratedListFunctionAttributesView:get'].eggs)
+    eq_(hasattr(
+            app.view_functions['DecoratedListFunctionAttributesView:get'],
+            'eggs'),
+        True)
+    eq_('scrambled',
+        app.view_functions['DecoratedListFunctionAttributesView:get'].eggs)
 
 
 def test_decorator_list_function_attributes_index():
-    """Verify list of decorators with attributes modify all functions in FlaskView"""
+    """
+    Verify list of decorators with attributes modify all functions in FlaskView
+    """
     resp = client.get('/decorated_list_function_attributes_view/')
     eq_(b'Index' in resp.data, True)
     eq_(b'<i>Index</i>', resp.data)
-    eq_(hasattr(app.view_functions['DecoratedListFunctionAttributesView:index'], 'eggs'), True)
-    eq_('scrambled', app.view_functions['DecoratedListFunctionAttributesView:index'].eggs)
+    eq_(hasattr(
+            app.view_functions['DecoratedListFunctionAttributesView:index'],
+            'eggs'),
+        True)
+    eq_('scrambled',
+        app.view_functions['DecoratedListFunctionAttributesView:index'].eggs)
 
 
 def test_decorator_list_member_function_attributes_get():
@@ -153,7 +165,12 @@ def test_decorator_list_member_function_attributes_get():
     resp = client.get('/decorated_list_member_function_attributes_view/4321')
     eq_(b'Get 4321' in resp.data, True)
     eq_(b'<i><b>Get 4321</b></i>', resp.data)
-    eq_(hasattr(app.view_functions['DecoratedListMemberFunctionAttributesView:get'], 'eggs'), False)
+    eq_(
+        hasattr(
+            app.view_functions[
+                'DecoratedListMemberFunctionAttributesView:get'
+            ], 'eggs'),
+        False)
 
 
 def test_decorator_list_member_function_attributes_index():
@@ -161,5 +178,12 @@ def test_decorator_list_member_function_attributes_index():
     resp = client.get('/decorated_list_member_function_attributes_view/')
     eq_(b'Index' in resp.data, True)
     eq_(b'<i>Index</i>', resp.data)
-    eq_(hasattr(app.view_functions['DecoratedListMemberFunctionAttributesView:index'], 'eggs'), True)
-    eq_('scrambled', app.view_functions['DecoratedListMemberFunctionAttributesView:index'].eggs)
+    eq_(hasattr(
+            app.view_functions[
+                'DecoratedListMemberFunctionAttributesView:index'
+            ], 'eggs'),
+        True)
+    eq_('scrambled',
+        app.view_functions[
+            'DecoratedListMemberFunctionAttributesView:index'
+        ].eggs)

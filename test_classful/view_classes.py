@@ -191,11 +191,12 @@ def func_decorator(f):
 
 def params_decorator(p_1, p_2):
     def decorator(f):
-       @wraps(f)
-       def decorated_function(*args, **kwargs):
-           return f(*args, **kwargs)
-       return decorated_function
+        @wraps(f)
+        def decorated_function(*args, **kwargs):
+            return f(*args, **kwargs)
+        return decorated_function
     return decorator
+
 
 def recursive_decorator(f):
     @wraps(f)
@@ -215,6 +216,7 @@ def more_recursive(stop_type):
             return func(*args, **kw)
         return _recursive
     return _inner
+
 
 class DecoratedView(FlaskView):
     @func_decorator

@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# flake8: noqa
 #
 # Flask Classy documentation build configuration file, created by
 # sphinx-quickstart on Tue Oct 30 13:14:07 2012.

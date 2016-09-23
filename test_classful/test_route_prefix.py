@@ -1,6 +1,6 @@
 from flask import Flask
 from .view_classes import BasicView, RoutePrefixView, RouteBaseView
-from nose.tools import *
+from nose.tools import eq_
 
 app = Flask('route_base')
 
@@ -25,4 +25,3 @@ def test_route_prefix_with_route_base():
     client = app.test_client()
     resp = client.get('/prefix/base-routed/')
     eq_(b"Index", resp.data)
-
