@@ -1,6 +1,6 @@
 from flask import Flask
 from .view_classes import InheritanceView, DecoratedInheritanceView
-from nose.tools import *
+from nose.tools import eq_
 
 app = Flask('inheritance')
 InheritanceView.register(app)

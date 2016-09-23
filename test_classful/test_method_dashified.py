@@ -1,6 +1,5 @@
-import json
 from flask import Flask
-from flask_classful import FlaskView, route
+from flask_classful import FlaskView
 from nose.tools import eq_
 
 
@@ -15,6 +14,7 @@ class DashifiedAttributeView(FlaskView):
 
     def another_route(self):
         return "another route"
+
 
 class DashifiedAttributeOverrideView(FlaskView):
     method_dashified = True

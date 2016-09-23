@@ -6,7 +6,7 @@ Class based views for Flask
 """
 import os
 import re
-from setuptools import setup, find_packages
+from setuptools import setup
 
 
 def get_file(*parts):

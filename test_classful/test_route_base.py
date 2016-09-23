@@ -1,6 +1,6 @@
 from flask import Flask
-from .view_classes import BasicView, RouteBaseView
-from nose.tools import *
+from .view_classes import RouteBaseView
+from nose.tools import eq_
 
 app = Flask('route_base')
 RouteBaseView.register(app, route_base="/rb_test2/")
