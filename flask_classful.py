@@ -74,7 +74,7 @@ class FlaskView(object):
 
     @classmethod
     def register(cls, app, route_base=None, subdomain=None, route_prefix=None,
-                 trailing_slash=None, method_dashified=None):
+                 trailing_slash=None, method_dashified=None, base_class=None):
         """Registers a FlaskView class for use with a specific instance of a
         Flask app. Any methods not prefixes with an underscore are candidates
         to be routed and will have routes registered when this method is
@@ -103,6 +103,9 @@ class FlaskView(object):
             raise TypeError(
                 "cls must be a subclass of FlaskView, not FlaskView itself")
 
+        if not base_class:
+            base_class = FlaskView
+
         if route_base:
             cls.orig_route_base = cls.route_base
             cls.route_base = route_base
@@ -125,7 +128,7 @@ class FlaskView(object):
             cls.orig_method_dashified = cls.method_dashified
             cls.method_dashified = method_dashified
 
-        members = get_interesting_members(FlaskView, cls)
+        members = get_interesting_members(base_class, cls)
 
         for name, value in members:
             proxy = cls.make_proxy_method(name)
