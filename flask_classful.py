@@ -74,7 +74,7 @@ class FlaskView(object):
 
     @classmethod
     def register(cls, app, route_base=None, subdomain=None, route_prefix=None,
-                 trailing_slash=None, method_dashified=None, base_class=None):
+                 trailing_slash=None, method_dashified=None, base_class=None, **rule_options):
         """Registers a FlaskView class for use with a specific instance of a
         Flask app. Any methods not prefixes with an underscore are candidates
         to be routed and will have routes registered when this method is
@@ -97,6 +97,8 @@ class FlaskView(object):
         :param method_dashified: An option to dashify method name from
                                  some_route to /some-route/ route instead of
                                  default /some_route/
+        :param rule_options: The options are passed to 
+                                :class:`~werkzeug.routing.Rule` object.
         """
 
         if cls is FlaskView:
@@ -162,7 +164,7 @@ class FlaskView(object):
                         rule = rule.rstrip("/")
                     app.add_url_rule(
                         rule, route_name, proxy,
-                        methods=methods, subdomain=subdomain)
+                        methods=methods, subdomain=subdomain, **rule_options)
 
                 else:
                     if cls.method_dashified is True:
@@ -172,7 +174,7 @@ class FlaskView(object):
                         route_str = route_str.rstrip('/')
                     rule = cls.build_rule(route_str, value)
                     app.add_url_rule(
-                        rule, route_name, proxy, subdomain=subdomain)
+                        rule, route_name, proxy, subdomain=subdomain, **rule_options)
             except DecoratorCompatibilityError:
                 raise DecoratorCompatibilityError(
                     "Incompatible decorator detected on {0!s} in class {1!s}"
