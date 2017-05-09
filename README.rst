@@ -1,6 +1,10 @@
 Flask-Classful
 ==============
 
+.. image:: https://badges.gitter.im/teracyhq/flask-classful.svg
+   :alt: Join the chat at https://gitter.im/teracyhq/flask-classful
+   :target: https://gitter.im/teracyhq/flask-classful?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
 ..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=develop
     :target: https://travis-ci.org/teracyhq/flask-classful
 
