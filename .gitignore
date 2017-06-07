@@ -32,6 +32,9 @@ pip-log.txt
 .idea/*
 .idea/libraries/sass_stdlib.xml
 
+# Vim
+*.swp
+
 # Distribution
 dist/*
 Flask_Classful.egg-info/*
