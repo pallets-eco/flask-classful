@@ -521,7 +521,7 @@ def coerce(**kwargs):
         def wrapped(*args, **kw):
             params = request.args
             newkw = {}
-            for k, func in kwargs.iteritems():
+            for k, func in kwargs.items():
                 if not k in params:
                     continue
                 v = params[k]

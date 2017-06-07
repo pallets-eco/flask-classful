@@ -1,6 +1,9 @@
+import sys
 from flask import Flask
 from .view_classes import InspectArgsView, NoInspectArgsView
 from nose.tools import eq_
+
+_py2 = sys.version_info[0] == 2
 
 app = Flask('inspect_args')
 
@@ -11,7 +14,10 @@ NoInspectArgsView.register(app)
 def test_inspect_args():
     client = app.test_client()
     resp = client.get('/inspect-args/foo/123/456')
-    eq_(b"foo unicode(123) unicode(456) int(678)", resp.data)
+    expected = b"foo str(123) str(456) int(678)"
+    if _py2:
+        expected = b"foo unicode(123) unicode(456) int(678)"
+    eq_(expected, resp.data)
 
 
 def test_no_inspect_args():
