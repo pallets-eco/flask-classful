@@ -541,3 +541,16 @@ class NoInspectArgsView(FlaskView):
             type(arg2).__name__, arg2,
             type(kwarg1).__name__, kwarg1
         )
+
+
+class DefaultMethodsView(FlaskView):
+    default_methods= ['GET', 'POST']
+
+    def foo(self):
+        return request.method
+
+
+class NoDefaultMethodsView(FlaskView):
+
+    def foo(self):
+        return request.method
