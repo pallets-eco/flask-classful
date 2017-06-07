@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, request
 from flask_classful import FlaskView, route
 from functools import wraps
 
@@ -97,7 +97,6 @@ class VarBaseView(FlaskView):
     route_base = "/var-base-route/<route>"
 
     def before_index(self):
-        from flask import request
         request.view_args.pop('route')
 
     def index(self):
@@ -504,3 +503,41 @@ class DecoratedListMemberFunctionAttributesView(FlaskView):
     def index(self):
         """Get the index"""
         return 'Index'
+
+
+class InspectArgsView(FlaskView):
+
+    def foo(self, arg1, arg2, kwarg1=678):
+        return 'foo %s(%s) %s(%s) %s(%s)' % (
+            type(arg1).__name__, arg1,
+            type(arg2).__name__, arg2,
+            type(kwarg1).__name__, kwarg1
+        )
+
+
+def coerce(**kwargs):
+    def wrap(fn):
+        @wraps(fn)
+        def wrapped(*args, **kw):
+            params = request.args
+            newkw = {}
+            for k, func in kwargs.iteritems():
+                if not k in params:
+                    continue
+                v = params[k]
+                newkw[k] = func(v)
+            return fn(*args, **newkw)
+        return wrapped
+    return wrap
+
+
+class NoInspectArgsView(FlaskView):
+    inspect_args = False
+
+    @coerce(arg1=int, arg2=int, kwarg1=int)
+    def foo(self, arg1=1, arg2=2, kwarg1=678):
+        return 'foo %s(%s) %s(%s) %s(%s)' % (
+            type(arg1).__name__, arg1,
+            type(arg2).__name__, arg2,
+            type(kwarg1).__name__, kwarg1
+        )
