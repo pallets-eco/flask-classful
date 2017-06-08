@@ -167,14 +167,19 @@ class FlaskView(object):
                         methods=methods, subdomain=subdomain, **rule_options)
 
                 else:
+                    methods = getattr(cls, 'default_methods', ["GET"])
+
                     if cls.method_dashified is True:
                         name = _dashify_underscore(name)
+
                     route_str = '/{0!s}/'.format(name)
                     if not cls.trailing_slash:
                         route_str = route_str.rstrip('/')
+
                     rule = cls.build_rule(route_str, value)
                     app.add_url_rule(
-                        rule, route_name, proxy, subdomain=subdomain, **rule_options)
+                        rule, route_name, proxy, subdomain=subdomain,
+                        methods=methods, **rule_options)
             except DecoratorCompatibilityError:
                 raise DecoratorCompatibilityError(
                     "Incompatible decorator detected on {0!s} in class {1!s}"
@@ -328,7 +333,7 @@ class FlaskView(object):
         if hasattr(cls, 'base_args'):
             ignored_rule_args += cls.base_args
 
-        if method:
+        if method and getattr(cls, 'inspect_args', True):
             argspec = get_true_argspec(method)
             args = argspec[0]
             query_params = argspec[3]  # All default args should be ignored
