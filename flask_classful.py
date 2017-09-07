@@ -4,7 +4,6 @@
 
     Class based views for the Flask microframework.
 
-    :copyright: (c) 2016 by Teracy, Inc.
     :copyright: (c) 2013 by Freedom Dumlao.
     :license: BSD, see LICENSE for more details.
 """
