@@ -4,7 +4,7 @@ env:
   global:
   - MOST_TESTED_PYTHON_VERSION=2.7
   - COVERAGE_PYTHON_VERSION=3.5
-  - FLASK_LATEST=0.11.1
+  - FLASK_LATEST=0.12.2
   - GH_REPO="teracyhq/flask-classful"
   - secure: WP/pK+Hcm7s3992sy6atnm+znXal6ZipVe4GIv90E71CqxhUG/dv6h+C4V4w48LEbDuW19tt6y5EOUeyoBl1bIAaIruBgJAyvQsi8PO6rAhnqQmfkPTnjfoOjHuWXO8dyFrQFhl9R2P/BxSmrYb/HFVhrjMHqwe0JnfSpwyDqjVN1xFYkg81fCjXnQA60uCY8TNPSnwkUb1w1vKG7Aot46uMJk1aWUmWFlDRBfQaqhw2y2KK/G4xB0t9UL4lRl66xER4iXjkYuGQEAik5OVKnpPf9IZRUDMUdPCdxzsbbw6qdrNls5FhvNhfz/PN+65l3Ui3eRQZs74Yw2eOI77pUUQ/6oYdbwm346cyrS33GiHWwvylQHsKdTIGf2C4AlyUAYzOIMmuNHaKuWSgt++czxEQQKfoNRp7Zthru0PuPS0Y9M3G2AsbiX05XpNL+qbhvnRzE/TYiTUoqKpB9TrTDF5FX6wLsgluHxroU27Tu2i5iB+DkNDeDCv1oZFnY3VZQd5rH8hu5BA6r5SWfe4VrUoTXABNAniCWvVZLu+zfY/kYcbd/RY8Tcm914I2TDU3tZa0rPjZl90y5NjoNJyu4+3mO3xUg/1fOWsTmdSW3EsLC0VqzJeSJTi9xX6zy62twcvGxivlgW2fippEZ6azboHJQHAjKS2PyUn//+MFRzk=
   matrix:
@@ -13,6 +13,9 @@ env:
   - Flask=0.10.1
   - Flask=0.11
   - Flask=0.11.1
+  - Flask=0.12
+  - Flask=0.12.1
+  - Flask=0.12.2
 matrix:
   exclude:
   - python: 3.3
@@ -21,12 +24,15 @@ matrix:
     env: Flask=0.9.0
   - python: 3.5
     env: Flask=0.9.0
+  - python: 3.6
+    env: Flask=0.9.0
 python:
 - 2.6
 - 2.7
 - 3.3
 - 3.4
 - 3.5
+- 3.6
 before_script:
 - git config --global user.name "Teracy Bot"
 - git config --global user.email "teracy.com@gmail.com"
