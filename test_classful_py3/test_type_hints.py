@@ -35,16 +35,22 @@ client = app.test_client()
 def test_index():
     resp = client.get('/typing/')
     eq_(b"Index", resp.data)
+    resp = client.get('/typing')
+    eq_(resp.status_code, 301)
 
 
 def test_post():
     resp = client.post('/typing/123')
     eq_(b"Post", resp.data)
+    resp = client.post('/typing/123/')
+    eq_(resp.status_code, 405)
 
 
 def test_patch():
-    resp = client.patch('/typing/123')
+    resp = client.patch('/typing/123/')
     eq_(b"Patch", resp.data)
+    resp = client.patch('/typing/123')
+    eq_(resp.status_code, 301)
 
 
 def test_url_converter():
@@ -53,7 +59,7 @@ def test_url_converter():
         ('float', 'sdfad', '1.1'),
         ('uuid', '10', '1f5018ba-1a86-4f7f-a6c5-596674562f36')
     ]:
-        url = '/typing/{}/{}'
+        url = '/typing/{}/{}/'
         resp = client.get(url.format(type_, wrong_var))
         # should not match the endpoint if url variable type mismatches
         eq_(resp.status_code, 404)

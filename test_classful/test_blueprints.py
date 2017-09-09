@@ -20,18 +20,24 @@ def test_bp_index():
 
 
 def test_bp_get():
-    resp = client.get("/basic/1234")
+    resp = client.get("/basic/1234/")
     eq_(b"Get 1234", resp.data)
+    resp = client.get("/basic/1234")
+    eq_(resp.status_code, 301)
 
 
 def test_bp_put():
-    resp = client.put("/basic/1234")
+    resp = client.put("/basic/1234/")
     eq_(b"Put 1234", resp.data)
+    resp = client.put("/basic/1234")
+    eq_(resp.status_code, 301)
 
 
 def test_bp_patch():
-    resp = client.patch("/basic/1234")
+    resp = client.patch("/basic/1234/")
     eq_(b"Patch 1234", resp.data)
+    resp = client.patch("/basic/1234")
+    eq_(resp.status_code, 301)
 
 
 def test_bp_post():
@@ -40,18 +46,24 @@ def test_bp_post():
 
 
 def test_bp_delete():
-    resp = client.delete("/basic/1234")
+    resp = client.delete("/basic/1234/")
     eq_(b"Delete 1234", resp.data)
+    resp = client.delete("/basic/1234")
+    eq_(resp.status_code, 301)
 
 
 def test_bp_custom_method():
     resp = client.get("/basic/custom_method/")
     eq_(b"Custom Method", resp.data)
+    resp = client.get("/basic/custom_method")
+    eq_(resp.status_code, 301)
 
 
 def test_bp_custom_method_with_params():
-    resp = client.get("/basic/custom_method_with_params/1234/abcd")
+    resp = client.get("/basic/custom_method_with_params/1234/abcd/")
     eq_(b"Custom Method 1234 abcd", resp.data)
+    resp = client.get("/basic/custom_method_with_params/1234/abcd")
+    eq_(resp.status_code, 301)
 
 
 def test_bp_routed_method():
@@ -70,6 +82,8 @@ def test_bp_multi_routed_method():
 def test_bp_no_slash():
     resp = client.get("/basic/noslash")
     eq_(b"No Slash Method", resp.data)
+    resp = client.get("/basic/noslash/")  # matches get(id)
+    eq_(b"Get noslash", resp.data)
 
 
 def test_bp_index_view_index():

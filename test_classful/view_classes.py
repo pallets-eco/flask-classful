@@ -343,6 +343,26 @@ class OverrideInheritedTrailingSlashView(TrailingSlashView):
         return "Index"
 
 
+class EnabledHasTrailingSlashView(FlaskView):
+    route_base = '/enabled-trailing-yes/'
+
+    def index(self):
+        return "Index"
+
+    def get(self, obj_id):
+        return "Get " + obj_id
+
+
+class EnabledNoTrailingSlashView(FlaskView):
+    route_base = '/enabled-trailing-no'
+
+    def index(self):
+        return "Index"
+
+    def get(self, obj_id):
+        return "Get " + obj_id
+
+
 class JSONifyTestView(FlaskView):
     route_base = '/jsonify'
     trailing_slash = False

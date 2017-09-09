@@ -15,8 +15,10 @@ def test_index():
 
 
 def test_override():
-    resp = client.get("/inheritance/1234")
+    resp = client.get("/inheritance/1234/")
     eq_(b"Inheritance Get 1234", resp.data)
+    resp = client.get("/inheritance/1234")
+    eq_(resp.status_code, 301)
 
 
 def test_inherited():
@@ -45,5 +47,7 @@ def test_decorated_inherited_mixitup():
 
 
 def test_decorated_inheritance_get():
-    resp = client.get("/decorated-inheritance/1234")
+    resp = client.get("/decorated-inheritance/1234/")
     eq_(b"Decorated Inheritance Get 1234", resp.data)
+    resp = client.get("/decorated-inheritance/1234")
+    eq_(resp.status_code, 301)
