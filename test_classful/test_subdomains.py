@@ -15,18 +15,24 @@ def test_index_subdomain():
 
 
 def test_get():
-    resp = client.get("/basic/1234", base_url="http://basic.test.test")
+    resp = client.get("/basic/1234/", base_url="http://basic.test.test")
     eq_(b"Get 1234", resp.data)
+    resp = client.get("/basic/1234", base_url="http://basic.test.test")
+    eq_(resp.status_code, 301)
 
 
 def test_put():
-    resp = client.put("/basic/1234", base_url="http://basic.test.test")
+    resp = client.put("/basic/1234/", base_url="http://basic.test.test")
     eq_(b"Put 1234", resp.data)
+    resp = client.put("/basic/1234", base_url="http://basic.test.test")
+    eq_(resp.status_code, 301)
 
 
 def test_patch():
-    resp = client.patch("/basic/1234", base_url="http://basic.test.test")
+    resp = client.patch("/basic/1234/", base_url="http://basic.test.test")
     eq_(b"Patch 1234", resp.data)
+    resp = client.patch("/basic/1234", base_url="http://basic.test.test")
+    eq_(resp.status_code, 301)
 
 
 def test_post():
@@ -35,8 +41,10 @@ def test_post():
 
 
 def test_delete():
-    resp = client.delete("/basic/1234", base_url="http://basic.test.test")
+    resp = client.delete("/basic/1234/", base_url="http://basic.test.test")
     eq_(b"Delete 1234", resp.data)
+    resp = client.delete("/basic/1234", base_url="http://basic.test.test")
+    eq_(resp.status_code, 301)
 
 
 def test_custom_method():
@@ -46,9 +54,12 @@ def test_custom_method():
 
 
 def test_custom_method_with_params():
-    resp = client.get("/basic/custom_method_with_params/1234/abcd",
+    resp = client.get("/basic/custom_method_with_params/1234/abcd/",
                       base_url="http://basic.test.test")
     eq_(b"Custom Method 1234 abcd", resp.data)
+    resp = client.get("/basic/custom_method_with_params/1234/abcd",
+                      base_url="http://basic.test.test")
+    eq_(resp.status_code, 301)
 
 
 def test_routed_method():

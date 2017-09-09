@@ -150,7 +150,7 @@ class FlaskView(object):
                             endpoint = route_name
                         else:
                             endpoint = "{0!s}_{1:d}".format(route_name, idx)
-
+                        # print '1 - {0!s}'.format(rule)
                         app.add_url_rule(
                             rule, endpoint, proxy,
                             subdomain=subdomain, **options)
@@ -161,6 +161,9 @@ class FlaskView(object):
                     rule = cls.build_rule("/", value)
                     if not cls.trailing_slash and rule != '/':
                         rule = rule.rstrip("/")
+                    elif cls.trailing_slash is True and rule.endswith('/') is False:
+                        rule = '{0!s}/'.format(rule)
+                    # print '2 - {0!s}'.format(rule)
                     app.add_url_rule(
                         rule, route_name, proxy,
                         methods=methods, subdomain=subdomain, **rule_options)
@@ -174,8 +177,10 @@ class FlaskView(object):
                     route_str = '/{0!s}/'.format(name)
                     if not cls.trailing_slash:
                         route_str = route_str.rstrip('/')
-
                     rule = cls.build_rule(route_str, value)
+                    if cls.trailing_slash is True and rule.endswith('/') is False:
+                        rule = '{0!s}/'.format(rule)
+                    # print '3 - {0!s}'.format(rule)
                     app.add_url_rule(
                         rule, route_name, proxy, subdomain=subdomain,
                         methods=methods, **rule_options)

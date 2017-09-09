@@ -13,11 +13,13 @@ NoInspectArgsView.register(app)
 
 def test_inspect_args():
     client = app.test_client()
-    resp = client.get('/inspect-args/foo/123/456')
+    resp = client.get('/inspect-args/foo/123/456/')
     expected = b"foo str(123) str(456) int(678)"
     if _py2:
         expected = b"foo unicode(123) unicode(456) int(678)"
     eq_(expected, resp.data)
+    resp = client.get('/inspect-args/foo/123/456')
+    eq_(resp.status_code, 301)
 
 
 def test_no_inspect_args():
