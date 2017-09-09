@@ -1,0 +1,18 @@
+{
+  "provisioners": [{
+    "_id": "0",
+    "_ua_cookbooks_path": [
+      "workspace/flask-classful/dev-setup/chef/main-cookbooks"
+    ],
+    "_ua_run_list": [
+      "flask-classful"
+    ],
+    "json": {
+      "teracy": {
+        "flask-classful": {
+          "project_guest_path": "/home/vagrant/workspace/flask-classful"
+        }
+      }
+    }
+  }]
+}

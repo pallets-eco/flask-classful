@@ -1,5 +1,3 @@
-Flask
-
 # test
 nose
 tox

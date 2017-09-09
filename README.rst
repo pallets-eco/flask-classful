@@ -187,13 +187,18 @@ in a FlaskView that doesn't begin with an underscore character.
 You can still define your own routes of course, and we'll look at that next.
 
 
-
 Questions?
 ----------
 
 Feel free to ping me on twitter @teracyhq, or head on over to the
 github repo at http://github.com/teracyhq/flask-classful so you can join
 the fun.
+
+
+How to develop
+--------------
+
+Follow the dev-setup/README.md file (https://github.com/teracyhq/flask-classful/blob/develop/dev-setup/README.md)
 
 
 License
