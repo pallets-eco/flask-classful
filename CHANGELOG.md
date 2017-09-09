@@ -37,7 +37,7 @@ Details: https://github.com/teracyhq/flask-classful/issues?q=milestone%3A0.12.0+
     Version: 0.11.0
 
     - Improvements:
-        * enhance 3rd party decorators #14
+        * enhance 3rd party decorators #14 (BREAKING CHANGES for the decorator members: reversed order)
 
 Details: https://github.com/teracyhq/flask-classful/issues?q=milestone%3A0.11.0+is%3Aclosed
 
