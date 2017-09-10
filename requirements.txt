@@ -6,3 +6,7 @@ tox
 coverage
 flake8
 pylint
+
+# test with webargs
+flask
+webargs
