@@ -52,6 +52,7 @@ class FlaskView(object):
     route_base = None
     route_prefix = None
     trailing_slash = True
+    excluded_methods = []  # specify the class methods to be explicitly excluded
     # TODO(hoatle): make method_dashified=True as default instead,
     # this is not a compatible change
     method_dashified = False
@@ -422,7 +423,8 @@ def get_interesting_members(base_class, cls):
             )
             and not member[0].startswith("_")
             and not member[0].startswith("before_")
-            and not member[0].startswith("after_")]
+            and not member[0].startswith("after_")
+            and not member[0] in cls.excluded_methods]
 
 
 def get_true_argspec(method):
