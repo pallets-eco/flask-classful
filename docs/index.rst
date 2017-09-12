@@ -561,6 +561,36 @@ app. For example::
 ============ ================================
 
 
+Hiding your own methods (they're not *all* special!)
+----------------------------------------------------
+
+While automatically registering your own methods is awesome and usually
+expected, sometimes you write view-level methods that shouldn't be API routes.
+Generally, these are private methods prefixed with an `_`. By default,
+Flask-Classful will not register a route for any method beginning with an `_`.
+However, sometimes you don't have full API control or you are creating a publicly
+accessible API that isn't an API endpoint. For example, consider some kind of
+setup method your class view has::
+
+    class SetupView(FlaskView):
+        def setup(self):
+            # do some sort of crazy expensive calculation on demand here
+            pass
+            
+The intention is for the app to call this after registering the view when some
+data that isn't immediately available is ready. As such, this isn't really a
+private method, but it also isn't an API endpoint. To prevent Flask-Classful
+from registering this as an endpoint, add it to the `excluded_methods` class
+property, like so::
+
+    class SetupView(FlaskView):
+        excluded_methods = ['setup']
+        
+        def setup(self):
+            # do some sort of crazy expensive calculation on demand here
+            pass
+
+
 Decorating Tips
 ---------------
 
