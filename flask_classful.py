@@ -367,7 +367,8 @@ class FlaskView(object):
             base_rule = parse_rule(route_base)
             # see: https://github.com/teracyhq/flask-classful/issues/50
             if hasattr(cls, 'base_args'):
-                cls.base_args += [r[2] for r in base_rule]
+                # thanks to: https://github.com/teracyhq/flask-classful/pull/56#issuecomment-328985183
+                cls.base_args = list(set(cls.base_args).union(r[2] for r in base_rule))
             else:
                 cls.base_args = [r[2] for r in base_rule]
         else:
