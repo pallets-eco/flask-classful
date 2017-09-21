@@ -1,6 +1,7 @@
 Flask-Classful
 ==============
 
+
 .. module:: flask_classful
 
 Flask-Classful is an extension that adds class-based views to Flask.

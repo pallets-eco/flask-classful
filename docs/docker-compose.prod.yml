@@ -1,0 +1,34 @@
+version: '3'
+
+services:
+
+  ngrok-prod:
+    image: ${NGROK_PROD_IMAGE:-wernight/ngrok}
+    command: ngrok http -host-header=flask-classful-docs.teracy.dev nginx-proxy:80
+    environment:
+      - VIRTUAL_HOST=ngrok-prod.flask-classful-docs.teracy.dev
+      - HTTPS_METHOD=noredirect
+    ports:
+      - 4040
+    depends_on:
+      - app-prod
+    external_links:
+      - nginx-proxy
+    network_mode: bridge
+
+  app-prod:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        CI_BUILD_ID: ${CI_BUILD_ID}
+        CI_BUILD_REF: ${CI_BUILD_REF}
+        CI_BUILD_TIME: ${CI_BUILD_TIME}
+        CI_REGISTRY_IMAGE: ${CI_REGISTRY_IMAGE}
+    image: ${APP_PROD_IMAGE:-teracy/flask-classful-docs:develop}
+    environment:
+      VIRTUAL_HOST: ${APP_PROD_VIRTUAL_HOST:-flask-classful-docs.teracy.dev, ~^flask-classful-docs\..*\.xip\.io}
+      HTTPS_METHOD: noredirect # support both http and https
+    ports:
+      - 8000
+    network_mode: bridge
