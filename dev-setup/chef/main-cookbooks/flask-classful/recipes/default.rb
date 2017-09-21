@@ -6,3 +6,4 @@
 
 
 include_recipe 'flask-classful::setup'
+include_recipe 'flask-classful::docs'
