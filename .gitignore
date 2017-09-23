@@ -42,7 +42,9 @@ Flask_Classful.egg-info/*
 # Mac stuff
 .DS_Store
 
-docs/_build*
+# Docs
+docs/_build/**
+!.gitkeep
 
 ## https://github.com/github/gitignore/blob/master/Global/IntelliJ.gitignore
 
