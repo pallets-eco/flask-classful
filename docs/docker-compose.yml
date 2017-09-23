@@ -24,7 +24,7 @@ services:
     volumes:
       - .:/opt/app
     environment:
-      VIRTUAL_HOST: ${APP_PROD_VIRTUAL_HOST:-dev.flask-classful-docs.teracy.dev, ~^dev.flask-classful-docs\..*\.xip\.io}
+      VIRTUAL_HOST: ${APP_DEV_VIRTUAL_HOST:-dev.flask-classful-docs.teracy.dev, ~^dev.flask-classful-docs\..*\.xip\.io}
       HTTPS_METHOD: noredirect # support both http and https
     ports:
       - 80
