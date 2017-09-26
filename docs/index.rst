@@ -899,7 +899,7 @@ Then go ahead and add this new resource representation to your `FlaskView`::
     # views.py
 
     from flask_classful import FlaskView
-    from representations import output_json
+    from .representations import output_json
 
     class CoolJSONView(FlaskView):
         representations = {'application/json': output_json}
