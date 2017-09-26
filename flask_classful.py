@@ -271,8 +271,8 @@ class FlaskView(object):
 
             if not isinstance(response, ResponseBase):
 
-                if not cls.representations:
-                    # No representations defined, then the default is to just
+                if not bool(cls.representations):
+                    # representations is empty, then the default is to just
                     # output what the view function returned as a response
                     response = make_response(response, code, headers)
                 else:

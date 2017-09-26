@@ -911,10 +911,13 @@ Then go ahead and add this new resource representation to your `FlaskView`::
 The ``representations`` is a dictionary in which the key is the accepted content type and the value
 is a ``flask.make_response`` proxy function with the same signature.
 
-If the view functions returns the ``flask.wrappers.ResponseBase`` instance, it will be returned immediately
-to the ``Flask`` to handle the rest. Otherwise, ``Flask-Classful`` will try to find the best
-match of ``representations``'s accepted content type and call the associated output proxy function
-to create the ``flask.wrappers.ResponseBase`` instance. If no matching output proxy function is found
+By default, the ``representations`` class attribute is an empty dictionary.
+
+When the ``representations`` is not empty and if the view functions returns the
+``flask.wrappers.ResponseBase`` instance, it will be returned immediately to the ``Flask`` to handle
+the rest. Otherwise, ``Flask-Classful`` will try to find the best match of the ``representations``'s
+accepted content type and call the associated output proxy function to create the
+``flask.wrappers.ResponseBase`` instance. If no matching output proxy function is found
 when ``Flask-Classfull`` looks up, it will call the first entry's value of the dictionary (This
 behavior could change in the future, maybe just return the data?).
 
@@ -933,6 +936,56 @@ This is an example that the view function returns the ``flask.wrappers.ResponseB
         def redirect(self):
             return redirect("http://flask-classful.teracy.org")
 
+
+Type Hints Support for Python 3
+-------------------------------
+
+With Python 3, you can use `type hints <https://docs.python.org/3/library/typing.html>`_ for the view
+function's arguments. By using this, you can have a very simple convenient type input validator and
+converter for the view function. If the view parameters passed are not the right type, the view
+function will not be called and `404` http status code will be responded.
+
+This is an example for the type hints support::
+
+    # python3 only
+
+    class TypingView(FlaskView):
+
+        def index(self):
+            return "Index"
+
+        @route('/<id>', methods=['POST'])
+        def post(self, id: str) -> str:
+            return "Post"
+
+        def patch(self, id: str) -> str:
+            return "Patch"
+
+        def int(self, arg: int):
+            return str(arg)
+
+        def float(self, arg: float):
+            return str(arg)
+
+        def uuid(self, arg: UUID):
+            return str(arg)
+
+
+This is the current default ``type_hints`` class attribute of the ``FlaskView`` class::
+
+    # supported type hints used to determine url variable converters
+    type_hints = {
+        str: 'string',
+        int: 'int',
+        float: 'float',
+        UUID: 'uuid',
+    }
+
+You can override as much as you wish for your application, see more at
+`URL Route Registrations <http://flask.pocoo.org/docs/0.12/api/#url-route-registrations>`_ and
+`flask.Flask.url_map <http://flask.pocoo.org/docs/0.12/api/#flask.Flask.url_map>`_
+
+In the future, we could add a more sophiticated mechanism for the type hint and converter.
 
 
 Questions?
