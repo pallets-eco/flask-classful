@@ -894,7 +894,7 @@ Here's the code for the JSON Response class::
 
 ::
 
-The go ahead and add this new resource representation to your `FlaskView`::
+Then go ahead and add this new resource representation to your `FlaskView`::
 
     # views.py
 
@@ -906,6 +906,32 @@ The go ahead and add this new resource representation to your `FlaskView`::
 
         def index(self):
             return {'This is JSON': 'How Cool is that'}
+
+
+The ``representations`` is a dictionary in which the key is the accepted content type and the value
+is a ``flask.make_response`` proxy function with the same signature.
+
+If the view functions returns the ``flask.wrappers.ResponseBase`` instance, it will be returned immediately
+to the ``Flask`` to handle the rest. Otherwise, ``Flask-Classful`` will try to find the best
+match of ``representations``'s accepted content type and call the associated output proxy function
+to create the ``flask.wrappers.ResponseBase`` instance. If no matching output proxy function is found
+when ``Flask-Classfull`` looks up, it will call the first entry's value of the dictionary (This
+behavior could change in the future, maybe just return the data?).
+
+
+This is an example that the view function returns the ``flask.wrappers.ResponseBase`` instance::
+
+    # views.py
+
+    from flask import redirect
+    from flask_classful import FlaskView
+    from representations import output_json
+
+    class CoolJSONView(FlaskView):
+        representations = {'application/json': output_json}
+
+        def redirect(self):
+            return redirect("http://flask-classful.teracy.org")
 
 
 
