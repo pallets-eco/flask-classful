@@ -52,7 +52,7 @@ class FlaskView(object):
     route_base = None
     route_prefix = None
     trailing_slash = True
-    excluded_methods = []  # specify the class methods to be explicitly excluded
+    excluded_methods = []  # specify the class methods to be explicitly excluded from routing creation
     # TODO(hoatle): make method_dashified=True as default instead,
     # this is not a compatible change
     method_dashified = False
@@ -71,6 +71,7 @@ class FlaskView(object):
         float: 'float',
         UUID: 'uuid',
     }
+
 
     @classmethod
     def register(cls, app, route_base=None, subdomain=None, route_prefix=None,
@@ -97,6 +98,7 @@ class FlaskView(object):
         :param method_dashified: An option to dashify method name from
                                  some_route to /some-route/ route instead of
                                  default /some_route/
+        :param base_class: Allow specifying an alternate base class for customization instead of the default FlaskView
         :param rule_options: The options are passed to 
                                 :class:`~werkzeug.routing.Rule` object.
         """
@@ -271,8 +273,8 @@ class FlaskView(object):
 
             if not isinstance(response, ResponseBase):
 
-                if not cls.representations:
-                    # No representations defined, then the default is to just
+                if not bool(cls.representations):
+                    # representations is empty, then the default is to just
                     # output what the view function returned as a response
                     response = make_response(response, code, headers)
                 else:

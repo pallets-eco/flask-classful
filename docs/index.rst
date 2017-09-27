@@ -894,12 +894,12 @@ Here's the code for the JSON Response class::
 
 ::
 
-The go ahead and add this new resource representation to your `FlaskView`::
+Then go ahead and add this new resource representation to your `FlaskView`::
 
     # views.py
 
     from flask_classful import FlaskView
-    from representations import output_json
+    from .representations import output_json
 
     class CoolJSONView(FlaskView):
         representations = {'application/json': output_json}
@@ -907,6 +907,88 @@ The go ahead and add this new resource representation to your `FlaskView`::
         def index(self):
             return {'This is JSON': 'How Cool is that'}
 
+
+The ``representations`` attribute is a dictionary in which each key is a content type and the value
+is a ``flask.make_response`` proxy function with the same signature.
+
+By default, the ``representations`` class attribute is an empty dictionary.
+
+When the ``representations`` dictionary is not empty and if the view function returns a
+``flask.wrappers.ResponseBase`` instance, it will be returned immediately to ``Flask`` to handle
+the rest. Otherwise, ``Flask-Classful`` will try to find the best match between the accepted content
+type and the keys in the ``representations`` dictionary, and call the associated output proxy
+function to create a ``flask.wrappers.ResponseBase`` instance. If no matching output proxy function
+is found when ``Flask-Classful`` looks up, it will call the first key's value in the dictionary (This
+behavior could change in the future, maybe just return the data?).
+
+//TODO(hoatle): https://github.com/teracyhq/flask-classful/issues/72
+
+
+This is an example where the view function returns a ``flask.wrappers.ResponseBase`` instance,
+skipping the ``representations`` system entirely::
+
+    # views.py
+
+    from flask import redirect
+    from flask_classful import FlaskView
+    from .representations import output_json
+
+    class CoolJSONView(FlaskView):
+        representations = {'application/json': output_json}
+
+        def redirect(self):
+            return redirect("http://flask-classful.teracy.org")
+
+
+Type Hints Support for Python 3
+-------------------------------
+
+With Python 3, you can use `type hints <https://docs.python.org/3/library/typing.html>`_ for a view
+function's arguments. By using these, you can have very simple, and convenient type input validation
+and conversion for a view function. If a view function is called with parameters of the wrong type,
+the view function will not be called and a ``404`` HTTP status code will be returned.
+
+This is an example of type hinting support::
+
+    # python3 only
+
+    class TypingView(FlaskView):
+
+        def index(self):
+            return "Index"
+
+        @route('/<id>', methods=['POST'])
+        def post(self, id: str) -> str:
+            return "Post"
+
+        def patch(self, id: str) -> str:
+            return "Patch"
+
+        def int(self, arg: int):
+            return str(arg)
+
+        def float(self, arg: float):
+            return str(arg)
+
+        def uuid(self, arg: UUID):
+            return str(arg)
+
+
+This is the current default ``type_hints`` class attribute of the ``FlaskView`` class::
+
+    # supported type hints used to determine url variable converters
+    type_hints = {
+        str: 'string',
+        int: 'int',
+        float: 'float',
+        UUID: 'uuid',
+    }
+
+You can override as much as you wish for your application, see more at
+`URL Route Registrations <http://flask.pocoo.org/docs/0.12/api/#url-route-registrations>`_ and
+`flask.Flask.url_map <http://flask.pocoo.org/docs/0.12/api/#flask.Flask.url_map>`_
+
+In the future, we can add a more sophisticated mechanism for type hinting and conversion.
 
 
 Questions?
