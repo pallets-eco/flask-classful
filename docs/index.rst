@@ -908,27 +908,30 @@ Then go ahead and add this new resource representation to your `FlaskView`::
             return {'This is JSON': 'How Cool is that'}
 
 
-The ``representations`` is a dictionary in which the key is the accepted content type and the value
+The ``representations`` attribute is a dictionary in which each key is a content type and the value
 is a ``flask.make_response`` proxy function with the same signature.
 
 By default, the ``representations`` class attribute is an empty dictionary.
 
-When the ``representations`` is not empty and if the view functions returns the
-``flask.wrappers.ResponseBase`` instance, it will be returned immediately to the ``Flask`` to handle
-the rest. Otherwise, ``Flask-Classful`` will try to find the best match of the ``representations``'s
-accepted content type and call the associated output proxy function to create the
-``flask.wrappers.ResponseBase`` instance. If no matching output proxy function is found
-when ``Flask-Classfull`` looks up, it will call the first entry's value of the dictionary (This
+When the ``representations`` dictionary is not empty and if the view function returns a
+``flask.wrappers.ResponseBase`` instance, it will be returned immediately to ``Flask`` to handle
+the rest. Otherwise, ``Flask-Classful`` will try to find the best match between the accepted content
+type and the keys in the ``representations`` dictionary, and call the associated output proxy
+function to create a ``flask.wrappers.ResponseBase`` instance. If no matching output proxy function
+is found when ``Flask-Classful`` looks up, it will call the first key's value in the dictionary (This
 behavior could change in the future, maybe just return the data?).
 
+//TODO(hoatle): https://github.com/teracyhq/flask-classful/issues/72
 
-This is an example that the view function returns the ``flask.wrappers.ResponseBase`` instance::
+
+This is an example where the view function returns a ``flask.wrappers.ResponseBase`` instance,
+skipping the ``representations`` system entirely::
 
     # views.py
 
     from flask import redirect
     from flask_classful import FlaskView
-    from representations import output_json
+    from .representations import output_json
 
     class CoolJSONView(FlaskView):
         representations = {'application/json': output_json}
@@ -940,12 +943,12 @@ This is an example that the view function returns the ``flask.wrappers.ResponseB
 Type Hints Support for Python 3
 -------------------------------
 
-With Python 3, you can use `type hints <https://docs.python.org/3/library/typing.html>`_ for the view
-function's arguments. By using this, you can have a very simple convenient type input validator and
-converter for the view function. If the view parameters passed are not the right type, the view
-function will not be called and `404` http status code will be responded.
+With Python 3, you can use `type hints <https://docs.python.org/3/library/typing.html>`_ for a view
+function's arguments. By using these, you can have very simple, and convenient type input validation
+and conversion for a view function. If a view function is called with parameters of the wrong type,
+the view function will not be called and a ``404`` HTTP status code will be returned.
 
-This is an example for the type hints support::
+This is an example of type hinting support::
 
     # python3 only
 
@@ -985,7 +988,7 @@ You can override as much as you wish for your application, see more at
 `URL Route Registrations <http://flask.pocoo.org/docs/0.12/api/#url-route-registrations>`_ and
 `flask.Flask.url_map <http://flask.pocoo.org/docs/0.12/api/#flask.Flask.url_map>`_
 
-In the future, we could add a more sophiticated mechanism for the type hint and converter.
+In the future, we can add a more sophisticated mechanism for type hinting and conversion.
 
 
 Questions?
