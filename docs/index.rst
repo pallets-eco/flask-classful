@@ -301,6 +301,29 @@ instance::
 The second method will always override the first, so you can use method
 one, and override it with method two if needed. Sweet!
 
+A Few Words on ``register``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As you've probably seen by now, the ``register`` method is integral to
+Flask-Classful's usage and is pretty frickin' powerful. But, how does it
+work under the hood?
+
+Internally, ``register`` grabs all methods defined directly on the View Class
+given to it, ignoring methods from any base classes. From there, we inspect
+the names of the methods and the configuration attributes on the class and
+construct a valid URL Rule. We then merely call Flask's own ``add_url_rule``
+with the configuration we've gathered.
+
+What does this mean for you? Well, it means you can pass any argument that
+``add_url_rule`` takes to ``register`` and it will be passed to every single
+``add_url_rule`` call we make when registering the class! Want all methods
+on a View to redirect elsewhere? Try calling ``register`` like so::
+
+    RedirectView.register(app, redirect_to='my/new/route')
+    
+For more information on what you can pass, see Werkzeug's own documentation for
+`werkzeug.routing.Rule<http://werkzeug.pocoo.org/docs/0.12/routing/#werkzeug.routing.Rule>`_.
+
 Using multiple routes for a single view
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
