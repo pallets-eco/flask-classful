@@ -305,7 +305,7 @@ instance::
 The second method will always override the first, so you can use method
 one, and override it with method two if needed. Sweet!
 
-A Few Words on ``register``
+A few words on ``register``
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 As you've probably seen by now, the ``register`` method is integral to
@@ -1058,6 +1058,50 @@ Luckily, Classful supports doing just that! Merely add a new class attribute nam
 In the above example, even though we're using a Type Hint to say that the ``id`` URL Argument
 should be an ``int``, Flask Classful will ignore this information and continue to pass it to
 you as a string. From there, I'm sure you want to coerce arguments in your own fancy way.
+
+Providing your OWN base class
+-----------------------------
+
+Just about every programmer who's worked with a major library has discovered some odd issues
+with it or has found something they disagree with in it's implementation. Many times, the
+easiest way to fix this (beyond contributing upstream!) is to define your own base class
+that extends the problematic class in question and fixes your gripe. This is a wonderful
+way to fix problems and really shows how excellent OOP can be, and, as such, is highly encouraged.
+
+Flask Classful feels the same way, if you want to sub-class ``FlaskView`` to add whatever
+functionality you want, you should do exactly that! However, you should know one thing
+before you do this, and that is how Flask Classful automatically discovers methods to register
+as routes. Whenever ``register`` is called with a ``FlaskView`` subclass, the method inspects
+both ``FlaskView`` and the subclass, grabbing the set of methods from both. It then takes
+the set of methods defined on ``FlaskView`` and **removes** them from the set of methods
+defined on the subclass. This then gives the set of methods that are unique to the subclass
+and those methods are registered.
+
+What does this mean to you? It means that all your nifty little helper methods on your base
+class... will be registered as routes by default! This is certainly not what you want. The
+astute reader will recognize that you can use the ``excluded_methods`` attribute to work around
+this. While this will work, it poses some problems. It essentially forces you to maintain a list
+of all methods on your base class that you want excluded. All in all, this creates a very
+user-unfriendly process.
+
+Now that I've dashed all of your hopes, how about I restore them? This is a problem Flask
+Classful has thought about and addressed, through the usage of the ``base_class`` kwarg on
+the ``register`` method. Whenever you call ``register`` on a ``FlaskView`` subclass, you
+can pass it the actual base class of the class you're registering. When this is passed,
+Flask Classful will grab the set of methods from the new base class and will not register
+any of them. For example::
+
+    class MyBaseView(FlaskView):
+        def foo(self):
+            return 'foo'
+            
+    class MyChildView(MyBaseView):
+        pass
+        
+    MyChildView.register(app, base_class=MyBaseView)
+    
+By passing ``MyBaseView`` as the ``base_class`` to the ``register`` call, we will now
+properly ignore ``foo`` and it will not become a route!
 
 Questions?
 ----------
