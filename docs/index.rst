@@ -45,20 +45,24 @@ using Flask's familiar decorator syntax.
 About Flask-Classful vs Flask-Classy and how to migrate
 -------------------------------------------------------
 
-This is a fork of original ``Flask-Classy`` for continuing its development since the original
-project was not updated for a long time. For more information, see:
-https://github.com/apiguy/flask-classy/issues/80
+This is a fork of the original ``Flask-Classy`` for continued development
+since the original project has ceased updates. For more information,
+see: https://github.com/apiguy/flask-classy/issues/80
 
-If you switch from ``Flask-Classy`` to ``Flask-Classful``, you just need to update the module import,
-the APIs are the same for both.
+To switch from ``Flask-Classy`` to ``Flask-Classful``, you just need to update
+the module import, as the APIs are the same for both.
 
-``from flask.ext.flask_classy`` => ``from flask_classful`` (recommended) or ``from flask.ext.flask_classful`` (not recommended)
+    from flask.ext.flask_classy => from flask_classful
 
+(recommended) or: 
 
-``from flask_classy`` => ``from flask_classful``
+    from flask.ext.flask_classy => from flask.ext.flask_classful
 
+Alternatively:
 
-You can switch back to ``flask_classy`` if you like by doing the reverse.
+    from flask_classy => from flask_classful
+
+You can switch back to ``flask_classy``, if you like, by doing the reverse.
 
 
 Installation
