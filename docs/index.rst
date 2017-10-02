@@ -588,9 +588,31 @@ app. For example::
 **method**    GET
 ============ ================================
 
+Out of the box, your custom methods will all be registed as only ``GET`` methods. This is
+done because it is simply the default that Flask uses when registering routes without
+any HTTP methods specified. If you want to change the default HTTP method your custom
+methods respond to, simply define a class level attribute named ``default_methods``
+and make it a list of all HTTP methods you want your custom methods to respond to.
+
+For example::
+
+    class DefaultMethodsView(FlaskView):
+        default_methods = ['GET', 'POST']
+        
+        def my_view(self):
+            return "Check out my view!"
+            
+This will register ``my_view`` as both a ``GET`` and a ``POST`` route. Creating the following
+route:
+
+============ ================================
+**rule**      /root/my_view/
+**endpoint**  SomeView:my_view
+**method**    GET, POST
+============ ================================
 
 Hiding your own methods (they're not *all* special!)
-----------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 While automatically registering your own methods is awesome and usually
 expected, sometimes you write view-level methods that shouldn't be API routes.
@@ -1017,6 +1039,25 @@ You can override as much as you wish for your application, see more at
 
 In the future, we can add a more sophisticated mechanism for type hinting and conversion.
 
+Disabling Type Hints
+~~~~~~~~~~~~~~~~~~~~
+
+Let's say you're using Python 3 with Type Hints, because types are awesome (just like you),
+but you want to disable reading these hints and adding them into your URL Rules. First off,
+I'm not really sure why you would ever want to do this, but I'm sure you have a great reason!
+
+Luckily, Classful supports doing just that! Merely add a new class attribute named
+``inspect_args`` and set it's value to ``False``, like so::
+
+    class NoInspectArgsView(FlaskView):
+        inspect_args = False
+        
+        def post(self, id: int):
+            pass
+            
+In the above example, even though we're using a Type Hint to say that the ``id`` URL Argument
+should be an ``int``, Flask Classful will ignore this information and continue to pass it to
+you as a string. From there, I'm sure you want to coerce arguments in your own fancy way.
 
 Questions?
 ----------
