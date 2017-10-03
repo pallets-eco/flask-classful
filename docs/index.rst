@@ -45,20 +45,24 @@ using Flask's familiar decorator syntax.
 About Flask-Classful vs Flask-Classy and how to migrate
 -------------------------------------------------------
 
-This is a fork of original ``Flask-Classy`` for continuing its development since the original
-project was not updated for a long time. For more information, see:
-https://github.com/apiguy/flask-classy/issues/80
+This is a fork of the original ``Flask-Classy`` for continued development
+since the original project has ceased updates. For more information,
+see: https://github.com/apiguy/flask-classy/issues/80
 
-If you switch from ``Flask-Classy`` to ``Flask-Classful``, you just need to update the module import,
-the APIs are the same for both.
+To switch from ``Flask-Classy`` to ``Flask-Classful``, you just need to update
+the module import, as the APIs are the same for both.
 
-``from flask.ext.flask_classy`` => ``from flask_classful`` (recommended) or ``from flask.ext.flask_classful`` (not recommended)
+    from flask.ext.flask_classy => from flask_classful
 
+(recommended) or: 
 
-``from flask_classy`` => ``from flask_classful``
+    from flask.ext.flask_classy => from flask.ext.flask_classful
 
+Alternatively:
 
-You can switch back to ``flask_classy`` if you like by doing the reverse.
+    from flask_classy => from flask_classful
+
+You can switch back to ``flask_classy``, if you like, by doing the reverse.
 
 
 Installation
@@ -300,6 +304,29 @@ instance::
 
 The second method will always override the first, so you can use method
 one, and override it with method two if needed. Sweet!
+
+A few words on ``register``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+As you've probably seen by now, the ``register`` method is integral to
+Flask-Classful's usage and is pretty frickin' powerful. But, how does it
+work under the hood?
+
+Internally, ``register`` grabs all methods defined directly on the View Class
+given to it, ignoring methods from any base classes. From there, we inspect
+the names of the methods and the configuration attributes on the class and
+construct a valid URL Rule. We then merely call Flask's own ``add_url_rule``
+with the configuration we've gathered.
+
+What does this mean for you? Well, it means you can pass any argument that
+``add_url_rule`` takes to ``register`` and it will be passed to every single
+``add_url_rule`` call we make when registering the class! Want all methods
+on a View to redirect elsewhere? Try calling ``register`` like so::
+
+    RedirectView.register(app, redirect_to='my/new/route')
+    
+For more information on what you can pass, see Werkzeug's own documentation for
+`werkzeug.routing.Rule<http://werkzeug.pocoo.org/docs/0.12/routing/#werkzeug.routing.Rule>`_.
 
 Using multiple routes for a single view
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -561,9 +588,31 @@ app. For example::
 **method**    GET
 ============ ================================
 
+Out of the box, your custom methods will all be registed as only ``GET`` methods. This is
+done because it is simply the default that Flask uses when registering routes without
+any HTTP methods specified. If you want to change the default HTTP method your custom
+methods respond to, simply define a class level attribute named ``default_methods``
+and make it a list of all HTTP methods you want your custom methods to respond to.
+
+For example::
+
+    class DefaultMethodsView(FlaskView):
+        default_methods = ['GET', 'POST']
+        
+        def my_view(self):
+            return "Check out my view!"
+            
+This will register ``my_view`` as both a ``GET`` and a ``POST`` route. Creating the following
+route:
+
+============ ================================
+**rule**      /root/my_view/
+**endpoint**  SomeView:my_view
+**method**    GET, POST
+============ ================================
 
 Hiding your own methods (they're not *all* special!)
-----------------------------------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 While automatically registering your own methods is awesome and usually
 expected, sometimes you write view-level methods that shouldn't be API routes.
@@ -990,6 +1039,69 @@ You can override as much as you wish for your application, see more at
 
 In the future, we can add a more sophisticated mechanism for type hinting and conversion.
 
+Disabling Type Hints
+~~~~~~~~~~~~~~~~~~~~
+
+Let's say you're using Python 3 with Type Hints, because types are awesome (just like you),
+but you want to disable reading these hints and adding them into your URL Rules. First off,
+I'm not really sure why you would ever want to do this, but I'm sure you have a great reason!
+
+Luckily, Classful supports doing just that! Merely add a new class attribute named
+``inspect_args`` and set it's value to ``False``, like so::
+
+    class NoInspectArgsView(FlaskView):
+        inspect_args = False
+        
+        def post(self, id: int):
+            pass
+            
+In the above example, even though we're using a Type Hint to say that the ``id`` URL Argument
+should be an ``int``, Flask Classful will ignore this information and continue to pass it to
+you as a string. From there, I'm sure you want to coerce arguments in your own fancy way.
+
+Providing your OWN base class
+-----------------------------
+
+Just about every programmer who's worked with a major library has discovered some odd issues
+with it or has found something they disagree with in it's implementation. Many times, the
+easiest way to fix this (beyond contributing upstream!) is to define your own base class
+that extends the problematic class in question and fixes your gripe. This is a wonderful
+way to fix problems and really shows how excellent OOP can be, and, as such, is highly encouraged.
+
+Flask Classful feels the same way, if you want to sub-class ``FlaskView`` to add whatever
+functionality you want, you should do exactly that! However, you should know one thing
+before you do this, and that is how Flask Classful automatically discovers methods to register
+as routes. Whenever ``register`` is called with a ``FlaskView`` subclass, the method inspects
+both ``FlaskView`` and the subclass, grabbing the set of methods from both. It then takes
+the set of methods defined on ``FlaskView`` and **removes** them from the set of methods
+defined on the subclass. This then gives the set of methods that are unique to the subclass
+and those methods are registered.
+
+What does this mean to you? It means that all your nifty little helper methods on your base
+class... will be registered as routes by default! This is certainly not what you want. The
+astute reader will recognize that you can use the ``excluded_methods`` attribute to work around
+this. While this will work, it poses some problems. It essentially forces you to maintain a list
+of all methods on your base class that you want excluded. All in all, this creates a very
+user-unfriendly process.
+
+Now that I've dashed all of your hopes, how about I restore them? This is a problem Flask
+Classful has thought about and addressed, through the usage of the ``base_class`` kwarg on
+the ``register`` method. Whenever you call ``register`` on a ``FlaskView`` subclass, you
+can pass it the actual base class of the class you're registering. When this is passed,
+Flask Classful will grab the set of methods from the new base class and will not register
+any of them. For example::
+
+    class MyBaseView(FlaskView):
+        def foo(self):
+            return 'foo'
+            
+    class MyChildView(MyBaseView):
+        pass
+        
+    MyChildView.register(app, base_class=MyBaseView)
+    
+By passing ``MyBaseView`` as the ``base_class`` to the ``register`` call, we will now
+properly ignore ``foo`` and it will not become a route!
 
 Questions?
 ----------
