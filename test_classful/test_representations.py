@@ -15,6 +15,17 @@ def output_json(data, code, headers=None):
     return response
 
 
+def output_default(data, code, headers=None):
+    dumped = json.dumps(data)
+
+    if headers:
+        headers.update({'Content-Type': 'flask-classful/default'})
+    else:
+        headers = {'Content-Type': 'flask-classful/default'}
+    response = make_response(dumped, code, headers)
+    return response
+
+
 # Test Responses
 response_1 = {
     'internal_string': "just a string",
@@ -85,8 +96,17 @@ class RepresentationView(FlaskView):
     def redirect(self):
         return redirect("http://google.com")
 
+
+class DefaultRepresentationView(FlaskView):
+    representations = {'application/json': output_json,
+                       'flask-classful/default': output_default}
+
+    def post(self):
+        return request.get_json(), 201, {'say': 'hello'}
+
 app = Flask("representations")
 RepresentationView.register(app)
+DefaultRepresentationView.register(app, route_base='default')
 
 client = app.test_client()
 
@@ -146,3 +166,28 @@ def test_representations_no_match_return_string():
     eq_(resp.data, b'foobar')
     eq_(resp.headers['Content-Type'], 'foo/bar')
     eq_(resp.status_code, 201)
+
+
+def test_default_representation():
+    """If a default representation is found, use it for no better match."""
+    resp = client.post("/default/",
+                       data=json.dumps({'foo': 'bar'}),
+                       headers={'Accept': 'foo/bar',
+                                'Content-Type': 'application/json'})
+
+    eq_(resp.status_code, 201)
+    eq_(resp.headers['say'], 'hello')
+    eq_(resp.data, b'{"foo": "bar"}')
+    eq_(resp.headers['Content-Type'], 'flask-classful/default')
+
+
+def test_representation_with_default():
+    """Default representation should not override proper match"""
+    resp = client.post("/default/",
+                       data=json.dumps({'foo': 'bar'}),
+                       headers=input_headers)
+
+    eq_(resp.status_code, 201)
+    eq_(resp.headers['say'], 'hello')
+    eq_(resp.data, b'{"foo": "bar"}')
+    eq_(resp.headers['Content-Type'], 'application/json')

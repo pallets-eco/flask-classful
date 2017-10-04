@@ -287,6 +287,10 @@ class FlaskView(object):
                         response = cls.representations[
                             resp_representation
                         ](response, code, headers)
+                    elif 'flask-classful/default' in cls.representations:
+                        response = cls.representations['flask-classful/default'](
+                            response, code, headers
+                        )
                     else:
                         # Nothing adequate found, return what the view function
                         # gave us for predictability

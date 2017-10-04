@@ -988,6 +988,23 @@ skipping the ``representations`` system entirely::
             return redirect("http://flask-classful.teracy.org")
 
 
+To define a default representation that is used when no other matches are
+found, you can add the ``flask-classful/default`` mimetype to your
+representations dictionary, like so::
+
+    # views.py
+
+    from flask_classful import FlaskView
+    from .representations import output_default, output_json
+
+    class CoolDefaultView(FlaskView):
+        representations = {'application/json': output_json,
+                           'flask-classful/default': output_default}
+
+        def post(self):
+            return {'defaults': 'are cool, yo'}
+
+
 Type Hints Support for Python 3
 -------------------------------
 
