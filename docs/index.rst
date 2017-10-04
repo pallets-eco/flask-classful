@@ -969,11 +969,8 @@ When the ``representations`` dictionary is not empty and if the view function re
 the rest. Otherwise, ``Flask-Classful`` will try to find the best match between the accepted content
 type and the keys in the ``representations`` dictionary, and call the associated output proxy
 function to create a ``flask.wrappers.ResponseBase`` instance. If no matching output proxy function
-is found when ``Flask-Classful`` looks up, it will call the first key's value in the dictionary (This
-behavior could change in the future, maybe just return the data?).
-
-//TODO(hoatle): https://github.com/teracyhq/flask-classful/issues/72
-
+is found when ``Flask-Classful`` looks for one, then the data the view returns
+is passed straight to ``Flask's`` ``make_response`` and returned as is.
 
 This is an example where the view function returns a ``flask.wrappers.ResponseBase`` instance,
 skipping the ``representations`` system entirely::
