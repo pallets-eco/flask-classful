@@ -967,7 +967,7 @@ By default, the ``representations`` class attribute is an empty dictionary.
 When the ``representations`` dictionary is not empty and if the view function returns a
 ``flask.wrappers.ResponseBase`` instance, it will be returned immediately to ``Flask`` to handle
 the rest. Otherwise, ``Flask-Classful`` will try to find the best match between the accepted content
-type and the keys in the ``representations`` dictionary, and call the associated output proxy
+types and the keys in the ``representations`` dictionary, and call the associated output proxy
 function to create a ``flask.wrappers.ResponseBase`` instance. If no matching output proxy function
 is found when ``Flask-Classful`` looks for one, then the data the view returns
 is passed straight to ``Flask's`` ``make_response`` and returned as is.
@@ -1003,6 +1003,15 @@ representations dictionary, like so::
 
         def post(self):
             return {'defaults': 'are cool, yo'}
+
+.. note::
+    "Find the best match" means comparing the accepted mimetypes and their
+    q-factor weighting to the list of representation mimetypes. That is, Flask
+    Classful does no special heuristics in finding this best match. For more
+    information, see `this MDN article on the Accept
+    header<https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept>`_
+    or `this snippet<http://flask.pocoo.org/snippets/45/>`_ about Werkzeug's
+    ``best_match`` helper.
 
 
 Type Hints Support for Python 3
