@@ -1008,10 +1008,9 @@ representations dictionary, like so::
     "Find the best match" means comparing the accepted mimetypes and their
     q-factor weighting to the list of representation mimetypes. That is, Flask
     Classful does no special heuristics in finding this best match. For more
-    information, see `this MDN article on the Accept
-    header<https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept>`_
-    or `this snippet<http://flask.pocoo.org/snippets/45/>`_ about Werkzeug's
-    ``best_match`` helper.
+    information, see
+    `this MDN article on the Accept header <https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Accept>`_
+    or `this snippet <http://flask.pocoo.org/snippets/45/>`_ about Werkzeug's ``best_match`` helper.
 
 
 Type Hints Support for Python 3
