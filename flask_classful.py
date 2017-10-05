@@ -287,13 +287,14 @@ class FlaskView(object):
                         response = cls.representations[
                             resp_representation
                         ](response, code, headers)
+                    elif 'flask-classful/default' in cls.representations:
+                        response = cls.representations['flask-classful/default'](
+                            response, code, headers
+                        )
                     else:
-                        # Nothing adequate found, make the response any one of
-                        # the representations defined
-                        # TODO(hoatle): or just make_response?
-                        response = cls.representations[
-                            list(cls.representations.keys())[0]
-                        ](response, code, headers)
+                        # Nothing adequate found, return what the view function
+                        # gave us for predictability
+                        response = make_response(response, code, headers)
 
             # If the header or code is set, regenerate the response
             elif any(x is not None for x in (code, headers)):
