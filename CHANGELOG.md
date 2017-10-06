@@ -4,25 +4,25 @@
     Version: 0.14.0
 
     - Features:
-        * type hints support for py3 #34
-        * base_class introduced #38
+        * Type hints support for py3 #34
+        * `base_class` introduced #38
         * Add options passing to `werkzeug.Routing.Rule` from register function #46
-        * enable using custom decorators in FlaskView #29
+        * Enable using custom decorators in FlaskView #29
         * Should allow specifying excluded methods from becoming routes #41
 
     - Improvements:
-        * better representations #33 #72
-        * docker workflow along with teracy-dev for better dev setup #32 #63 #66 #67
+        * Better representations #33 #72
+        * Docker workflow along with teracy-dev for better dev setup #32 #63 #66 #67
 
     - Bugfixes:
-        * the behavior of the trailing slash should be more intuitive and consistent #47
-        * base_args should not be overriden when route_base is set #50
+        * The behavior of the trailing slash should be more intuitive and consistent #47
+        * `base_args` should not be overriden when `route_base` is set #50
 
     - Tasks:
-        * keep the original license #51
-        * fix docs publishing #61
-        * Breaking change re FlaskView.decorators missing in CHANGELOG (for v0.11.0) #49
-        * should update docs for v0.14.0 #60 #73
+        * Keep the original license #51
+        * Fix docs publishing #61
+        * Breaking change re: FlaskView.decorators missing in CHANGELOG (for v0.11.0) #49
+        * Should update docs for v0.14.0 #60 #73
 
 Details: https://github.com/teracyhq/flask-classful/milestone/8?closed=1
 
