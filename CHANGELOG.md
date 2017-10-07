@@ -22,7 +22,7 @@
         * Keep the original license #51
         * Fix docs publishing #61
         * Breaking change re: FlaskView.decorators missing in CHANGELOG (for v0.11.0) #49
-        * Should update docs for v0.14.0 #60 #73
+
 
 Details: https://github.com/teracyhq/flask-classful/milestone/8?closed=1
 
