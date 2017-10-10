@@ -2,6 +2,9 @@
 --------------------------------------
 
     Version: 0.14.0
+    
+    - Breaking Changes:
+      * The order in which `FlaskView` decorators are applied has been reversed #49
 
     - Features:
         * Type hints support for py3 #34
@@ -21,7 +24,6 @@
     - Tasks:
         * Keep the original license #51
         * Fix docs publishing #61
-        * Breaking change re: FlaskView.decorators missing in CHANGELOG (for v0.11.0) #49
 
 
 Details: https://github.com/teracyhq/flask-classful/milestone/8?closed=1
