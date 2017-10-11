@@ -21,7 +21,6 @@
     - Tasks:
         * Keep the original license #51
         * Fix docs publishing #61
-        * Breaking change re: FlaskView.decorators missing in CHANGELOG (for v0.11.0) #49
 
 
 Details: https://github.com/teracyhq/flask-classful/milestone/8?closed=1
@@ -63,6 +62,9 @@ Details: https://github.com/teracyhq/flask-classful/issues?q=milestone%3A0.12.0+
 --------------------------------------
 
     Version: 0.11.0
+        
+    - Breaking Changes:
+      * The order in which `FlaskView` decorators are applied has been reversed #49
 
     - Improvements:
         * enhance 3rd party decorators #14 (BREAKING CHANGES for the decorator members: reversed order)
