@@ -2,9 +2,6 @@
 --------------------------------------
 
     Version: 0.14.0
-    
-    - Breaking Changes:
-      * The order in which `FlaskView` decorators are applied has been reversed #49
 
     - Features:
         * Type hints support for py3 #34
@@ -65,6 +62,9 @@ Details: https://github.com/teracyhq/flask-classful/issues?q=milestone%3A0.12.0+
 --------------------------------------
 
     Version: 0.11.0
+        
+    - Breaking Changes:
+      * The order in which `FlaskView` decorators are applied has been reversed #49
 
     - Improvements:
         * enhance 3rd party decorators #14 (BREAKING CHANGES for the decorator members: reversed order)
