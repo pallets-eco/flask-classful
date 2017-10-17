@@ -3,6 +3,10 @@
 
     Version: 0.14.0
 
+    - Breaking Changes:
+        * The behavior of the trailing slash should be more intuitive and consistent #47
+        * Better representations #33 #72
+
     - Features:
         * Type hints support for py3 #34
         * `base_class` introduced #38
