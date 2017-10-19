@@ -1127,6 +1127,43 @@ any of them. For example::
 By passing ``MyBaseView`` as the ``base_class`` to the ``register`` call, we will now
 properly ignore ``foo`` and it will not become a route!
 
+
+Migration
+---------
+
+We will avoid introducing breaking changes immediately for a release but should add deprecated warnings
+before breaking things for the next version releases to make it always backward-compatible.
+
+However, there are still some breaking changes that you must follow to upgrade ``Flask-Classful``.
+
+
+From v0.13.1 to v0.14.0
+~~~~~~~~~~~~~~~~~~~~~~~
+
+- The behavior of the trailing slash is changed: redirect by default when no trailing slash, see:
+    + https://github.com/teracyhq/flask-classful/issues/47
+
+    => If you don't want to see 301 redirect, set `trailing_slash` option to `False`.
+
+- The behavior of the representations is changed: return content by default when no matching registered
+  representation instead of returning the first output from the first registered representation. Allow
+  specififying the default representation when no matching with `flask-classful/default` mime type,
+  see:
+    + https://github.com/teracyhq/flask-classful/issues/72
+
+    => You need to specify the default representation.
+
+
+From v0.10.0 to v0.11.0
+~~~~~~~~~~~~~~~~~~~~~~~
+
+- The order in which `FlaskView` decorators are applied has been reversed, see:
+    + https://github.com/teracyhq/flask-classful/commit/686be6ef6fd09d9c1719fa89763ad09baddf7fd0
+    + https://github.com/teracyhq/flask-classful/issues/49
+
+    => You need to make sure the decorators are in the right order.
+
+
 Questions?
 ----------
 
