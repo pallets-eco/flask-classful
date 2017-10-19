@@ -1,3 +1,12 @@
+2017-10-19 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.14.1
+
+    - Tasks:
+        * should have breaking sections on changelog and migration section on docs to upgrade to v0.14, v0.11 #79
+
+
 2017-10-05 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
