@@ -16,6 +16,7 @@ from werkzeug.routing import parse_rule
 from flask import request, make_response
 from flask.wrappers import ResponseBase
 import re
+from flask_apispec.views import MethodResource
 
 _py2 = sys.version_info[0] == 2
 
@@ -134,6 +135,12 @@ class FlaskView(object):
 
         members = get_interesting_members(base_class, cls)
 
+        # view = cls.as_view(cls.__name__)
+        view_name = cls
+        if view_name not in app._resource_views:
+            app._resource_views[view_name] = list()
+        # app._resource_views.append(view)
+
         for name, value in members:
             proxy = cls.make_proxy_method(name)
             route_name = cls.build_route_name(name)
@@ -185,15 +192,16 @@ class FlaskView(object):
                         route_str = route_str.rstrip('/')
                     rule = cls.build_rule(route_str, value)
                     if cls.trailing_slash is True and rule.endswith('/') is False:
-                        rule = '{0!s}/'.format(rule)
+                        rule = '{0!s}/'.fromat(rule)
                     # print '3 - {0!s}'.format(rule)
                     app.add_url_rule(
                         rule, route_name, proxy, subdomain=subdomain,
                         methods=methods, **rule_options)
 
-                app._resource_view_endpoints.append(dict(
-                    target=value,
+                app._resource_views[view_name].append(dict(
+                    method=proxy,
                     endpoint=endpoint_route_name,
+                    target=cls,
                 ))
             except DecoratorCompatibilityError:
                 raise DecoratorCompatibilityError(
