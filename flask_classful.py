@@ -135,11 +135,12 @@ class FlaskView(object):
 
         members = get_interesting_members(base_class, cls)
 
-        # view = cls.as_view(cls.__name__)
+        if not hasattr(app, '_classful_resource_views'):
+            setattr(app, '_classful_resource_views', dict())
+
         view_name = cls
-        if view_name not in app._resource_views:
-            app._resource_views[view_name] = list()
-        # app._resource_views.append(view)
+        if view_name not in app._classful_resource_views:
+            app._classful_resource_views[view_name] = list()
 
         for name, value in members:
             proxy = cls.make_proxy_method(name)
@@ -147,6 +148,8 @@ class FlaskView(object):
             endpoint_route_name = route_name
 
             try:
+                methods = []
+                rule = None
                 if hasattr(value, "_rule_cache") and name in value._rule_cache:
                     for idx, cached_rule in enumerate(value._rule_cache[name]):
                         rule, options = cached_rule
@@ -198,10 +201,12 @@ class FlaskView(object):
                         rule, route_name, proxy, subdomain=subdomain,
                         methods=methods, **rule_options)
 
-                app._resource_views[view_name].append(dict(
-                    method=proxy,
-                    endpoint=endpoint_route_name,
+                app._classful_resource_views[view_name].append(dict(
+                    view_func=proxy,
+                    rule=rule,
+                    route=endpoint_route_name,
                     target=cls,
+                    methods=methods,
                 ))
             except DecoratorCompatibilityError:
                 raise DecoratorCompatibilityError(
