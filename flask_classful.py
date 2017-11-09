@@ -134,13 +134,6 @@ class FlaskView(object):
 
         members = get_interesting_members(base_class, cls)
 
-        if not hasattr(app, '_classful_resource_views'):
-            setattr(app, '_classful_resource_views', dict())
-
-        view_name = cls
-        if view_name not in app._classful_resource_views:
-            app._classful_resource_views[view_name] = list()
-
         for name, value in members:
             proxy = cls.make_proxy_method(name)
             route_name = cls.build_route_name(name)
@@ -200,7 +193,7 @@ class FlaskView(object):
                         rule, route_name, proxy, subdomain=subdomain,
                         methods=methods, **rule_options)
 
-                app._classful_resource_views[view_name].append(dict(
+                setattr(app.view_functions[endpoint_route_name], "_classful_meta", dict(
                     view_func=proxy,
                     rule=rule,
                     route=endpoint_route_name,
