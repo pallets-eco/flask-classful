@@ -195,7 +195,7 @@ class FlaskView(object):
                         route_str = route_str.rstrip('/')
                     rule = cls.build_rule(route_str, value)
                     if cls.trailing_slash is True and rule.endswith('/') is False:
-                        rule = '{0!s}/'.fromat(rule)
+                        rule = '{0!s}/'.format(rule)
                     # print '3 - {0!s}'.format(rule)
                     app.add_url_rule(
                         rule, route_name, proxy, subdomain=subdomain,
