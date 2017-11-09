@@ -16,7 +16,6 @@ from werkzeug.routing import parse_rule
 from flask import request, make_response
 from flask.wrappers import ResponseBase
 import re
-from flask_apispec.views import MethodResource
 
 _py2 = sys.version_info[0] == 2
 
