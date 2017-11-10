@@ -193,13 +193,14 @@ class FlaskView(object):
                         rule, route_name, proxy, subdomain=subdomain,
                         methods=methods, **rule_options)
 
-                setattr(app.view_functions[endpoint_route_name], "_classful_meta", dict(
-                    view_func=proxy,
-                    rule=rule,
-                    route=endpoint_route_name,
-                    target=cls,
-                    methods=methods,
-                ))
+                if hasattr(app, 'view_functions'):
+                    setattr(app.view_functions[endpoint_route_name], "_classful_meta", dict(
+                        view_func=proxy,
+                        rule=rule,
+                        route=endpoint_route_name,
+                        target=cls,
+                        methods=methods,
+                    ))
             except DecoratorCompatibilityError:
                 raise DecoratorCompatibilityError(
                     "Incompatible decorator detected on {0!s} in class {1!s}"
