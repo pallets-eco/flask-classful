@@ -328,6 +328,44 @@ on a View to redirect elsewhere? Try calling ``register`` like so::
 For more information on what you can pass, see Werkzeug's own documentation for
 `werkzeug.routing.Rule <http://werkzeug.pocoo.org/docs/0.12/routing/#werkzeug.routing.Rule>`_.
 
+
+Well ... more words on ``register``
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Sometimes you may want to pass additional information to the inherited ``FlaskView``
+classes. One possible solution could be to use global objects (well, you could even
+join Darth Vader on the dark side and your mom wouldn't be proud either) but this is not
+the best pattern.
+
+Instead it is possible to pass an additional parameter to the ``register`` method
+called ``init_argument``.
+
+When it is passed with a value different than ``Nothing``, ``Flask-Classful`` will
+create the inherited ``FlaskView`` instance passing this parameter to the constructor.
+
+Note that this parameter is unique, you can pass complex structures using as this
+parameter either tuples or dictionaries.
+
+Let's see an example of this additional parameter in the ``register`` method::
+
+    from flask import Flask
+    from flask_classful import FlaskView
+
+    app = Flask(__name__)
+
+    class QuotesView(FlaskView):
+        def __init__(self, my_init_argument):
+            self._my_init_argument = my_init_argument
+
+        def index(self):
+            return self._my_init_argument
+
+    QuotesView.register(app, "Fistro diodenarl de abajorl")
+
+    if __name__ == '__main__':
+        app.run()
+
+
 Using multiple routes for a single view
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 

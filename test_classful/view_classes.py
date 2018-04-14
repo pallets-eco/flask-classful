@@ -574,3 +574,30 @@ class NoDefaultMethodsView(FlaskView):
 
     def foo(self):
         return request.method
+
+
+class WithInitArgument(FlaskView):
+    """
+    View class that receives in the constructor a parameter
+    """
+    route_base = '/with_init_argument/'
+
+    def __init__(self, init_argument):
+        self._init_argument = init_argument
+
+    def get(self):
+        return jsonify({ "init_argument": self._init_argument }), 200
+
+
+class WithoutInitArgument(FlaskView):
+    """
+    View class that does not receive in the constructor a parameter
+    For checking backwards compatibility
+    """
+    route_base = '/without_init_argument/'
+
+    def __init__(self):
+        self._init_argument = "not sent"
+
+    def get(self):
+        return jsonify({ "init_argument": self._init_argument }), 200
