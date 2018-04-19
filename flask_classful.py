@@ -140,7 +140,11 @@ class FlaskView(object):
         for name, value in members:
             proxy = cls.make_proxy_method(name, init_argument)
             route_name = cls.build_route_name(name)
+            endpoint_route_name = route_name
+
             try:
+                methods = []
+                rule = None
                 if hasattr(value, "_rule_cache") and name in value._rule_cache:
                     for idx, cached_rule in enumerate(value._rule_cache[name]):
                         rule, options = cached_rule
@@ -157,6 +161,7 @@ class FlaskView(object):
                         else:
                             endpoint = "{0!s}_{1:d}".format(route_name, idx)
                         # print '1 - {0!s}'.format(rule)
+                        endpoint_route_name = endpoint
                         app.add_url_rule(
                             rule, endpoint, proxy,
                             subdomain=subdomain, **options)
@@ -190,6 +195,15 @@ class FlaskView(object):
                     app.add_url_rule(
                         rule, route_name, proxy, subdomain=subdomain,
                         methods=methods, **rule_options)
+
+                if hasattr(app, 'view_functions'):
+                    setattr(app.view_functions[endpoint_route_name], "_classful_meta", dict(
+                        view_func=proxy,
+                        rule=rule,
+                        route=endpoint_route_name,
+                        target=cls,
+                        methods=methods,
+                    ))
             except DecoratorCompatibilityError:
                 raise DecoratorCompatibilityError(
                     "Incompatible decorator detected on {0!s} in class {1!s}"
