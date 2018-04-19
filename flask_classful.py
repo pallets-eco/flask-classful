@@ -75,7 +75,8 @@ class FlaskView(object):
 
     @classmethod
     def register(cls, app, route_base=None, subdomain=None, route_prefix=None,
-                 trailing_slash=None, method_dashified=None, base_class=None, **rule_options):
+                 trailing_slash=None, method_dashified=None, base_class=None,
+                 init_argument=None, **rule_options):
         """Registers a FlaskView class for use with a specific instance of a
         Flask app. Any methods not prefixes with an underscore are candidates
         to be routed and will have routes registered when this method is
@@ -99,7 +100,9 @@ class FlaskView(object):
                                  some_route to /some-route/ route instead of
                                  default /some_route/
         :param base_class: Allow specifying an alternate base class for customization instead of the default FlaskView
-        :param rule_options: The options are passed to 
+        :param init_argument: If provided, when instancing the class being registered it will pass this parameter to
+                              the constructor
+        :param rule_options: The options are passed to
                                 :class:`~werkzeug.routing.Rule` object.
         """
 
@@ -135,7 +138,7 @@ class FlaskView(object):
         members = get_interesting_members(base_class, cls)
 
         for name, value in members:
-            proxy = cls.make_proxy_method(name)
+            proxy = cls.make_proxy_method(name, init_argument)
             route_name = cls.build_route_name(name)
             try:
                 if hasattr(value, "_rule_cache") and name in value._rule_cache:
@@ -219,7 +222,7 @@ class FlaskView(object):
         return subdomain, endpoint, options,
 
     @classmethod
-    def make_proxy_method(cls, name):
+    def make_proxy_method(cls, name, init_argument):
         """Creates a proxy function that can be used by Flasks routing. The
         proxy instantiates the FlaskView subclass and calls the appropriate
         method.
@@ -227,7 +230,10 @@ class FlaskView(object):
         :param name: the name of the method to create a proxy for
         """
 
-        i = cls()
+        if init_argument is None:
+            i = cls()
+        else:
+            i = cls(init_argument)
         view = getattr(i, name)
 
         # Since the view is a bound instance method,
