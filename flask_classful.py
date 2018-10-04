@@ -254,11 +254,6 @@ class FlaskView(object):
 
         @functools.wraps(view)
         def proxy(**forgettable_view_args):
-            # Always use the global request object's view_args, because they
-            # can be modified by intervening function before an endpoint or
-            # wrapper gets called. This matches Flask's behavior.
-            del forgettable_view_args
-
             if hasattr(i, "before_request"):
                 response = i.before_request(name, **request.view_args)
                 if response is not None:
