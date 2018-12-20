@@ -491,3 +491,170 @@ def unpack(value):
 
 class DecoratorCompatibilityError(Exception):
     pass
+
+
+class ViewRegistration(object):
+    """
+    Allows for easy registration of many FlaskView in one go
+    It can be used in three ways:
+
+    1) As a context manager, so you can mix default view params with custom ones:
+
+        with ViewRegistration(flask_app, auth_views, route_prefix='auth') as reg:
+            # here all registrations will overwrite the params provided above
+            reg.register(my_views.LoginView, route_base='signin', route_prefix='sign')  # custom params used
+
+        # when exiting the context manager all 'auth_views' FlaskViews classes not manually
+        # registered will be registered with the defaults if 'ViewRegistration.register_all' is True
+
+    2) As a registration utility to register entire modules:
+
+        ViewRegistration(flask_app, auth_views, **my_registration_params).register_module()
+
+        or
+
+        ViewRegistration(flask_app, **my_registration_params).register_module(auth_views)
+
+    3) Same as you do with a normal FlaskView (note very usefull tho):
+
+        ViewRegistration(flask_app, **my_registration_params).register(auth_views.LoginView)
+
+        or
+
+        ViewRegistration(flask_app).register(auth_views.LoginView, **my_registration_params)
+    """
+
+    def __init__(self, app, module=None, register_all=True, route_base=None, subdomain=None, route_prefix=None,
+                 trailing_slash=None, method_dashified=None, base_class=None, init_argument=None,
+                 **rule_options):
+        """
+
+        :param app: an instance of a Flask application
+        :param module: the module that contains the FlaskViews classes
+        :param register_all: If True and module is provided will try to register all unregistered
+         FlaskViews with the default parameters
+
+        The following params are the same as the FlaskView ones.
+        :param route_base: The base path to use for all routes registered for
+                           this class. Overrides the route_base attribute if
+                           it has been set.
+
+        :param subdomain:  A subdomain that this registration should use when
+                           configuring routes.
+
+        :param route_prefix: A prefix to be applied to all routes registered
+                             for this class. Precedes route_base. Overrides
+                             the class' route_prefix if it has been set.
+        :param trailing_slash: An option to put trailing slashes at the end of
+                               routes without parameters.
+        :param method_dashified: An option to dashify method name from
+                                 some_route to /some-route/ route instead of
+                                 default /some_route/
+        :param base_class: Allow specifying an alternate base class for customization instead of the default FlaskView
+        :param init_argument: If provided, when instancing the class being registered it will pass this parameter to
+                              the constructor
+        :param rule_options: The options are passed to
+                                :class:`~werkzeug.routing.Rule` object.
+        """
+        self.app = app
+        self.module = module
+        self.register_all = register_all
+        self._registered = set()  # keep track of registered classes
+        self.route_base = route_base
+        self.subdomain = subdomain
+        self.route_prefix = route_prefix
+        self.trailing_slash = trailing_slash
+        self.method_dashified = method_dashified
+        self.base_class = base_class
+        self.init_argument = init_argument
+        self.rule_options = rule_options
+
+    def register_module(self, module=None):
+        """
+        Registers all the FlaskView's in the provided module
+
+        :param module: the module to be registered
+        """
+        module = module or self.module
+        if module is None:
+            raise ValueError('Provide a module to be registered')
+
+        for name, obj in inspect.getmembers(module, inspect.isclass):  # iterate over all the module Class definitions
+            if issubclass(obj, FlaskView) and obj.__name__ != FlaskView.__name__:  # if inherits from FlaskView and is not FlaskView
+                self.register(obj)
+
+    def register(self, class_obj, route_base=None, subdomain=None, route_prefix=None,
+                 trailing_slash=None, method_dashified=None, base_class=None,
+                 init_argument=None, **rule_options):
+        """
+        Registers the provided class in self.app
+        :param class_obj: the FlaskView class to be registered
+
+        The following params are the same as the FlaskView ones.
+
+        :param route_base: The base path to use for all routes registered for
+                           this class. Overrides the route_base attribute if
+                           it has been set.
+
+        :param subdomain:  A subdomain that this registration should use when
+                           configuring routes.
+
+        :param route_prefix: A prefix to be applied to all routes registered
+                             for this class. Precedes route_base. Overrides
+                             the class' route_prefix if it has been set.
+        :param trailing_slash: An option to put trailing slashes at the end of
+                               routes without parameters.
+        :param method_dashified: An option to dashify method name from
+                                 some_route to /some-route/ route instead of
+                                 default /some_route/
+        :param base_class: Allow specifying an alternate base class for customization instead of the default FlaskView
+        :param init_argument: If provided, when instancing the class being registered it will pass this parameter to
+                              the constructor
+        :param rule_options: The options are passed to
+                                :class:`~werkzeug.routing.Rule` object.
+        """
+        if class_obj.__name__ in self._registered:
+            # the class is already registered
+            return False
+
+        if not issubclass(class_obj, FlaskView):
+            # all registrations must be FlaskView subclasses
+            return False
+
+        if class_obj.__name__ == FlaskView.__name__:
+            # don't try to register a FlaskView class directly
+            return False
+
+        route_base = route_base or self.route_base
+        subdomain = subdomain or self.subdomain
+        route_prefix = route_prefix or self.route_prefix
+        trailing_slash = trailing_slash or self.trailing_slash
+        method_dashified = method_dashified or self.method_dashified
+        base_class = base_class or self.base_class
+        init_argument = init_argument or self.init_argument
+
+        if not rule_options:
+            rule_options = self.rule_options
+        else:
+            # merge dicts (provided takes precedence)
+            for key, value in self.rule_options.items():
+                rule_options.setdefault(key, value)
+
+        class_obj.register(self.app, route_base=route_base, subdomain=subdomain,
+                           route_prefix=route_prefix, trailing_slash=trailing_slash,
+                           method_dashified=method_dashified, base_class=base_class,
+                           init_argument=init_argument, **rule_options)
+
+        self._registered.add(class_obj.__name__)
+
+        return True
+
+    def __enter__(self):
+        """ Returns itself when used as a context manager"""
+        return self
+
+    def __exit__(self, *args):
+        """ On exiting the context manager will try to register all unregistered FlaskViews """
+        if self.register_all and self.module is not None:
+            # this will register all the unregistered FlaskView classes with the defaults
+            self.register_module()
