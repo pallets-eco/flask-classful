@@ -603,9 +603,9 @@ too. If you were to define another view like this::
 ============ ================================
 
 .. note::
-    One important thing to note, is that `FlaskView` does not type your
-    parameters, so if you want or need them you'll need to define the
-    route yourself using the `@route` decorator.
+    One important thing to note is that `FlaskView` supports `type hints in your
+    parameters in Python 3 <#type-hints-support-for-python-3>`_, and if you want or need them in
+    Python 2, you'll need to define the route yourself using the `@route` decorator.
 
 Sometimes that you need to use `my-view` instead of default `my_view` generated route, you can
 use `method_dashified` attribute when defining the view class or when registering the view with the
