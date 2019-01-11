@@ -1,5 +1,6 @@
 sudo: false
 language: python
+dist: xenial
 env:
   global:
   - MOST_TESTED_PYTHON_VERSION=3.6
@@ -13,7 +14,7 @@ env:
   - Flask=0.12
   - Flask=0.12.1
   - Flask=0.12.2
-  - Flask=0.12.3
+#  - Flask=0.12.3 # buggy, not supported, see related: https://github.com/dpgaspar/Flask-AppBuilder/issues/741
   - Flask=0.12.4
   - Flask=1.0
   - Flask=1.0.1
@@ -30,10 +31,12 @@ before_script:
 - . ./.travis/setup.sh
 - echo $DEPLOY_HTML_DIR
 install:
-- python setup.py install
 - make resolve
-- pip uninstall -y Flask
 - pip install Flask==$Flask
+# test with webargs
+# see: https://github.com/marshmallow-code/webargs/issues/355
+- pip install webargs==4.4.1
+- python setup.py install
 script:
 - make test
 after_script:
