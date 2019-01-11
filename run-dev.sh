@@ -1,9 +1,9 @@
 #!/bin/bash
 
-python setup.py install;
 make resolve;
-pip uninstall -y Flask;
 pip install Flask==$FLASK;
+pip install webargs==4.4.1;
+python setup.py install;
 
 if [ "$CHECK_STYLE" = "yes" ] || [ "$CHECK_STYLE" = "1" ]; then
   echo "style checking...";
