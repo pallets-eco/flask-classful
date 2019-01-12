@@ -444,9 +444,9 @@ def get_true_argspec(method):
     """
 
     try:
-        argspec = inspect.getargspec(method)
-    except ValueError:
         argspec = inspect.getfullargspec(method)
+    except AttributeError:
+        argspec = inspect.getargspec(method)
 
     args = argspec[0]
     if args and args[0] == 'self':
