@@ -2,7 +2,7 @@
 
 make resolve;
 pip install Flask==$FLASK;
-pip install webargs==4.4.1;
+pip install webargs!=5.0.0;
 python setup.py install;
 
 if [ "$CHECK_STYLE" = "yes" ] || [ "$CHECK_STYLE" = "1" ]; then
