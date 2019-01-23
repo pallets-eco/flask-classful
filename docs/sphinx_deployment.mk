@@ -90,7 +90,7 @@ endif
 #if REPO_URL_GITHUB was NOT defined by travis-ci
 ifndef REPO_URL_GITHUB
 # Configure your right github project repo
-REPO_URL       = git@github.com:teracyhq/flask-classful.git
+REPO_URL_GITHUB      = https://github.com/teracyhq/flask-classful.git
 endif
 
 ## -- Heroku Deployment Config -- ##
@@ -128,7 +128,7 @@ setup_gh_pages: init_gh_pages
 	@cd $(DEPLOY_DIR);\
 		git fetch origin;\
 		git reset --hard origin/$(DEPLOY_BRANCH_GITHUB);\
-		git branch --set-upstream $(DEPLOY_BRANCH_GITHUB) origin/$(DEPLOY_BRANCH_GITHUB)
+		git branch --set-upstream-to origin/$(DEPLOY_BRANCH_GITHUB)
 	@echo "Now you can deploy to Github Pages with 'make generate' and then 'make deploy_gh_pages'"
 
 init_heroku:
@@ -150,7 +150,7 @@ setup_heroku: init_heroku
 	@cd $(DEPLOY_DIR_HEROKU);\
 		git fetch origin;\
 		git reset --hard origin/master;\
-		git branch --set-upstream master origin/master
+		git branch --set-upstream-to origin/master
 	@echo "Now you can deploy to Heroku with 'make generate' and then 'make deploy_heroku'"
 
 generate: html

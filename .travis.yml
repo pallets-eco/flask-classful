@@ -1,33 +1,42 @@
 sudo: false
 language: python
+dist: xenial
 env:
   global:
-  - MOST_TESTED_PYTHON_VERSION=3.6
+  - MOST_TESTED_PYTHON_VERSION=3.7
   - COVERAGE_PYTHON_VERSION=2.7
-  - FLASK_LATEST=0.12.2
-  - GH_REPO="teracyhq/flask-classful"
-  - secure: Hi311ZhGAI1JCnKj1xnOUYSaUy5+gyfs3xsndD3gjuPahfIm3Lp5Rj3ZWaofzBoX+isn7OoyHaVgCIJwJflmdwTIoodQvD011cICVVDpIApcrSiiIG3MO6NxTrLwhRYNlyA0/C8jl8uooLphnVT7gGsGrzzIMYxb7z67UcgZSwAGwaBmTF0Tt737dZDlH5hbnYek6aZS+4PQbqPLVbyO9ekZzUXdrRiM9Pv0HHW4A0QFBZaNow/o7cGhHKHUypXGSW8x+a6g4hiI8OJVnwMqyQQkWI09bVPqtROq+e24TkmUjCYRJyx2gYvowqg6+PkPKs/cddlJ1lwkBFIdUym6D7MgdixCCAXDc6ZXnTvipUO1lBuRc6OpEf4lmB+QgDsWFeqrrFMvSu/32rZw2527qI9HqMQZZCcdWEUVuxleR7//ABKXmpSXBfGlrJ0aNdOfsdIhmRztIm/wtgcovzvJQzi2F/sfRUo0wUAsoT2N4QRYzAdSbLjCVkJlaY4d5YpQ1HAcOLCZravirjPxnZ4Ds3/acSbVE7ls+G1Ho0eAbGiq3WSlBRIE0eGtG1C7sQnAzryOc8pVnPwZ12YOoLYC5QP0MHdht3W3fArRFem0uyyFGWcNPe7X4eYlkP73bGG4FPvsoTCz8L2GYs5umZSrOgLoZl/dTP/U6uW76b2buts=
+  - FLASK_LATEST=1.0.2
   matrix:
   - Flask=0.11
   - Flask=0.11.1
   - Flask=0.12
   - Flask=0.12.1
   - Flask=0.12.2
+#  - Flask=0.12.3 # buggy, not supported, see related: https://github.com/dpgaspar/Flask-AppBuilder/issues/741
+  - Flask=0.12.4
+  - Flask=1.0
+  - Flask=1.0.1
+  - Flask=1.0.2
 python:
 - 2.7
-- 3.3
+- 3.4
 - 3.6
+- 3.7
 before_script:
 - git config --global user.name "Teracy Bot"
 - git config --global user.email "teracy.com@gmail.com"
+- if [[ -z ${GH_REPO+x} ]]; then
+  export GH_REPO=teracyhq/flask-classful; fi
 - export REPO_URL_GITHUB="https://$GH_TOKEN@github.com/$GH_REPO.git"
 - . ./.travis/setup.sh
 - echo $DEPLOY_HTML_DIR
 install:
-- python setup.py install
 - make resolve
-- pip uninstall -y Flask
 - pip install Flask==$Flask
+# test with webargs
+# see: https://github.com/marshmallow-code/webargs/issues/355
+- pip install webargs!=5.0.0
+- python setup.py install
 script:
 - make test
 after_script:
