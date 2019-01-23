@@ -1,3 +1,19 @@
+
+2019-01-23 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.14.2
+
+    - Improvements:
+      + should remove deprecated warnings of inspect.getargspec #96
+
+    - Bug Fixes:
+      + should fix travis-ci build and docs generation #97
+
+
+Details: https://github.com/teracyhq/flask-classful/milestone/12?closed=1
+
+
 2017-10-19 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
