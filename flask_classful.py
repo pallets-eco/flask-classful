@@ -14,7 +14,11 @@ import inspect
 from uuid import UUID
 from werkzeug.routing import parse_rule
 from flask import request, make_response
-from flask.wrappers import ResponseBase
+try:
+    from flask.wrappers import ResponseBase
+except:
+    from flask.wrappers import Response as ResponseBase
+
 import re
 
 _py2 = sys.version_info[0] == 2
