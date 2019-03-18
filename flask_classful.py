@@ -461,6 +461,9 @@ def get_true_argspec(method):
         inner_method = cell.cell_contents
         if inner_method is method:
             continue
+        if hasattr(method, '__wrapped__'):
+            if inner_method is not method.__wrapped__:
+                continue
         if not inspect.isfunction(inner_method)\
            and not inspect.ismethod(inner_method):
             continue
