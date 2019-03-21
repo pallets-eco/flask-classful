@@ -1,7 +1,8 @@
 import json
+import marshmallow as ma
 
 from flask import Flask
-from flask_classful import FlaskView
+from flask_classful import FlaskView, route
 from webargs.flaskparser import use_args
 from webargs import fields
 from nose.tools import eq_
@@ -21,6 +22,23 @@ put_args = {
 }
 
 
+class QuoteSchema(ma.Schema):
+    id = ma.fields.Int()
+    text = ma.fields.Str()
+
+    class Meta:
+        strict = True
+
+
+def make_quote_schema(request):
+    # Filter based on 'fields' query parameter
+    only = request.args.get("fields", None)
+    # Respect partial updates for PATCH requests
+    partial = request.method == "PATCH"
+    # Add current request to the schema's context
+    return QuoteSchema(only=only, partial=partial, context={"request": request})
+
+
 class QuotesView(FlaskView):
     base_args = ['args']
 
@@ -36,6 +54,15 @@ class QuotesView(FlaskView):
 
     @use_args(put_args)
     def put(self, args, id):
+        quote_id = int(id)
+        if quote_id >= len(quotes) - 1:
+            return "Not Found", 404
+        quotes[quote_id] = args['text']
+        return quotes[quote_id]
+
+    @route("<id>/", methods=['PATCH'])
+    @use_args(make_quote_schema)
+    def factory(self, args, id):
         quote_id = int(id)
         if quote_id >= len(quotes) - 1:
             return "Not Found", 404
@@ -94,6 +121,11 @@ def test_quotes_put():
                       data=json.dumps(input_data))
     eq_(input_data["text"], resp.data.decode('ascii'))
 
+def test_quotes_factory():
+    resp = client.patch("/quotes/1/",
+                        headers=input_headers,
+                        data=json.dumps(input_data))
+    eq_(input_data["text"], resp.data.decode('ascii'))
 
 def test_quotes2_index():
     resp = client.get("/quotes-2/")
