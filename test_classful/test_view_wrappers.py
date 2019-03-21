@@ -50,7 +50,7 @@ def test_decorated_view():
     eq_(b"Get 1234", resp.data)
 
     resp = client.get("/decorated/1234")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 def test_before_request_returns():
     resp = client.get("/before-request-returns/")

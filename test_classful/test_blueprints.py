@@ -23,21 +23,22 @@ def test_bp_get():
     resp = client.get("/basic/1234/")
     eq_(b"Get 1234", resp.data)
     resp = client.get("/basic/1234")
-    eq_(resp.status_code, 301)
+    print(resp)
+    eq_(resp.status_code, 308)
 
 
 def test_bp_put():
     resp = client.put("/basic/1234/")
     eq_(b"Put 1234", resp.data)
     resp = client.put("/basic/1234")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_bp_patch():
     resp = client.patch("/basic/1234/")
     eq_(b"Patch 1234", resp.data)
     resp = client.patch("/basic/1234")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_bp_post():
@@ -49,21 +50,21 @@ def test_bp_delete():
     resp = client.delete("/basic/1234/")
     eq_(b"Delete 1234", resp.data)
     resp = client.delete("/basic/1234")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_bp_custom_method():
     resp = client.get("/basic/custom_method/")
     eq_(b"Custom Method", resp.data)
     resp = client.get("/basic/custom_method")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_bp_custom_method_with_params():
     resp = client.get("/basic/custom_method_with_params/1234/abcd/")
     eq_(b"Custom Method 1234 abcd", resp.data)
     resp = client.get("/basic/custom_method_with_params/1234/abcd")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_bp_routed_method():

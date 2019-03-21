@@ -19,7 +19,7 @@ def test_inspect_args():
         expected = b"foo unicode(123) unicode(456) int(678)"
     eq_(expected, resp.data)
     resp = client.get('/inspect-args/foo/123/456')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_no_inspect_args():

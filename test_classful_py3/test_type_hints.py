@@ -36,7 +36,7 @@ def test_index():
     resp = client.get('/typing/')
     eq_(b"Index", resp.data)
     resp = client.get('/typing')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_post():
@@ -50,7 +50,7 @@ def test_patch():
     resp = client.patch('/typing/123/')
     eq_(b"Patch", resp.data)
     resp = client.patch('/typing/123')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_url_converter():

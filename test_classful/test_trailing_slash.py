@@ -81,7 +81,7 @@ def test_routed_method():
     resp = client.get("/basic/routed/")
     eq_(b"Routed Method", resp.data)
     resp = client.get("/basic/routed")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 # TrailingSlashView
 def test_trailing_index():
@@ -143,7 +143,7 @@ def test_trailing_routed_method():
     resp = client.get("/trailing/routed/")
     eq_(b"Routed Method", resp.data)
     resp = client.get("/trailing/routed")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_trailing_routed_method2():
@@ -166,7 +166,7 @@ def test_inherited_trailing_slash_override():
     resp = client.get("/override/trailing/")
     eq_(b"Index", resp.data)
     resp = client.get("/override/trailing")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 # EnabledHasTrailingSlashView
@@ -174,14 +174,14 @@ def test_enabled_has_trailing_slash_view_index():
     resp = client.get("/enabled-trailing-yes/")
     eq_(b"Index", resp.data)
     resp = client.get("/enabled-trailing-yes")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_enabled_has_trailing_slash_view_get():
     resp = client.get("/enabled-trailing-yes/1234/")
     eq_(b"Get 1234", resp.data)
     resp = client.get("/enabled-trailing-yes/1234")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 # EnabledNoTrailingSlashView
@@ -189,14 +189,14 @@ def test_enabled_no_trailing_slash_view_index():
     resp = client.get("/enabled-trailing-no/")
     eq_(b"Index", resp.data)
     resp = client.get("/enabled-trailing-no")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_enabled_no_trailing_slash_view_get():
     resp = client.get("/enabled-trailing-no/1234/")
     eq_(b"Get 1234", resp.data)
     resp = client.get("/enabled-trailing-no/1234")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 # IndexView route_base '/' and trailing slash False
@@ -204,4 +204,4 @@ def test_index_trailing_slash():
     resp = client.get("/")
     eq_(b"Index", resp.data)
     resp = client.get("")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)

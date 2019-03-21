@@ -80,7 +80,7 @@ def test_quotes_index():
     num = len(str(resp.data).split("<br>"))
     eq_(3, num)
     resp = client.get("/quotes")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_quotes_get():
@@ -99,8 +99,8 @@ def test_quotes2_index():
     resp = client.get("/quotes-2/")
     num = len(str(resp.data).split("<br>"))
     eq_(3, num)
-    resp = client.get("/quotes")
-    eq_(resp.status_code, 301)
+    resp = client.get("/quotes-2")
+    eq_(resp.status_code, 308)
 
 
 def test_quotes2_get():

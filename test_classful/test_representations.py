@@ -120,7 +120,7 @@ def test_get_representation():
     resp = client.get("/representation/1/", headers=input_headers)
     eq_(json.dumps(response_get), resp.data.decode('ascii'))
     resp = client.get("/representation/1")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_post_representation():
@@ -141,7 +141,7 @@ def test_put_representation():
     resp = client.put("/representation/1",
                       headers=input_headers,
                       data=json.dumps(input_data))
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_delete_representation():
@@ -149,7 +149,7 @@ def test_delete_representation():
                          headers=input_headers)
     eq_(json.dumps(response_delete), resp.data.decode('ascii'))
     resp = client.delete("/representation/1")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_skip_representation_matching_if_response_is_returned():

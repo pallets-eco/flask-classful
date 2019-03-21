@@ -18,7 +18,7 @@ def test_override():
     resp = client.get("/inheritance/1234/")
     eq_(b"Inheritance Get 1234", resp.data)
     resp = client.get("/inheritance/1234")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_inherited():
@@ -50,4 +50,4 @@ def test_decorated_inheritance_get():
     resp = client.get("/decorated-inheritance/1234/")
     eq_(b"Decorated Inheritance Get 1234", resp.data)
     resp = client.get("/decorated-inheritance/1234")
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)

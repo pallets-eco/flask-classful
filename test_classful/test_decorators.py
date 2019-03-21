@@ -21,42 +21,42 @@ def test_func_decorator_index():
     resp = client.get('/decorated/')
     eq_(b"Index", resp.data)
     resp = client.get('/decorated')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_func_decorator_get():
     resp = client.get('/decorated/1234/')
     eq_(b"Get 1234", resp.data)
     resp = client.get('/decorated/1234')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_recursive_decorator_post():
     resp = client.post('/decorated/')
     eq_(b"Post", resp.data)
     resp = client.post('/decorated')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_more_recursive_decorator_get():
     resp = client.get('/decorated/get_some/')
     eq_(b"Get Some", resp.data)
     resp = client.get('/decorated/get_some')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_multiple_recursive_decorators_get():
     resp = client.get('/decorated/get_this/')
     eq_(b"Get This", resp.data)
     resp = client.get('/decorated/get_this')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_routes_with_recursive_decorators():
     resp = client.get('/decorated/mixitup/')
     eq_(b"Mix It Up", resp.data)
     resp = client.get('/decorated/mixitup')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_recursive_with_parameter():
@@ -78,7 +78,7 @@ def test_params_decorator_delete():
     resp = client.delete('/decorated/1234/')
     eq_(b"Params Decorator Delete 1234", resp.data)
     resp = client.delete('/decorated/1234')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_decorator_bold_list_get():
@@ -88,7 +88,7 @@ def test_decorator_bold_list_get():
     eq_(b'</b>' in resp.data, True)
     eq_(b'<b>Get 1234</b>', resp.data)
     resp = client.get('/decorated_bold_list_view/1234')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_decorator_bold_list_index():
@@ -108,7 +108,7 @@ def test_decorator_bold_italics_list_get():
     eq_(b'</b>' in resp.data, True)
     eq_(b'<b><i>Get 1234</i></b>', resp.data)
     resp = client.get('/decorated_bold_italics_list_view/1234')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_decorator_bold_italics_list_index():
@@ -147,7 +147,7 @@ def test_decorator_list_member_get():
     eq_(b'</b>', resp.data[-4:])
     eq_(b'<b><i><p>Get 1234</p></i></b>', resp.data)
     resp = client.get('/decorated_list_member_view/1234')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_decorator_list_function_attributes_get():
@@ -164,7 +164,7 @@ def test_decorator_list_function_attributes_get():
     eq_('scrambled',
         app.view_functions['DecoratedListFunctionAttributesView:get'].eggs)
     resp = client.get('/decorated_list_function_attributes_view/1234')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_decorator_list_function_attributes_index():
@@ -194,7 +194,7 @@ def test_decorator_list_member_function_attributes_get():
             ], 'eggs'),
         False)
     resp = client.get('/decorated_list_member_function_attributes_view/4321')
-    eq_(resp.status_code, 301)
+    eq_(resp.status_code, 308)
 
 
 def test_decorator_list_member_function_attributes_index():
