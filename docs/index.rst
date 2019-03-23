@@ -714,6 +714,68 @@ method and ``Flask-Classful`` will take care of the rest::
             return "Looking at me? I guess you're logged in."
 
 
+Integrating with webargs
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+In the wider Flask ecosystem, `webargs <https://webargs.readthedocs.io>`_
+is a commonly-used library to parse and validate HTTP requests. There
+are a couple of things to bear in mind when using ``webargs`` with
+``Flask-Classful``.
+
+If using the `@use_args
+<https://webargs.readthedocs.io/en/latest/api.html#webargs.core.Parser.use_args>`_
+decorator, the parsed arguments are injected into your view. However,
+by default, the args variable would also be included in your route.
+e.g.::
+
+    class UsersView(FlaskView):
+        @use_args(...)
+        def post(self, args, id):
+           # the rest of the view
+
+will result in a route such as ``/users/<args>/<id>/`` which is obviously
+not what you want. The workaround is to include ``base_args = ['args']``
+in your view, which causes `build_rule <http://flask-classful.teracy.org/#api>`_
+to ignore that argument.
+
+Next, if you are using `marshmallow
+<https://marshmallow.readthedocs.io/en/3.0/>`_ and specifically `schema factories
+<https://webargs.readthedocs.io/en/latest/advanced.html#schema-factories>`_,
+by default ``Flask-Classful`` will attempt to create endpoints from the
+functions, which crashes and burns. This was discussed above in the
+`Hiding your own methods (they're not all special!)`_ section, yet it
+may not be obvious that this is the failure at first glance.
+
+The first workaround applies if you're using a vanilla schema factory
+function::
+
+    from marshmallow import Schema, fields
+    from webargs.flaskparser import use_args
+
+    class UserSchema(Schema):
+        # the rest of the schema
+
+    def make_user_schema(request):
+        # Filter based on 'fields' query parameter
+        only = request.args.get("fields", None)
+        # Respect partial updates for PATCH requests
+        partial = request.method == "PATCH"
+        # Add current request to the schema's context
+        return UserSchema(only=only, partial=partial, context={"request": request})
+
+    class UsersView(FlaskView):
+        excluded_methods = ['make_user_schema']  # Important
+        @use_args(make_user_schema)
+        def post(self, id, args):
+            # the rest of the view
+
+If you're using the more advanced `helper function approach
+<https://webargs.readthedocs.io/en/latest/advanced.html#reducing-boilerplate>`_
+to reduce boilerplate and you have something like
+``@use_args_with(UserSchema)`` decorating your method, just add
+``excluded_methods = ['use_args_with']`` to your ``FlaskView``.
+
+
 Before and After
 ----------------
 
