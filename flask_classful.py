@@ -140,6 +140,13 @@ class FlaskView(object):
         for name, value in members:
             proxy = cls.make_proxy_method(name, init_argument)
             route_name = cls.build_route_name(name)
+
+            # This long try block calls build_rule() and add_url_rule()
+            # for each member. The logic around those methods is
+            # slightly different depending on whether the member:
+            # 1. Has a _rule_cache (custom @route decorator)
+            # 2. Is in cls.special_methods
+            # 3. Neither of the above
             try:
                 if hasattr(value, "_rule_cache") and name in value._rule_cache:
                     for idx, cached_rule in enumerate(value._rule_cache[name]):
@@ -461,6 +468,9 @@ def get_true_argspec(method):
         inner_method = cell.cell_contents
         if inner_method is method:
             continue
+        if hasattr(method, '__wrapped__'):
+            if inner_method is not method.__wrapped__:
+                continue
         if not inspect.isfunction(inner_method)\
            and not inspect.ismethod(inner_method):
             continue
