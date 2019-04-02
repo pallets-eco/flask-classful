@@ -3,6 +3,7 @@ import marshmallow as ma
 
 from flask import Flask
 from flask_classful import FlaskView, route
+from marshmallow import Schema, fields
 from webargs.flaskparser import use_args
 from webargs import fields
 from nose.tools import eq_
@@ -20,6 +21,34 @@ app.config['DEBUG'] = True
 put_args = {
     "text": fields.Str(required=True)
 }
+
+
+class UserSchema(Schema):
+    email = ma.fields.Str()
+
+    class Meta:
+        strict = True
+
+
+def make_user_schema(request):
+    # Filter based on 'fields' query parameter
+    only = request.args.get("fields", None)
+    # Respect partial updates for PATCH requests
+    partial = request.method == "PATCH"
+    # Add current request to the schema's context
+    return UserSchema(only=only, partial=partial, context={"request": request})
+
+
+class UsersView(FlaskView):
+    base_args = ['args']
+
+    @use_args(make_user_schema)
+    def post(self, args):
+        return args['email']
+
+    @use_args(make_user_schema)
+    def put(self, args, id):
+        return args['email']
 
 
 class QuoteSchema(ma.Schema):
@@ -95,12 +124,23 @@ class UglyNameView(FlaskView):
 
 QuotesView.register(app)
 UglyNameView.register(app)
+UsersView.register(app)
 
 client = app.test_client()
 
 input_headers = [('Content-Type', 'application/json')]
 input_data = {'text': 'My quote'}
 
+
+def test_users_post():
+    resp = client.post('users/', headers=input_headers, data=json.dumps({'email':'test@example.com'}))
+    eq_(resp.status_code, 200)
+    eq_("test@example.com", resp.data.decode('ascii'))
+
+def test_users_put():
+    resp = client.put('users/1/', headers=input_headers, data=json.dumps({'email':'test@example.com'}))
+    eq_(resp.status_code, 200)
+    eq_("test@example.com", resp.data.decode('ascii'))
 
 def test_quotes_index():
     resp = client.get("/quotes/")
