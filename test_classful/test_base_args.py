@@ -50,6 +50,10 @@ class UsersView(FlaskView):
     def put(self, args, id):
         return args['email']
 
+    @use_args(make_user_schema)
+    def patch(self, args, id):
+        return args['email']
+
 
 class QuoteSchema(ma.Schema):
     id = ma.fields.Int()
@@ -139,6 +143,11 @@ def test_users_post():
 
 def test_users_put():
     resp = client.put('users/1/', headers=input_headers, data=json.dumps({'email':'test@example.com'}))
+    eq_(resp.status_code, 200)
+    eq_("test@example.com", resp.data.decode('ascii'))
+
+def test_users_patch():
+    resp = client.patch('users/1/', headers=input_headers, data=json.dumps({'email':'test@example.com'}))
     eq_(resp.status_code, 200)
     eq_("test@example.com", resp.data.decode('ascii'))
 
