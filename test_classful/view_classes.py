@@ -66,6 +66,11 @@ class BasicView(FlaskView):
     def methodtwicedecorated(self):
         return request.method
 
+    @method("POST")
+    @route("/route4")
+    def methodplusroute(self):
+        return request.method
+
 
 class SubdomainAttributeView(FlaskView):
     subdomain = "sub1"

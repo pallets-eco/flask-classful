@@ -117,7 +117,13 @@ def test_method_decorator_twice():
     resp = client.patch('/basic/methodtwicedecorated/')
     eq_(b"PATCH", resp.data)
 
-    
+def test_method_route():
+   """Test that the @method decorator does not come into play when a route
+   is set explicitly"""
+   resp = client.post('/basic/route4/')
+   eq_(resp.status_code, 405)
+   resp = client.get('/basic/route4/')
+   eq_(b"Get route4", resp.data)
 
 
 def test_docstrings():
