@@ -105,6 +105,20 @@ def test_custom_http_method():
     resp = client.post("/basic/route3")
     eq_(resp.status_code, 308)
 
+def test_method_decorator_simple():
+    resp = client.post("/basic/methoddecorated/")
+    eq_(b"POST", resp.data)
+    resp = client.post("/basic/methoddecorated")
+    eq_(resp.status_code, 308)
+
+def test_method_decorator_twice():
+    resp = client.post('/basic/methodtwicedecorated/')
+    eq_(b"POST", resp.data)
+    resp = client.patch('/basic/methodtwicedecorated/')
+    eq_(b"PATCH", resp.data)
+
+    
+
 
 def test_docstrings():
     proxy_func = app.view_functions["BasicView:index"]
