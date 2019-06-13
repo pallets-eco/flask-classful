@@ -120,10 +120,10 @@ def test_method_decorator_twice():
 def test_method_route():
    """Test that the @method decorator does not come into play when a route
    is set explicitly"""
-   resp = client.post('/basic/route4/')
+   resp = client.post('/basic/methodroute')
    eq_(resp.status_code, 405)
-   resp = client.get('/basic/route4/')
-   eq_(b"Get route4", resp.data)
+   resp = client.get('/basic/methodroute')
+   eq_(b"GET", resp.data)
 
 
 def test_docstrings():

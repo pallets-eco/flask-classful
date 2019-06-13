@@ -1,3 +1,5 @@
+import logging
+
 from flask import jsonify, request
 from flask_classful import FlaskView, route, method
 from functools import wraps
@@ -67,7 +69,7 @@ class BasicView(FlaskView):
         return request.method
 
     @method("POST")
-    @route("/route4")
+    @route("/methodroute")
     def methodplusroute(self):
         return request.method
 
