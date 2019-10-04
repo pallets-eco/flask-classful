@@ -105,6 +105,26 @@ def test_custom_http_method():
     resp = client.post("/basic/route3")
     eq_(resp.status_code, 308)
 
+def test_method_decorator_simple():
+    resp = client.post("/basic/methoddecorated/")
+    eq_(b"POST", resp.data)
+    resp = client.post("/basic/methoddecorated")
+    eq_(resp.status_code, 308)
+
+def test_method_decorator_twice():
+    resp = client.post('/basic/methodtwicedecorated/')
+    eq_(b"POST", resp.data)
+    resp = client.patch('/basic/methodtwicedecorated/')
+    eq_(b"PATCH", resp.data)
+
+def test_method_route():
+   """Test that the @method decorator does not come into play when a route
+   is set explicitly"""
+   resp = client.post('/basic/methodroute')
+   eq_(resp.status_code, 405)
+   resp = client.get('/basic/methodroute')
+   eq_(b"GET", resp.data)
+
 
 def test_docstrings():
     proxy_func = app.view_functions["BasicView:index"]

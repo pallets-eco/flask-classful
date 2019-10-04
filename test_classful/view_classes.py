@@ -1,5 +1,7 @@
+import logging
+
 from flask import jsonify, request
-from flask_classful import FlaskView, route
+from flask_classful import FlaskView, route, method
 from functools import wraps
 
 VALUE1 = "value1"
@@ -56,6 +58,20 @@ class BasicView(FlaskView):
     @route("/route3/", methods=['POST'])
     def custom_http_method(self):
         return "Custom HTTP Method"
+
+    @method("POST")
+    def methoddecorated(self):
+        return request.method
+
+    @method("POST")
+    @method("PATCH")
+    def methodtwicedecorated(self):
+        return request.method
+
+    @method("POST")
+    @route("/methodroute")
+    def methodplusroute(self):
+        return request.method
 
 
 class SubdomainAttributeView(FlaskView):

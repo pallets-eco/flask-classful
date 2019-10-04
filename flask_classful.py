@@ -41,6 +41,20 @@ def route(rule, **options):
 
     return decorator
 
+def method(method, **options):
+    """A decorator that is used to define custom http methods on methods in
+    FlaskView subclasses.
+    """
+
+    def decorator(f):
+        if not hasattr(f, 'http_methods'):
+            f.http_methods = []
+
+        f.http_methods.append(method)
+        return f
+
+    return decorator
+
 
 class FlaskView(object):
     """Base view for any class based views implemented with Flask-Classful. Will
@@ -182,7 +196,10 @@ class FlaskView(object):
                         methods=methods, subdomain=subdomain, **rule_options)
 
                 else:
-                    methods = getattr(cls, 'default_methods', ["GET"])
+                    if hasattr(value, 'http_methods'):
+                        methods = value.http_methods
+                    else:
+                        methods = getattr(cls, 'default_methods', ["GET"])
 
                     if cls.method_dashified is True:
                         name = _dashify_underscore(name)

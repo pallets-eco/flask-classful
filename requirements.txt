@@ -1,3 +1,7 @@
+flask
+marshmallow
+webargs
+
 # test
 nose
 tox
