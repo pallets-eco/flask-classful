@@ -150,7 +150,7 @@ one quote? What would we do then?
 
         def get(self, id):
             id = int(id)
-            if id < len(quotes) - 1:
+            if id < len(quotes):
                 return quotes[id]
             else:
                 return "Not Found", 404
