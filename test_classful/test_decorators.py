@@ -5,6 +5,7 @@ from .view_classes import DecoratedBoldItalicsListView
 from .view_classes import DecoratedListMemberView
 from .view_classes import DecoratedListFunctionAttributesView
 from .view_classes import DecoratedListMemberFunctionAttributesView
+from .view_classes import DecoratedAppendClassAttributeView
 from nose.tools import eq_
 
 app = Flask("decorated")
@@ -14,6 +15,7 @@ DecoratedBoldItalicsListView.register(app)
 DecoratedListMemberView.register(app)
 DecoratedListFunctionAttributesView.register(app)
 DecoratedListMemberFunctionAttributesView.register(app)
+DecoratedAppendClassAttributeView.register(app)
 client = app.test_client()
 
 
@@ -211,3 +213,8 @@ def test_decorator_list_member_function_attributes_index():
         app.view_functions[
             'DecoratedListMemberFunctionAttributesView:index'
         ].eggs)
+
+
+def test_decorator_append_class_attribute_index():
+    resp = client.get('/decorated_append_class_attribute_view/')
+    eq_(b'Index (this is a test)', resp.data)
