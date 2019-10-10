@@ -270,6 +270,9 @@ class FlaskView(object):
             return inner
         view = make_func(view)
 
+        # Keep a reference to the class for potential use inside decorators
+        view.class_ = i
+
         # Now apply the class decorator list in reverse order
         # to match member decorator order
         if cls.decorators:

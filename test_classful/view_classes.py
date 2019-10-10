@@ -525,7 +525,7 @@ class DecoratedListFunctionAttributesView(FlaskView):
 class DecoratedListMemberFunctionAttributesView(FlaskView):
     """
     View class that applies an attribute to a function via a
-    decorator on the memeber function
+    decorator on the member function
     """
     route_base = '/decorated_list_member_function_attributes_view/'
     decorators = [make_italics_decorator]
@@ -539,6 +539,29 @@ class DecoratedListMemberFunctionAttributesView(FlaskView):
     def index(self):
         """Get the index"""
         return 'Index'
+
+
+def append_test_class_attribute_decorator(fn):
+    @wraps(fn)
+    def inner(*args, **kwargs):
+        test_cls_attribute = getattr(fn.class_, "test")
+        return fn(*args, **kwargs) + test_cls_attribute
+    return inner
+
+
+class DecoratedAppendClassAttributeView(FlaskView):
+    """
+    View class that appends the value of the class attribute
+    `test` to the response.
+    """
+    route_base = '/decorated_append_class_attribute_view/'
+    decorators = [append_test_class_attribute_decorator]
+
+    test = " (this is a test)"
+
+    def index(self):
+        """Get the index"""
+        return "Index"
 
 
 class InspectArgsView(FlaskView):
