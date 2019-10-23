@@ -7,13 +7,13 @@ env:
   - COVERAGE_PYTHON_VERSION=2.7
   - FLASK_LATEST=1.1.1
   matrix:
-  - Flask=0.11
-  - Flask=0.11.1
-  - Flask=0.12
-  - Flask=0.12.1
-  - Flask=0.12.2
+  # - Flask=0.11
+  # - Flask=0.11.1
+  # - Flask=0.12
+  # - Flask=0.12.1
+  # - Flask=0.12.2
 #  - Flask=0.12.3 # buggy, not supported, see related: https://github.com/dpgaspar/Flask-AppBuilder/issues/741
-  - Flask=0.12.4
+  # - Flask=0.12.4
   - Flask=1.0
   - Flask=1.0.1
   - Flask=1.0.2
