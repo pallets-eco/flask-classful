@@ -3,9 +3,9 @@ language: python
 dist: xenial
 env:
   global:
-  - MOST_TESTED_PYTHON_VERSION=3.7
+  - MOST_TESTED_PYTHON_VERSION=3.8
   - COVERAGE_PYTHON_VERSION=2.7
-  - FLASK_LATEST=1.0.2
+  - FLASK_LATEST=1.1.1
   matrix:
   - Flask=0.11
   - Flask=0.11.1
@@ -17,11 +17,17 @@ env:
   - Flask=1.0
   - Flask=1.0.1
   - Flask=1.0.2
+  - Flask=1.0.3
+  - Flask=1.0.4
+  - Flask=1.1.0
+  - Flask=1.1.1
 python:
 - 2.7
-- 3.4
+#- 3.4
+- 3.5
 - 3.6
 - 3.7
+- 3.8
 before_script:
 - git config --global user.name "Teracy Bot"
 - git config --global user.email "teracy.com@gmail.com"

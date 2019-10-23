@@ -3,11 +3,11 @@ version: '3'
 services:
 
   dev:
-    image: ${DEV_IMAGE:-python:3.7}
+    image: ${DEV_IMAGE:-python:3.8}
     working_dir: /opt/app
     command: sh run-dev.sh
     environment:
-      FLASK: ${FLASK:-1.0.2}
+      FLASK: ${FLASK:-1.1.1}
       CHECK_STYLE: ${CHECK_STYLE:-yes}
       RUN_TEST: ${RUN_TEST:-yes}
     volumes:
