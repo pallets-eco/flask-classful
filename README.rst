@@ -114,7 +114,9 @@ Let's see how it works
 
 If you're like me, you probably get a better idea of how to use something
 when you see it being used. Let's go ahead and create a little app to
-see how Flask-Classful works::
+see how Flask-Classful works:
+
+..  code-block:: python
 
     from flask import Flask
     from flask_classful import FlaskView
@@ -142,7 +144,7 @@ Run this app and open your web browser to: http://localhost:5000/quotes/
 As you can see, it returns the list of quotes. But what if we just wanted
 one quote? What would we do then?
 
-::
+..  code-block:: python
 
     class QuotesView(FlaskView):
         def index(self):
@@ -159,11 +161,13 @@ Now direct your browser to: http://localhost:5000/quotes/1/ and you should
 see the very poignant quote from the esteemed Mr. Edison.
 
 That's cool and all, but what if we just wanted a random quote? What then?
-Let's add a random view to our FlaskView::
+Let's add a random view to our FlaskView:
+
+..  code-block:: python
 
     from random import choice
 
-::
+..  code-block:: python
 
     class QuotesView(FlaskView):
         def index(self):
