@@ -101,6 +101,10 @@ class RouteBaseView(FlaskView):
     def index(self):
         return "Index"
 
+class RouteBaseViewIsNotLatest(FlaskView):
+    def index(self):
+        return "Index"
+
 
 class RoutePrefixView(FlaskView):
     route_prefix = "/my_prefix/"
@@ -563,7 +567,6 @@ class DecoratedAppendClassAttributeView(FlaskView):
         """Get the index"""
         return "Index"
 
-
 class InspectArgsView(FlaskView):
 
     def foo(self, arg1, arg2, kwarg1=678):
@@ -573,6 +576,9 @@ class InspectArgsView(FlaskView):
             type(kwarg1).__name__, kwarg1
         )
 
+class InspectArgsFalseView(FlaskView):
+    def foo():
+        pass
 
 def coerce(**kwargs):
     def wrap(fn):

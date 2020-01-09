@@ -501,8 +501,8 @@ def get_true_argspec(method):
 
 def unpack(value):
     """Return a three tuple of data, code, and headers"""
-    if not isinstance(value, tuple):
-        return value, 200, {}
+    # if not isinstance(value, tuple):
+    #     return value, 200, {}
 
     try:
         data, code, headers = value
@@ -521,3 +521,4 @@ def unpack(value):
 
 class DecoratorCompatibilityError(Exception):
     pass
+
