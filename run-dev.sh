@@ -13,4 +13,5 @@ fi
 if [ "$RUN_TEST" = "yes" ] || [ "$RUN_TEST" = "1" ]; then
   echo "test running...";
   make test;
+  make report-coverage;
 fi
