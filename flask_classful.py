@@ -472,7 +472,10 @@ def get_true_argspec(method):
 
     try:
         argspec = inspect.getfullargspec(method)
-    except AttributeError:
+    # except AttributeError:
+    # https://github.com/python/cpython/blob/master/Lib/inspect.py#L1127
+    # It may never raise AttributeError and may only raise TypeError
+    except TypeError:
         argspec = inspect.getargspec(method)
 
     args = argspec[0]
