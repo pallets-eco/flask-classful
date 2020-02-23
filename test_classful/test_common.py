@@ -1,6 +1,7 @@
 from flask import Flask
+from flask_classful import unpack, get_true_argspec, method, route, DecoratorCompatibilityError
 from .view_classes import BasicView, IndexView
-from nose.tools import eq_
+from nose.tools import eq_, raises
 
 app = Flask("common")
 BasicView.register(app)
@@ -125,7 +126,72 @@ def test_method_route():
    resp = client.get('/basic/methodroute')
    eq_(b"GET", resp.data)
 
-
 def test_docstrings():
     proxy_func = app.view_functions["BasicView:index"]
     eq_(proxy_func.__doc__, BasicView.index.__doc__)
+
+def test_unpack_tuple():
+    """Test unpack tuple data"""
+    response, code, headers = unpack(("response", 100, "c"))
+
+    eq_("response", response)
+    eq_(100, code)
+    eq_("c", headers)
+
+    response, code, headers = unpack(('response', 404))
+    eq_("response", response)
+    eq_(404, code)
+    eq_({}, headers)
+
+    response, code, headers = unpack(('response'))
+    eq_("response", response)
+    eq_(200, code)
+    eq_({}, headers)
+
+def test_unpack_not_tuple():
+    """Test unpack not tuple data"""
+    response, code, headers = unpack(None)
+
+    eq_(None, response)
+    eq_(200, code)
+    eq_({}, headers)
+
+    response, code, headers = unpack({})
+    eq_({}, response)
+    eq_(200, code)
+    eq_({}, headers)
+
+    response, code, headers = unpack("string")
+    eq_("string", response)
+    eq_(200, code)
+    eq_({}, headers)
+
+    response, code, headers = unpack(('response', 1, 2, 3, 4, 5))
+
+    eq_(('response', 1, 2, 3, 4, 5), response)
+    eq_(200, code)
+    eq_({}, headers)
+
+@raises(TypeError)
+def test_get_true_argspec_raise_error():
+    """Test get_true_argspec will raise error if method is not correct"""
+    get_true_argspec(None)
+
+
+def test_get_true_argspec_func():
+    """Test get_true_argspec will use __func__ attr"""
+
+    def _method():
+        pass
+
+    def _func(x):
+        def _inner():
+            return x
+        return _inner
+
+    setattr(_method, '__func__', _func(None))
+
+    response = get_true_argspec(_method)
+
+    eq_(None, response)
+
