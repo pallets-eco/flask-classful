@@ -470,12 +470,12 @@ def get_true_argspec(method):
     for the method.
     """
 
-    try:
-        argspec = inspect.getfullargspec(method)
-    # except AttributeError:
     # https://github.com/python/cpython/blob/master/Lib/inspect.py#L1127
-    # It may never raise AttributeError and may only raise TypeError
-    except TypeError:
+    # getargspec is deprecated in python 3.
+
+    if not _py2:
+        argspec = inspect.getfullargspec(method)
+    else:
         argspec = inspect.getargspec(method)
 
     args = argspec[0]
