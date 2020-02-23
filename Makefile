@@ -2,8 +2,8 @@ resolve:
 	pip install -r requirements.txt --upgrade
 
 check-style:
-	flake8 --max-complexity 12 . || exit 0
-	pylint --rcfile .pylintrc *.py **/*.py **/**/*.py **/**/**/*.py || exit 0
+	flake8 --max-complexity 12 flask_classful.py || exit 0
+	pylint --rcfile .pylintrc flask_classful.py || exit 0
 
 test-clean:
 	coverage erase
