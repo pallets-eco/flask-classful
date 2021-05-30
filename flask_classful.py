@@ -13,7 +13,7 @@ import functools
 import inspect
 from uuid import UUID
 from werkzeug.routing import parse_rule
-from flask import request, make_response
+from flask import request, make_response, current_app
 from flask.wrappers import ResponseBase
 import re
 
@@ -54,6 +54,16 @@ def method(method, **options):
         return f
 
     return decorator
+
+
+def ensure_sync(fn):
+    """A helper function that provides access to the Flask's ensure_sync method
+    """
+    # Check for compatibility with Flask < 2.0
+    # If the ensure_sync is not defined in Flask,
+    # it will do nothing
+    _ensure_sync = getattr(current_app, 'ensure_sync', lambda f: f)
+    return _ensure_sync(fn)
 
 
 class FlaskView(object):
@@ -266,7 +276,7 @@ class FlaskView(object):
         def make_func(fn):
             @functools.wraps(fn)
             def inner(*args, **kwargs):
-                return fn(*args, **kwargs)
+                return ensure_sync(fn)(*args, **kwargs)
             return inner
         view = make_func(view)
 
@@ -287,14 +297,14 @@ class FlaskView(object):
             del forgettable_view_args
 
             if hasattr(i, "before_request"):
-                response = i.before_request(name, **request.view_args)
+                response = ensure_sync(i.before_request)(name, **request.view_args)
                 if response is not None:
                     return response
 
             before_view_name = "before_" + name
             if hasattr(i, before_view_name):
                 before_view = getattr(i, before_view_name)
-                response = before_view(**request.view_args)
+                response = ensure_sync(before_view)(**request.view_args)
                 if response is not None:
                     return response
 
@@ -338,10 +348,10 @@ class FlaskView(object):
             after_view_name = "after_" + name
             if hasattr(i, after_view_name):
                 after_view = getattr(i, after_view_name)
-                response = after_view(response)
+                response = ensure_sync(after_view)(response)
 
             if hasattr(i, "after_request"):
-                response = i.after_request(name, response)
+                response = ensure_sync(i.after_request)(name, response)
 
             return response
 
