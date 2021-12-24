@@ -92,7 +92,7 @@ jobs:
             TARGET_FOLDER=develop
         elif [[ $GIT_BRANCH =~ ^v[0-9.]+[0-9.a-z\-]*$ ]]; then
             TARGET_FOLDER=${GIT_BRANCH:1}
-        elif [[ $GIT_BRANCH =~ ^[0-9.]+[0-9.a-z\-]*$ || $GIT_BRANCH =~ ^releases\/[0-9.]+[0-9.a-z\-]*$ ]]; then
+        elif [[ $GIT_BRANCH =~ ^[0-9.]+[0-9.a-z\-]*$ || $GIT_BRANCH =~ ^releases\/[v0-9.]+[0-9.a-z\-]*$ ]]; then
             TARGET_FOLDER=$GIT_BRANCH
         fi
         echo "\$TARGET_FOLDER: $TARGET_FOLDER"
