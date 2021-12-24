@@ -19,7 +19,7 @@ import re
 
 _py2 = sys.version_info[0] == 2
 
-__version__ = "0.15.0-dev0"
+__version__ = "0.15.0-b1"
 
 
 def route(rule, **options):

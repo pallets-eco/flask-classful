@@ -1,3 +1,20 @@
+2021-12-25 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.15.0-b1
+
+    - Features:
+        * Add additional init_argument to register method #86
+        * Add @method decorator and handling #109
+
+    - Improvements:
+        * inspect.getargspec() is deprecated, use inspect.signature() or inspect.getfullargspec() #94
+
+    - Tasks:
+        * Bugs/fix update failed travis ci build #93
+        * should use github actions to run CI checks to replace travis-ci #134
+
+
 2017-10-19 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
