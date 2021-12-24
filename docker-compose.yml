@@ -12,3 +12,13 @@ services:
       RUN_TEST: ${RUN_TEST:-yes}
     volumes:
       - .:/opt/app
+
+
+  docs-gen:
+    image: python:3.8
+    working_dir: /opt/app/docs
+    command: >
+      bash -c "pip install -r requirements.txt
+      && make generate"
+    volumes:
+      - .:/opt/app
