@@ -1,4 +1,4 @@
-name: Lint and Test
+name: Lint, Test & Docs
 
 on:
   push:
@@ -7,9 +7,9 @@ on:
   # curl -X POST https://api.github.com/repos/:owner/:repo/dispatches \
   # -H 'Accept: application/vnd.github.everest-preview+json' \
   # -H 'Authorization: token TOKEN_VALUE_HERE' \
-  # --data '{"event_type":"lint-test","client_payload":{}}'
+  # --data '{"event_type":"lint-test-docs","client_payload":{}}'
   repository_dispatch:
-    types: [lint-test]
+    types: [lint-test-docs]
 
 jobs:
 
@@ -66,3 +66,42 @@ jobs:
         CHECK_STYLE: no
         DEV_IMAGE: python:${{ matrix.python }}
         FLASK: ${{ matrix.flask }}
+
+  # build and publish docs
+  docs:
+    if: github.event_name != 'pull_request'
+    needs: [lint, test]
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: gen docs
+      run: |
+        docker-compose run --rm docs-gen
+
+    # the target folder to be deployed on the gh_pages branch
+    - name: set target folder
+      id: set_target_folder
+      run: |
+        GIT_BRANCH=$(echo ${GITHUB_REF} | sed -e "s/refs\/heads\///g" | sed -e "s/refs\/tags\///g" \
+        | sed -e "s/refs\/pull\///g")
+        echo "\$GIT_BRANCH: $GIT_BRANCH"
+        if [[ $GIT_BRANCH == 'master' ]] || [[ $GIT_BRANCH == 'main' ]] ; then
+            TARGET_FOLDER=.
+        elif [[ $GIT_BRANCH == 'develop' ]] ; then
+            TARGET_FOLDER=develop
+        elif [[ $GIT_BRANCH =~ ^v[0-9.]+[0-9.a-z\-]*$ ]]; then
+            TARGET_FOLDER=${GIT_BRANCH:1}
+        elif [[ $GIT_BRANCH =~ ^[0-9.]+[0-9.a-z\-]*$ || $GIT_BRANCH =~ ^releases\/[0-9.]+[0-9.a-z\-]*$ ]]; then
+            TARGET_FOLDER=$GIT_BRANCH
+        fi
+        echo "\$TARGET_FOLDER: $TARGET_FOLDER"
+        echo "::set-output name=target_folder::$TARGET_FOLDER"
+
+    - name: publish docs
+      uses: JamesIves/github-pages-deploy-action@4.1.8
+      if: steps.set_target_folder.outputs.target_folder != ''
+      with:
+        branch: gh-pages
+        folder: docs/_build/html
+        target-folder: ${{ steps.set_target_folder.outputs.target_folder }}
