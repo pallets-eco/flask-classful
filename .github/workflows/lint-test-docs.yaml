@@ -104,4 +104,5 @@ jobs:
       with:
         branch: gh-pages
         folder: docs/_build/html
+        clean: false
         target-folder: ${{ steps.set_target_folder.outputs.target_folder }}
