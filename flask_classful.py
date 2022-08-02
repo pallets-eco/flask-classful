@@ -66,6 +66,7 @@ class FlaskView(object):
     route_base = None
     route_prefix = None
     trailing_slash = True
+    base_args = []
     excluded_methods = []  # specify the class methods to be explicitly excluded from routing creation
     # TODO(hoatle): make method_dashified=True as default instead,
     # this is not a compatible change
@@ -370,9 +371,8 @@ class FlaskView(object):
             rule_parts.append(route_base)
         if len(rule) > 0:  # the case of rule='' empty string
             rule_parts.append(rule)
-        ignored_rule_args = ['self']
-        if hasattr(cls, 'base_args'):
-            ignored_rule_args += cls.base_args
+
+        ignored_rule_args = ['self'] + cls.base_args
 
         if method and getattr(cls, 'inspect_args', True):
             argspec = get_true_argspec(method)
@@ -401,12 +401,9 @@ class FlaskView(object):
         if cls.route_base is not None:
             route_base = cls.route_base
             base_rule = parse_rule(route_base)
-            # see: https://github.com/teracyhq/flask-classful/issues/50
-            if hasattr(cls, 'base_args'):
-                # thanks to: https://github.com/teracyhq/flask-classful/pull/56#issuecomment-328985183
-                cls.base_args = list(set(cls.base_args).union(r[2] for r in base_rule))
-            else:
-                cls.base_args = [r[2] for r in base_rule]
+            cls.base_args.extend(
+                arg for con, _, arg in base_rule
+                if con is not None)
         else:
             route_base = cls.default_route_base()
 
@@ -524,4 +521,3 @@ def unpack(value):
 
 class DecoratorCompatibilityError(Exception):
     pass
-
