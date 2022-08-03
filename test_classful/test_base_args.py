@@ -187,7 +187,7 @@ def test_quotes2_index():
 def test_quotes2_get():
     resp = client.get("/quotes-2/0/")
     eq_(quotes[0], resp.data.decode('ascii'))
-    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 1)
+    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 0)
 
 
 def test_quotes2_put():
@@ -195,11 +195,11 @@ def test_quotes2_put():
                       headers=input_headers,
                       data=json.dumps(input_data))
     eq_(input_data["text"], resp.data.decode('ascii'))
-    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 1)
+    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 0)
 
 # see: https://github.com/teracyhq/flask-classful/pull/56#issuecomment-328985183
 def test_unique_elements():
     client.put("/quotes-2/1/",
                       headers=input_headers,
                       data=json.dumps(input_data))
-    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 1)
+    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 0)
