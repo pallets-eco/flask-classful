@@ -12,7 +12,7 @@ import sys
 import functools
 import inspect
 from uuid import UUID
-from werkzeug.routing import parse_rule
+from werkzeug.routing import Rule, Map
 from flask import request, make_response
 from flask.wrappers import ResponseBase
 import re
@@ -400,10 +400,13 @@ class FlaskView(object):
 
         if cls.route_base is not None:
             route_base = cls.route_base
-            base_rule = parse_rule(route_base)
-            cls.base_args.extend(
-                arg for con, _, arg in base_rule
-                if con is not None)
+            if not route_base.startswith('/'):
+                route_base = '/' + route_base
+            base_rule = Rule(route_base)
+            # Add rule to a dummy map and bind that map so that
+            # the Rule's arguments field is populated
+            Map(rules=[base_rule]).bind('')
+            cls.base_args.extend(base_rule.arguments)
         else:
             route_base = cls.default_route_base()
 
