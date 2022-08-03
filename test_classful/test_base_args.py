@@ -203,4 +203,3 @@ def test_unique_elements():
                       headers=input_headers,
                       data=json.dumps(input_data))
     eq_(UglyNameView.base_args.count(UglyNameView.route_base), 1)
-
