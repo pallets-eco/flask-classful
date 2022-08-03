@@ -98,10 +98,12 @@ def test_bp_custom_http_method():
 
 
 def test_bp_url_prefix():
+    app = Flask("blueprints")
     foo = Blueprint('foo', __name__)
     BasicView.register(foo, route_base="/")
     app.register_blueprint(foo, url_prefix='/foo')
 
+    client = app.test_client()
     resp = client.get('/foo/')
     eq_(b"Index", resp.data)
 
