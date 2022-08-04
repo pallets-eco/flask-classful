@@ -166,6 +166,7 @@ class FlaskView(object):
                 if hasattr(value, "_rule_cache") and name in value._rule_cache:
                     for idx, cached_rule in enumerate(value._rule_cache[name]):
                         rule, options = cached_rule
+                        options.update(rule_options)
                         rule = cls.build_rule(rule)
                         sub, ep, options = cls.parse_options(options)
 
