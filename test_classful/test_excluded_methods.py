@@ -1,7 +1,6 @@
 from flask import Flask
 
 from flask_classful import FlaskView
-from nose.tools import eq_
 
 
 class NormalMethodsView(FlaskView):
@@ -43,16 +42,16 @@ client = app.test_client()
 
 def test_normal_methods_copy_form_data():
     resp = client.get("/normal-methods/copy_form_data/")
-    eq_(b"copy form data", resp.data)
+    assert b"copy form data" == resp.data
 
 
 def test_excluded_methods_copy_form_data():
     resp = client.get("/excluded-methods/copy_form_data/")
-    eq_(resp.status_code, 404)
+    assert resp.status_code == 404
 
 def test_static_method_view():
     resp = client.get("/static-method/setup/")
-    eq_(resp.status_code, 404)
+    assert resp.status_code == 404
 
     resp = client.get("/static-method/copy_form_data/")
-    eq_(b"copy form data", resp.data)
+    assert b"copy form data" == resp.data

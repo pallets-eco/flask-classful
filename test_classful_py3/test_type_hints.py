@@ -1,7 +1,6 @@
 from uuid import UUID
 from flask import Flask
 from flask_classful import FlaskView, route
-from nose.tools import eq_
 
 
 # python3 only
@@ -34,23 +33,23 @@ client = app.test_client()
 
 def test_index():
     resp = client.get('/typing/')
-    eq_(b"Index", resp.data)
+    assert b"Index" == resp.data
     resp = client.get('/typing')
-    eq_(resp.status_code, 308)
+    assert resp.status_code == 308
 
 
 def test_post():
     resp = client.post('/typing/123')
-    eq_(b"Post", resp.data)
+    assert b"Post" == resp.data
     resp = client.post('/typing/123/')
-    eq_(resp.status_code, 405)
+    assert resp.status_code == 405
 
 
 def test_patch():
     resp = client.patch('/typing/123/')
-    eq_(b"Patch", resp.data)
+    assert b"Patch" == resp.data
     resp = client.patch('/typing/123')
-    eq_(resp.status_code, 308)
+    assert resp.status_code == 308
 
 
 def test_url_converter():
@@ -62,7 +61,7 @@ def test_url_converter():
         url = '/typing/{}/{}/'
         resp = client.get(url.format(type_, wrong_var))
         # should not match the endpoint if url variable type mismatches
-        eq_(resp.status_code, 404)
+        assert resp.status_code == 404
         resp = client.get(url.format(type_, correct_var))
-        eq_(resp.status_code, 200)
-        eq_(bytes(correct_var, 'utf-8'), resp.data)
+        assert resp.status_code == 200
+        assert bytes(correct_var, 'utf-8') == resp.data

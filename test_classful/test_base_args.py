@@ -6,7 +6,6 @@ from flask_classful import FlaskView, route
 from marshmallow import Schema, fields
 from webargs.flaskparser import use_args
 from webargs import fields
-from nose.tools import eq_
 
 # we'll make a list to hold some quotes for our app
 quotes = [
@@ -138,68 +137,68 @@ input_data = {'text': 'My quote'}
 
 def test_users_post():
     resp = client.post('users/', headers=input_headers, data=json.dumps({'email':'test@example.com'}))
-    eq_(resp.status_code, 200)
-    eq_("test@example.com", resp.data.decode('ascii'))
+    assert resp.status_code == 200
+    assert "test@example.com" == resp.data.decode('ascii')
 
 def test_users_put():
     resp = client.put('users/1/', headers=input_headers, data=json.dumps({'email':'test@example.com'}))
-    eq_(resp.status_code, 200)
-    eq_("test@example.com", resp.data.decode('ascii'))
+    assert resp.status_code == 200
+    assert "test@example.com" == resp.data.decode('ascii')
 
 def test_users_patch():
     resp = client.patch('users/1/', headers=input_headers, data=json.dumps({'email':'test@example.com'}))
-    eq_(resp.status_code, 200)
-    eq_("test@example.com", resp.data.decode('ascii'))
+    assert resp.status_code == 200
+    assert "test@example.com" == resp.data.decode('ascii')
 
 def test_quotes_index():
     resp = client.get("/quotes/")
     num = len(str(resp.data).split("<br>"))
-    eq_(3, num)
+    assert 3 == num
     resp = client.get("/quotes")
-    eq_(resp.status_code, 308)
+    assert resp.status_code == 308
 
 
 def test_quotes_get():
     resp = client.get("/quotes/0/")
-    eq_(quotes[0], resp.data.decode('ascii'))
+    assert quotes[0] == resp.data.decode('ascii')
 
 
 def test_quotes_put():
     resp = client.put("/quotes/1/",
                       headers=input_headers,
                       data=json.dumps(input_data))
-    eq_(input_data["text"], resp.data.decode('ascii'))
+    assert input_data["text"] == resp.data.decode('ascii')
 
 def test_quotes_factory():
     resp = client.patch("/quotes/1/",
                         headers=input_headers,
                         data=json.dumps(input_data))
-    eq_(input_data["text"], resp.data.decode('ascii'))
+    assert input_data["text"] == resp.data.decode('ascii')
 
 def test_quotes2_index():
     resp = client.get("/quotes-2/")
     num = len(str(resp.data).split("<br>"))
-    eq_(3, num)
+    assert 3 == num
     resp = client.get("/quotes-2")
-    eq_(resp.status_code, 308)
+    assert resp.status_code == 308
 
 
 def test_quotes2_get():
     resp = client.get("/quotes-2/0/")
-    eq_(quotes[0], resp.data.decode('ascii'))
-    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 0)
+    assert quotes[0] == resp.data.decode('ascii')
+    assert UglyNameView.base_args.count(UglyNameView.route_base) == 0
 
 
 def test_quotes2_put():
     resp = client.put("/quotes-2/1/",
                       headers=input_headers,
                       data=json.dumps(input_data))
-    eq_(input_data["text"], resp.data.decode('ascii'))
-    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 0)
+    assert input_data["text"] == resp.data.decode('ascii')
+    assert UglyNameView.base_args.count(UglyNameView.route_base) == 0
 
 # see: https://github.com/teracyhq/flask-classful/pull/56#issuecomment-328985183
 def test_unique_elements():
     client.put("/quotes-2/1/",
                       headers=input_headers,
                       data=json.dumps(input_data))
-    eq_(UglyNameView.base_args.count(UglyNameView.route_base), 0)
+    assert UglyNameView.base_args.count(UglyNameView.route_base) == 0
