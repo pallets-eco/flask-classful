@@ -1,6 +1,5 @@
 # test
-nose
-tox
+pytest
 
 # code style, coverage
 coverage

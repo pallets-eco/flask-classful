@@ -8,7 +8,6 @@ from .view_classes import (
     BeforeRequestReturnsView,
     BeforeViewReturnsView
 )
-from nose.tools import eq_
 
 app = Flask("wrappers")
 BeforeRequestView.register(app)
@@ -24,39 +23,39 @@ client = app.test_client()
 
 def test_before_request():
     resp = client.get("/before-request/")
-    eq_(b"Before Request", resp.data)
+    assert b"Before Request" == resp.data
 
 
 def test_before_view():
     resp = client.get("/before-view/")
-    eq_(b"Before View", resp.data)
+    assert b"Before View" == resp.data
 
 
 def test_after_view():
     resp = client.get("/after-view/")
-    eq_(b"After View", resp.data)
+    assert b"After View" == resp.data
 
 
 def test_after_request():
     resp = client.get("/after-request/")
-    eq_(b"After Request", resp.data)
+    assert b"After Request" == resp.data
 
 
 def test_decorated_view():
     resp = client.get("/decorated/")
-    eq_(b"Index", resp.data)
+    assert b"Index" == resp.data
 
     resp = client.get("/decorated/1234/")
-    eq_(b"Get 1234", resp.data)
+    assert b"Get 1234" == resp.data
 
     resp = client.get("/decorated/1234")
-    eq_(resp.status_code, 308)
+    assert resp.status_code == 308
 
 def test_before_request_returns():
     resp = client.get("/before-request-returns/")
-    eq_(b"BEFORE", resp.data)
+    assert b"BEFORE" == resp.data
 
 
 def test_before_view_returns():
     resp = client.get("/before-view-returns/")
-    eq_(b"BEFORE", resp.data)
+    assert b"BEFORE" == resp.data

@@ -12,7 +12,7 @@ import sys
 import functools
 import inspect
 from uuid import UUID
-from werkzeug.routing import parse_rule
+from werkzeug.routing import Rule, Map
 from flask import request, make_response
 from flask.wrappers import ResponseBase
 import re
@@ -66,6 +66,7 @@ class FlaskView(object):
     route_base = None
     route_prefix = None
     trailing_slash = True
+    base_args = []
     excluded_methods = []  # specify the class methods to be explicitly excluded from routing creation
     # TODO(hoatle): make method_dashified=True as default instead,
     # this is not a compatible change
@@ -165,6 +166,7 @@ class FlaskView(object):
                 if hasattr(value, "_rule_cache") and name in value._rule_cache:
                     for idx, cached_rule in enumerate(value._rule_cache[name]):
                         rule, options = cached_rule
+                        options.update(rule_options)
                         rule = cls.build_rule(rule)
                         sub, ep, options = cls.parse_options(options)
 
@@ -370,9 +372,8 @@ class FlaskView(object):
             rule_parts.append(route_base)
         if len(rule) > 0:  # the case of rule='' empty string
             rule_parts.append(rule)
-        ignored_rule_args = ['self']
-        if hasattr(cls, 'base_args'):
-            ignored_rule_args += cls.base_args
+
+        ignored_rule_args = ['self'] + cls.base_args
 
         if method and getattr(cls, 'inspect_args', True):
             argspec = get_true_argspec(method)
@@ -400,13 +401,13 @@ class FlaskView(object):
 
         if cls.route_base is not None:
             route_base = cls.route_base
-            base_rule = parse_rule(route_base)
-            # see: https://github.com/teracyhq/flask-classful/issues/50
-            if hasattr(cls, 'base_args'):
-                # thanks to: https://github.com/teracyhq/flask-classful/pull/56#issuecomment-328985183
-                cls.base_args = list(set(cls.base_args).union(r[2] for r in base_rule))
-            else:
-                cls.base_args = [r[2] for r in base_rule]
+            if not route_base.startswith('/'):
+                route_base = '/' + route_base
+            base_rule = Rule(route_base)
+            # Add rule to a dummy map and bind that map so that
+            # the Rule's arguments field is populated
+            Map(rules=[base_rule]).bind('')
+            cls.base_args.extend(base_rule.arguments)
         else:
             route_base = cls.default_route_base()
 
@@ -524,4 +525,3 @@ def unpack(value):
 
 class DecoratorCompatibilityError(Exception):
     pass
-

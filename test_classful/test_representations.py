@@ -1,7 +1,6 @@
 from flask import Flask, make_response, redirect, request
 from flask_classful import FlaskView
 import json
-from nose.tools import eq_, ok_
 
 
 def output_json(data, code, headers=None):
@@ -113,49 +112,49 @@ client = app.test_client()
 
 def test_index_representation():
     resp = client.get("/representation/", headers=input_headers)
-    eq_(json.dumps([response_1, response_2]), resp.data.decode('ascii'))
+    assert json.dumps([response_1, response_2]) == resp.data.decode('ascii')
 
 
 def test_get_representation():
     resp = client.get("/representation/1/", headers=input_headers)
-    eq_(json.dumps(response_get), resp.data.decode('ascii'))
+    assert json.dumps(response_get) == resp.data.decode('ascii')
     resp = client.get("/representation/1")
-    eq_(resp.status_code, 308)
+    assert resp.status_code == 308
 
 
 def test_post_representation():
     resp = client.post("/representation/",
                        headers=input_headers,
                        data=json.dumps(input_data))
-    eq_(resp.status_code, 404, 'should return 404 status code')
-    eq_(resp.headers['say'], 'hello')
-    eq_(json.dumps(response_post), resp.data.decode('ascii'))
+    assert resp.status_code, 404 == 'should return 404 status code'
+    assert resp.headers['say'] == 'hello'
+    assert json.dumps(response_post) == resp.data.decode('ascii')
 
 
 def test_put_representation():
     resp = client.put("/representation/1/",
                       headers=input_headers,
                       data=json.dumps(input_data))
-    eq_(resp.status_code, 403, 'should return 403 status code')
-    eq_(json.dumps(response_put), resp.data.decode('ascii'))
+    assert resp.status_code, 403 == 'should return 403 status code'
+    assert json.dumps(response_put) == resp.data.decode('ascii')
     resp = client.put("/representation/1",
                       headers=input_headers,
                       data=json.dumps(input_data))
-    eq_(resp.status_code, 308)
+    assert resp.status_code == 308
 
 
 def test_delete_representation():
     resp = client.delete("/representation/1/",
                          headers=input_headers)
-    eq_(json.dumps(response_delete), resp.data.decode('ascii'))
+    assert json.dumps(response_delete) == resp.data.decode('ascii')
     resp = client.delete("/representation/1")
-    eq_(resp.status_code, 308)
+    assert resp.status_code == 308
 
 
 def test_skip_representation_matching_if_response_is_returned():
     resp = client.get("/representation/redirect/")
-    eq_(resp.status_code, 302)
-    eq_(resp.location, "http://google.com")
+    assert resp.status_code == 302
+    assert resp.location == "http://google.com"
 
 
 def test_representations_no_match_return_string():
@@ -163,9 +162,9 @@ def test_representations_no_match_return_string():
     resp = client.get("/representation/mirror/", query_string={'q': 'foobar'},
                       headers={'Accept': 'foo/bar'})
 
-    eq_(resp.data, b'foobar')
-    eq_(resp.headers['Content-Type'], 'foo/bar')
-    eq_(resp.status_code, 201)
+    assert resp.data == b'foobar'
+    assert resp.headers['Content-Type'] == 'foo/bar'
+    assert resp.status_code == 201
 
 
 def test_default_representation():
@@ -175,10 +174,10 @@ def test_default_representation():
                        headers={'Accept': 'foo/bar',
                                 'Content-Type': 'application/json'})
 
-    eq_(resp.status_code, 201)
-    eq_(resp.headers['say'], 'hello')
-    eq_(resp.data, b'{"foo": "bar"}')
-    eq_(resp.headers['Content-Type'], 'flask-classful/default')
+    assert resp.status_code == 201
+    assert resp.headers['say'] == 'hello'
+    assert resp.data == b'{"foo": "bar"}'
+    assert resp.headers['Content-Type'] == 'flask-classful/default'
 
 
 def test_representation_with_default():
@@ -187,7 +186,7 @@ def test_representation_with_default():
                        data=json.dumps({'foo': 'bar'}),
                        headers=input_headers)
 
-    eq_(resp.status_code, 201)
-    eq_(resp.headers['say'], 'hello')
-    eq_(resp.data, b'{"foo": "bar"}')
-    eq_(resp.headers['Content-Type'], 'application/json')
+    assert resp.status_code == 201
+    assert resp.headers['say'] == 'hello'
+    assert resp.data == b'{"foo": "bar"}'
+    assert resp.headers['Content-Type'] == 'application/json'

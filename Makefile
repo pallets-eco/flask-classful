@@ -9,7 +9,7 @@ test-clean:
 	coverage erase
 
 test-intg:
-	coverage run --branch --source=. `which nosetests` -v --exe
+	coverage run --branch --source=. -m pytest
 
 test: | test-clean test-intg
 
