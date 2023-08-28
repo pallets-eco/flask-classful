@@ -1,3 +1,12 @@
+2023-08-28 F.N. Claessen <felix@seita.nl>
+-----------------------------------------
+
+    Version: 0.16.0
+
+    - Tasks:
+        * Compatibility with werkzeug 2.2 #145
+
+
 2021-12-25 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 
