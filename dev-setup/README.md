@@ -56,7 +56,7 @@ Stop the watching files by using `Ctrl + c`.
 
 ## How to develop
 
-- `$ docker-compose up` will check code style and run tests with defaul Python image.
+- `$ docker-compose up` will check code style and run tests with default Python image.
 
 There are environment variables to run and check with different versions of Python:
 
