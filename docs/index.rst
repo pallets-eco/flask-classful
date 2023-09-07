@@ -345,7 +345,7 @@ Let's see an example of this additional parameter in the ``register`` method::
         def index(self):
             return self._my_init_argument
 
-    QuotesView.register(app, "Fistro diodenarl de abajorl")
+    QuotesView.register(app, init_argument="Fistro diodenarl de abajorl")
 
     if __name__ == '__main__':
         app.run()
