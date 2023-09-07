@@ -1,14 +1,3 @@
-"""
-    Flask-Classful
-    --------------
-
-    Class based views for the Flask microframework.
-
-    :copyright: (c) 2013 by Freedom Dumlao.
-    :license: BSD, see LICENSE for more details.
-"""
-
-import sys
 import functools
 import inspect
 from uuid import UUID
@@ -16,8 +5,6 @@ from werkzeug.routing import Rule, Map
 from flask import request, make_response
 from flask.wrappers import ResponseBase
 import re
-
-_py2 = sys.version_info[0] == 2
 
 
 def route(rule, **options):
@@ -383,12 +370,11 @@ class FlaskView(object):
                     if not query_params or len(args) - i > len(query_params):
                         # This isn't optional param, so it's not query argument
                         rule_part = "<{0!s}>".format(arg)
-                        if not _py2:
-                            # in py3, try to determine url variable converters
-                            # from possible type hints
-                            type_str = cls.type_hints.get(annotations.get(arg))
-                            if type_str:
-                                rule_part = "<{}:{}>".format(type_str, arg)
+                        # try to determine url variable converters
+                        # from possible type hints
+                        type_str = cls.type_hints.get(annotations.get(arg))
+                        if type_str:
+                            rule_part = "<{}:{}>".format(type_str, arg)
                         rule_parts.append(rule_part)
         result = "/{0!s}".format("/".join(rule_parts))
         return re.sub(r'(/)\1+', r'\1', result)
@@ -448,15 +434,10 @@ def get_interesting_members(base_class, cls):
     """Returns a list of methods that can be routed to"""
 
     base_members = dir(base_class)
-    predicate = inspect.ismethod if _py2 else inspect.isfunction
+    predicate = inspect.isfunction
     all_members = inspect.getmembers(cls, predicate=predicate)
     return [member for member in all_members
             if not member[0] in base_members
-            and (
-                (hasattr(member[1], "__self__")
-                 and not member[1].__self__ in inspect.getmro(cls))
-                if _py2 else True
-            )
             and not member[0].startswith("_")
             and not member[0].startswith("before_")
             and not member[0].startswith("after_")
@@ -468,14 +449,7 @@ def get_true_argspec(method):
     Drills through layers of decorators attempting to locate the actual argspec
     for the method.
     """
-
-    # https://github.com/python/cpython/blob/master/Lib/inspect.py#L1127
-    # getargspec is deprecated in python 3.
-
-    if not _py2:
-        argspec = inspect.getfullargspec(method)
-    else:
-        argspec = inspect.getargspec(method)
+    argspec = inspect.getfullargspec(method)
 
     args = argspec[0]
     if args and args[0] == 'self':
