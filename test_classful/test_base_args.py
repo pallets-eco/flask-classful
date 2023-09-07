@@ -196,7 +196,7 @@ def test_quotes2_put():
     assert input_data["text"] == resp.data.decode('ascii')
     assert UglyNameView.base_args.count(UglyNameView.route_base) == 0
 
-# see: https://github.com/teracyhq/flask-classful/pull/56#issuecomment-328985183
+# see: https://github.com/pallets-eco/flask-classful/pull/56#issuecomment-328985183
 def test_unique_elements():
     client.put("/quotes-2/1/",
                       headers=input_headers,

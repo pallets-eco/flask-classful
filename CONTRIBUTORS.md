@@ -30,4 +30,4 @@
 
 see:
 
-- https://github.com/teracyhq/flask-classful/graphs/contributors
+- https://github.com/pallets-eco/flask-classful/graphs/contributors

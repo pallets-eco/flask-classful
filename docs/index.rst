@@ -38,8 +38,8 @@ For example, ``Flask-Classful`` will automatically generate routes based on the 
 in your views, and makes it super simple to override those routes
 using Flask's familiar decorator syntax.
 
-.. _Flask-Classful: http://github.com/teracyhq/flask-classful
-.. _Flask: http://flask.pocoo.org/
+.. _Flask-Classful: https://github.com/pallets-eco/flask-classful/
+.. _Flask: https://flask.palletsprojects.com
 
 
 About ``Flask-Classful`` vs ``Flask-Classy`` and how to migrate
@@ -75,7 +75,7 @@ Install the latest extension with::
 
 Or install the bleeding edge development version with::
 
-    $ pip install git+https://github.com/teracyhq/flask-classful.git@develop#egg=flask-classful
+    $ pip install git+https://github.com/pallets-eco/flask-classful.git@develop#egg=flask-classful
 
 Let's see how it works
 ----------------------
@@ -1179,7 +1179,7 @@ From v0.13.1 to v0.14.0
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 - The behavior of the trailing slash is changed: redirect by default when no trailing slash, see:
-    + https://github.com/teracyhq/flask-classful/issues/47
+    + https://github.com/pallets-eco/flask-classful/issues/47
 
     => If you don't want to see 301 redirect, set `trailing_slash` option to `False`.
 
@@ -1187,7 +1187,7 @@ From v0.13.1 to v0.14.0
   representation instead of returning the first output from the first registered representation. Allow
   specififying the default representation when no matching with `flask-classful/default` mime type,
   see:
-    + https://github.com/teracyhq/flask-classful/issues/72
+    + https://github.com/pallets-eco/flask-classful/issues/72
 
     => You need to specify the default representation.
 
@@ -1196,18 +1196,10 @@ From v0.10.0 to v0.11.0
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 - The order in which `FlaskView` decorators are applied has been reversed, see:
-    + https://github.com/teracyhq/flask-classful/commit/686be6ef6fd09d9c1719fa89763ad09baddf7fd0
-    + https://github.com/teracyhq/flask-classful/issues/49
+    + https://github.com/pallets-eco/flask-classful/commit/686be6ef6fd09d9c1719fa89763ad09baddf7fd0
+    + https://github.com/pallets-eco/flask-classful/issues/49
 
     => You need to make sure the decorators are in the right order.
-
-
-Questions?
-----------
-
-Feel free to ping me on twitter @teracyhq, or head on over to the
-github repo at https://github.com/teracyhq/flask-classful so you can join
-the fun.
 
 
 API
@@ -1217,7 +1209,3 @@ API
 
 
 .. autofunction:: flask_classful.route
-
-----
-
-© Copyright 2013 by Freedom Dumlao, `Follow Me @apiguy <https://twitter.com/APIguy>`_

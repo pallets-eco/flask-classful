@@ -34,10 +34,10 @@ os.chdir(os.path.normpath(os.path.join(os.path.abspath(__file__), os.pardir)))
 setup(
     name='Flask-Classful',
     version=find_version('flask_classful.py'),
-    url='https://github.com/teracyhq/flask-classful',
+    url='https://github.com/pallets-eco/flask-classful',
     license='BSD',
-    author='Freedom Dumlao & Teracy, Inc',
-    author_email='hq@teracy.com',
+    maintainer="Pallets Community Ecosystem",
+    maintainer_email="contact@palletsprojects.com",
     description='Class based views for Flask',
     long_description=__doc__,
     py_modules=['flask_classful'],
