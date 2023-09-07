@@ -5,7 +5,7 @@ set -eu pipefail
 
 make resolve;
 pip install $REQUIREMENTS;
-python setup.py install;
+pip install .;
 
 if [ "$CHECK_STYLE" = "yes" ] || [ "$CHECK_STYLE" = "1" ]; then
   make check-style;
