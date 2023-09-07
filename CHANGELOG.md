@@ -5,6 +5,7 @@
 
     - Tasks:
         * Compatibility with werkzeug 2.2 #145
+        * Use ``pyproject.toml`` for package metadata and ``flit_core`` as the build backend.
 
 
 2021-12-25 Hoat Le <hoatle@teracy.com>

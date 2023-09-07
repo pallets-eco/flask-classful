@@ -1,7 +1,6 @@
 [run]
 omit =
     test_classy/*.py
-    setup.py
 
 [report]
 exclude_lines =

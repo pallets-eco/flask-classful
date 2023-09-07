@@ -51,19 +51,8 @@ see: https://github.com/apiguy/flask-classy/issues/80
 
 To switch from ``Flask-Classy`` to ``Flask-Classful``, you just need to update
 the module import, as the APIs are the same for both::
-    // recommended
-    from flask.ext.flask_classy => from flask_classful
-
-or::
-
-    from flask.ext.flask_classy => from flask.ext.flask_classful
-
-Alternatively::
 
     from flask_classy => from flask_classful
-
-You can switch back to ``flask_classy``, if you like, by doing the reverse.
-
 
 Installation
 ------------
@@ -72,10 +61,6 @@ Install the latest extension with::
 
     $ pip install flask-classful -U
 
-
-Or install the bleeding edge development version with::
-
-    $ pip install git+https://github.com/pallets-eco/flask-classful.git@develop#egg=flask-classful
 
 Let's see how it works
 ----------------------
