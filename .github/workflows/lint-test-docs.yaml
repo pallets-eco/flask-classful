@@ -2,14 +2,9 @@ name: Lint, Test & Docs
 
 on:
   push:
+    branches:
+      - main
   pull_request:
-  # to trigger manually with webhook
-  # curl -X POST https://api.github.com/repos/:owner/:repo/dispatches \
-  # -H 'Accept: application/vnd.github.everest-preview+json' \
-  # -H 'Authorization: token TOKEN_VALUE_HERE' \
-  # --data '{"event_type":"lint-test-docs","client_payload":{}}'
-  repository_dispatch:
-    types: [lint-test-docs]
 
 jobs:
 
