@@ -19,8 +19,6 @@ import re
 
 _py2 = sys.version_info[0] == 2
 
-__version__ = "0.16.0"
-
 
 def route(rule, **options):
     """A decorator that is used to define custom routes for methods in
@@ -525,3 +523,19 @@ def unpack(value):
 
 class DecoratorCompatibilityError(Exception):
     pass
+
+
+def __getattr__(name):
+    if name == "__version__":
+        import importlib.metadata
+        import warnings
+
+        warnings.warn(
+            "The '__version__' attribute is deprecated and will be removed in"
+            " Flask-Classful 1.0. Use feature detection, or"
+            ' `importlib.metadata.version("flask-classful")`, instead.'
+        )
+        return importlib.metadata.version("flask-classful")
+
+
+    raise AttributeError(name)

@@ -1,3 +1,12 @@
+Version 0.17.0
+--------------
+
+Unreleased
+
+-   The `__version__` attribute is deprecated. Use feature detection, or
+    `importlib.metadata.version("flask-classful")`, instead. #155
+
+
 2023-09-07 F.N. Claessen <felix@seita.nl>
 -----------------------------------------
 
