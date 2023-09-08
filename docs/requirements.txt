@@ -1,5 +1,0 @@
-# pip requirements for docs generation
-# pip install -r docs/requirements.txt
-
-Sphinx
-flask-classful
