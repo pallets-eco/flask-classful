@@ -8,6 +8,8 @@ alabaster==0.7.13
     # via
     #   -r requirements/docs.txt
     #   sphinx
+asgiref==3.7.2
+    # via -r requirements/tests.txt
 babel==2.12.1
     # via
     #   -r requirements/docs.txt
