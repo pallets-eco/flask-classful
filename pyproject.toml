@@ -1,0 +1,31 @@
+[project]
+name = "Flask-Classful"
+version = "0.17.0.dev"
+description = "Class based views for Flask"
+readme = "README.rst"
+license = { file = "LICENSE" }
+maintainers = [{ name = "Pallets Community Ecosystem", email = "contact@palletsprojects.com" }]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Web Environment",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: BSD License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+]
+requires-python = ">=3.8"
+dependencies = [
+    "flask>=0.12.5",
+]
+
+[project.urls]
+Documentation = "https://flask-classful.readthedocs.io"
+Source = "https://github.com/pallets-eco/flask-classful/"
+
+[build-system]
+requires = ["flit_core<4"]
+build-backend = "flit_core.buildapi"
+
+[tool.flit.module]
+name = "flask_classful"

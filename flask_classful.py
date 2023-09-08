@@ -1,25 +1,12 @@
-"""
-    Flask-Classful
-    --------------
-
-    Class based views for the Flask microframework.
-
-    :copyright: (c) 2013 by Freedom Dumlao.
-    :license: BSD, see LICENSE for more details.
-"""
-
-import sys
 import functools
 import inspect
 from uuid import UUID
+from werkzeug.routing import Rule, Map
+from flask import request, make_response
 from werkzeug.routing import parse_rule
 from flask import request, make_response, current_app
 from flask.wrappers import ResponseBase
 import re
-
-_py2 = sys.version_info[0] == 2
-
-__version__ = "0.15.0-dev0"
 
 
 def route(rule, **options):
@@ -76,6 +63,7 @@ class FlaskView(object):
     route_base = None
     route_prefix = None
     trailing_slash = True
+    base_args = []
     excluded_methods = []  # specify the class methods to be explicitly excluded from routing creation
     # TODO(hoatle): make method_dashified=True as default instead,
     # this is not a compatible change
@@ -175,6 +163,7 @@ class FlaskView(object):
                 if hasattr(value, "_rule_cache") and name in value._rule_cache:
                     for idx, cached_rule in enumerate(value._rule_cache[name]):
                         rule, options = cached_rule
+                        options.update(rule_options)
                         rule = cls.build_rule(rule)
                         sub, ep, options = cls.parse_options(options)
 
@@ -380,9 +369,8 @@ class FlaskView(object):
             rule_parts.append(route_base)
         if len(rule) > 0:  # the case of rule='' empty string
             rule_parts.append(rule)
-        ignored_rule_args = ['self']
-        if hasattr(cls, 'base_args'):
-            ignored_rule_args += cls.base_args
+
+        ignored_rule_args = ['self'] + cls.base_args
 
         if method and getattr(cls, 'inspect_args', True):
             argspec = get_true_argspec(method)
@@ -394,12 +382,11 @@ class FlaskView(object):
                     if not query_params or len(args) - i > len(query_params):
                         # This isn't optional param, so it's not query argument
                         rule_part = "<{0!s}>".format(arg)
-                        if not _py2:
-                            # in py3, try to determine url variable converters
-                            # from possible type hints
-                            type_str = cls.type_hints.get(annotations.get(arg))
-                            if type_str:
-                                rule_part = "<{}:{}>".format(type_str, arg)
+                        # try to determine url variable converters
+                        # from possible type hints
+                        type_str = cls.type_hints.get(annotations.get(arg))
+                        if type_str:
+                            rule_part = "<{}:{}>".format(type_str, arg)
                         rule_parts.append(rule_part)
         result = "/{0!s}".format("/".join(rule_parts))
         return re.sub(r'(/)\1+', r'\1', result)
@@ -410,13 +397,13 @@ class FlaskView(object):
 
         if cls.route_base is not None:
             route_base = cls.route_base
-            base_rule = parse_rule(route_base)
-            # see: https://github.com/teracyhq/flask-classful/issues/50
-            if hasattr(cls, 'base_args'):
-                # thanks to: https://github.com/teracyhq/flask-classful/pull/56#issuecomment-328985183
-                cls.base_args = list(set(cls.base_args).union(r[2] for r in base_rule))
-            else:
-                cls.base_args = [r[2] for r in base_rule]
+            if not route_base.startswith('/'):
+                route_base = '/' + route_base
+            base_rule = Rule(route_base)
+            # Add rule to a dummy map and bind that map so that
+            # the Rule's arguments field is populated
+            Map(rules=[base_rule]).bind('')
+            cls.base_args.extend(base_rule.arguments)
         else:
             route_base = cls.default_route_base()
 
@@ -459,15 +446,10 @@ def get_interesting_members(base_class, cls):
     """Returns a list of methods that can be routed to"""
 
     base_members = dir(base_class)
-    predicate = inspect.ismethod if _py2 else inspect.isfunction
+    predicate = inspect.isfunction
     all_members = inspect.getmembers(cls, predicate=predicate)
     return [member for member in all_members
             if not member[0] in base_members
-            and (
-                (hasattr(member[1], "__self__")
-                 and not member[1].__self__ in inspect.getmro(cls))
-                if _py2 else True
-            )
             and not member[0].startswith("_")
             and not member[0].startswith("before_")
             and not member[0].startswith("after_")
@@ -479,14 +461,7 @@ def get_true_argspec(method):
     Drills through layers of decorators attempting to locate the actual argspec
     for the method.
     """
-
-    # https://github.com/python/cpython/blob/master/Lib/inspect.py#L1127
-    # getargspec is deprecated in python 3.
-
-    if not _py2:
-        argspec = inspect.getfullargspec(method)
-    else:
-        argspec = inspect.getargspec(method)
+    argspec = inspect.getfullargspec(method)
 
     args = argspec[0]
     if args and args[0] == 'self':
@@ -535,3 +510,18 @@ def unpack(value):
 class DecoratorCompatibilityError(Exception):
     pass
 
+
+def __getattr__(name):
+    if name == "__version__":
+        import importlib.metadata
+        import warnings
+
+        warnings.warn(
+            "The '__version__' attribute is deprecated and will be removed in"
+            " Flask-Classful 1.0. Use feature detection, or"
+            ' `importlib.metadata.version("flask-classful")`, instead.'
+        )
+        return importlib.metadata.version("flask-classful")
+
+
+    raise AttributeError(name)

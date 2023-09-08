@@ -7,7 +7,7 @@ services:
     working_dir: /opt/app
     command: sh run-dev.sh
     environment:
-      FLASK: ${FLASK:-1.1.1}
+      REQUIREMENTS: ${REQUIREMENTS:-flask==2.0.0}
       CHECK_STYLE: ${CHECK_STYLE:-yes}
       RUN_TEST: ${RUN_TEST:-yes}
     volumes:

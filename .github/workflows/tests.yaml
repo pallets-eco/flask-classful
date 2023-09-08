@@ -1,0 +1,45 @@
+name: Tests
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+
+jobs:
+
+  lint:
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: lint
+      run: |
+        docker-compose run --rm dev
+      env:
+        RUN_TEST: no
+
+  test:
+    continue-on-error: ${{ matrix.experimental }}
+    strategy:
+      fail-fast: false
+      matrix:
+        python: ["3.8", "3.9", "3.10", "3.11"]
+        requirements:
+          - "flask>=1.0,<1.1 werkzeug<2.1 jinja2<3 markupsafe<2.1 itsdangerous<2.1"
+          - "flask>=1.1,<1.2 markupsafe==2.0.1"
+          - "flask>=2.0,<2.1"
+          - "flask>=2.1,<2.2"
+          - "flask>=2.2,<2.3"
+        experimental: [false]
+    runs-on: ubuntu-20.04
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: test
+      run: |
+        docker-compose run --rm dev
+      env:
+        REQUIREMENTS: ${{ matrix.requirements }}
+        CHECK_STYLE: no
+        DEV_IMAGE: python:${{ matrix.python }}

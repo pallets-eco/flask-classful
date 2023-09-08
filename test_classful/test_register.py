@@ -1,6 +1,7 @@
 from flask import Flask, request
-from flask_classful import get_interesting_members, FlaskView
-from nose.tools import eq_, raises
+from flask_classful import FlaskView
+from pytest import raises
+
 
 class BaseClass():
     def put(self):
@@ -17,18 +18,19 @@ class ChildClassView(FlaskView):
 app = Flask('register')
 ChildClassView.register(app, base_class=BaseClass)
 
-@raises(TypeError)
+
 def test_register_is_not_correct():
-    FlaskView.register(app)
+    with raises(TypeError):
+        FlaskView.register(app)
 
 def test_child_class():
     """It can use method of child class normally"""
     client = app.test_client()
     resp = client.post('/child-class/')
-    eq_(b"POST", resp.data)
+    assert b"POST" == resp.data
 
 def test_base_class():
     """It filter out the method has in base class"""
     client = app.test_client()
     resp = client.put('/child-class/')
-    eq_(resp.status_code, 405)
+    assert resp.status_code == 405

@@ -1,6 +1,5 @@
 from flask import Flask
 from flask_classful import FlaskView
-from nose.tools import eq_
 
 
 class DashifiedDefaultView(FlaskView):
@@ -31,21 +30,21 @@ client = app.test_client()
 
 
 def test_original_method_dashifield():
-    eq_(False, DashifiedDefaultView.method_dashified)
-    eq_(True, DashifiedAttributeView.method_dashified)
-    eq_(True, DashifiedAttributeOverrideView.method_dashified)
+    assert False == DashifiedDefaultView.method_dashified
+    assert True == DashifiedAttributeView.method_dashified
+    assert True == DashifiedAttributeOverrideView.method_dashified
 
 
 def test_some_route():
     resp = client.get('/dashified-default/some-route/')
-    eq_(b"some route", resp.data)
+    assert b"some route" == resp.data
 
 
 def test_another_route():
     resp = client.get('/dashified-attribute/another-route/')
-    eq_(b"another route", resp.data)
+    assert b"another route" == resp.data
 
 
 def test_yet_another_route():
     resp = client.get('/dashified-attribute-override/yet_another_route/')
-    eq_(b"yet another route", resp.data)
+    assert b"yet another route" == resp.data

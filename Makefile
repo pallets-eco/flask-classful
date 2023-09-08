@@ -9,12 +9,12 @@ test-clean:
 	coverage erase
 
 test-intg:
-	coverage run --branch --source=. `which nosetests` -v --exe
+	coverage run --branch --source=. -m pytest
 
 test: | test-clean test-intg
 
 report-coverage:
-	coverage report --omit=test_classful/*,test_classful_py3/*,setup.py
+	coverage report --omit=test_classful/*,test_classful_py3/*
 
 .DEFAULT_GOAL := resolve
 

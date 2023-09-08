@@ -1,3 +1,41 @@
+Version 0.17.0
+--------------
+
+Unreleased
+
+-   Drop support for Python < 3.8.
+-   Remove old Python 2 compatibility checks.
+-   The `__version__` attribute is deprecated. Use feature detection, or
+    `importlib.metadata.version("flask-classful")`, instead. #155
+
+
+2023-09-07 F.N. Claessen <felix@seita.nl>
+-----------------------------------------
+
+    Version: 0.16.0
+
+    - Tasks:
+        * Compatibility with werkzeug 2.2 #145
+        * Use ``pyproject.toml`` for package metadata and ``flit_core`` as the build backend.
+
+
+2021-12-25 Hoat Le <hoatle@teracy.com>
+--------------------------------------
+
+    Version: 0.15.0-b1
+
+    - Features:
+        * Add additional init_argument to register method #86
+        * Add @method decorator and handling #109
+
+    - Improvements:
+        * inspect.getargspec() is deprecated, use inspect.signature() or inspect.getfullargspec() #94
+
+    - Tasks:
+        * Bugs/fix update failed travis ci build #93
+        * should use github actions to run CI checks to replace travis-ci #134
+
+
 2017-10-19 Hoat Le <hoatle@teracy.com>
 --------------------------------------
 

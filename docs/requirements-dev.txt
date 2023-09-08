@@ -1,8 +1,0 @@
-# pip install -r requirements-dev.txt
-
--r requirements.txt
-
-sphinx-autobuild
-
-# tempory fix for https://github.com/lepture/python-livereload/issues/132
-git+https://github.com/lepture/python-livereload.git@master

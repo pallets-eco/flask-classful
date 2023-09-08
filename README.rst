@@ -1,33 +1,6 @@
 Flask-Classful
 ==============
 
-..  image:: https://travis-ci.org/teracyhq/flask-classful.svg?branch=develop
-    :target: https://travis-ci.org/teracyhq/flask-classful
-
-..  image:: https://badges.gitter.im/teracyhq/flask-classful.svg
-    :alt: Join the chat at https://gitter.im/teracyhq/flask-classful
-    :target: https://gitter.im/teracyhq/flask-classful?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
-
-..  image:: https://coveralls.io/repos/teracyhq/flask-classful/badge.svg?branch=develop&service=github
-    :target: https://coveralls.io/github/teracyhq/flask-classful?branch=develop
-
-.. image:: https://codeclimate.com/github/teracyhq/flask-classful/badges/gpa.svg
-   :target: https://codeclimate.com/github/teracyhq/flask-classful
-   :alt: Code Climate
-
-..  image:: https://badge.fury.io/py/flask-classful.svg
-    :target: https://badge.fury.io/py/flask-classful
-    :alt: 'Latest PyPI release'
-
-..  image:: https://img.shields.io/pypi/wheel/flask-classful.svg?maxAge=2592000
-    :target: https://pypi.python.org/pypi/Flask-Classful
-    :alt: 'Wheel Supported'
-
-..  image:: https://img.shields.io/pypi/pyversions/flask-classful.svg?maxAge=2592000
-    :target: https://pypi.python.org/pypi/Flask-Classful
-    :alt: 'Supported Python versions'
-
-
 Note::
 
     This is a fork of original `Flask-Classy` for continuing its development since the original
@@ -69,8 +42,8 @@ For example, `Flask-Classful` will automatically generate routes based on the me
 in your views, and makes it super simple to override those routes
 using Flask's familiar decorator syntax.
 
-.. _Flask-Classful: http://github.com/teracyhq/flask-classful
-.. _Flask: http://flask.pocoo.org/
+.. _Flask-Classful: https://github.com/pallets-eco/flask-classful
+.. _Flask: https://flask.palletsprojects.com/
 
 Installation
 ------------
@@ -78,10 +51,6 @@ Installation
 Install the latest extension with::
 
     $ pip install flask-classful
-
-Or install the bleeding edge development version with::
-
-    $ pip install git+https://github.com/teracyhq/flask-classful.git@develop#egg=flask-classful
 
 
 Let's see how it works
@@ -164,57 +133,3 @@ you ask?
 Not at all. Flask-Classful will automatically create routes for any method
 in a FlaskView that doesn't begin with an underscore character.
 You can still define your own routes of course, and we'll look at that next.
-
-
-Questions?
-----------
-
-Feel free to ping me on twitter @teracyhq, or head on over to the
-github repo at http://github.com/teracyhq/flask-classful so you can join
-the fun.
-
-
-How to develop
---------------
-
-Follow the dev-setup/README.md file (https://github.com/teracyhq/flask-classful/blob/develop/dev-setup/README.md)
-
-
-License
--------
-
-BSD License
-::
-
-    Copyright (c) 2012 by Freedom Dumlao.
-
-    Some rights reserved.
-
-    Redistribution and use in source and binary forms of the software as well
-    as documentation, with or without modification, are permitted provided
-    that the following conditions are met:
-
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-
-    * Redistributions in binary form must reproduce the above
-      copyright notice, this list of conditions and the following
-      disclaimer in the documentation and/or other materials provided
-      with the distribution.
-
-    * The names of the contributors may not be used to endorse or
-      promote products derived from this software without specific
-      prior written permission.
-
-    THIS SOFTWARE AND DOCUMENTATION IS PROVIDED BY THE COPYRIGHT HOLDERS AND
-    CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT
-    NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
-    A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER
-    OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
-    EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
-    PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
-    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
-    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
-    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-    SOFTWARE AND DOCUMENTATION, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH
-    DAMAGE.
