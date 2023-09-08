@@ -1,45 +1,41 @@
 name: Tests
-
 on:
   push:
     branches:
       - main
   pull_request:
-
 jobs:
-
-  lint:
-    runs-on: ubuntu-20.04
-    steps:
-    - uses: actions/checkout@v2
-
-    - name: lint
-      run: |
-        docker-compose run --rm dev
-      env:
-        RUN_TEST: no
-
-  test:
-    continue-on-error: ${{ matrix.experimental }}
+  tests:
+    name: ${{ matrix.python }}
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
-        python: ["3.8", "3.9", "3.10", "3.11"]
-        requirements:
-          - "flask>=1.0,<1.1 werkzeug<2.1 jinja2<3 markupsafe<2.1 itsdangerous<2.1"
-          - "flask>=1.1,<1.2 markupsafe==2.0.1"
-          - "flask>=2.0,<2.1"
-          - "flask>=2.1,<2.2"
-          - "flask>=2.2,<2.3"
-        experimental: [false]
-    runs-on: ubuntu-20.04
+        python: ['3.12', '3.11', '3.10', '3.9', '3.8']
     steps:
-    - uses: actions/checkout@v2
-
-    - name: test
-      run: |
-        docker-compose run --rm dev
-      env:
-        REQUIREMENTS: ${{ matrix.requirements }}
-        CHECK_STYLE: no
-        DEV_IMAGE: python:${{ matrix.python }}
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+      - uses: actions/setup-python@61a6322f88396a6271a6ee3565807d608ecaddd1
+        with:
+          python-version: ${{ matrix.python }}
+          allow-prereleases: true
+          cache: pip
+          cache-dependency-path: requirements/tests.txt
+      - run: |
+          pip install -r requirements/tests.txt
+          pip install -e .
+      - run: pytest -v --tb=short
+  min:
+    name: Minimum Versions
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@c85c95e3d7251135ab7dc9ce3241c5835cc595a9
+      - uses: actions/setup-python@61a6322f88396a6271a6ee3565807d608ecaddd1
+        with:
+          python-version: '3.8'
+          cache: pip
+          cache-dependency-path: requirements/tests.txt
+      - run: |
+          pip install -r requirements/tests.txt
+          pip install flask<1.1 werkzeug<2.1 jinja2<3 markupsafe<2.1 itsdangerous<2.1
+          pip install -e .
+      - run: pytest -v --tb=short
