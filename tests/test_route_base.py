@@ -1,5 +1,7 @@
 from flask import Flask
-from .view_classes import RouteBaseView, RouteBaseViewIsNotLatest
+
+from .view_classes import RouteBaseView
+from .view_classes import RouteBaseViewIsNotLatest
 
 app = Flask("route_base")
 RouteBaseView.register(app, route_base="/rb_test2/")

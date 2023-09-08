@@ -1,9 +1,13 @@
 import sys
+
 from flask import Flask
-from .view_classes import InspectArgsView, NoInspectArgsView, InspectArgsFalseView
-from flask_classful import DecoratorCompatibilityError
 from pytest import raises
 
+from flask_classful import DecoratorCompatibilityError
+
+from .view_classes import InspectArgsFalseView
+from .view_classes import InspectArgsView
+from .view_classes import NoInspectArgsView
 
 _py2 = sys.version_info[0] == 2
 

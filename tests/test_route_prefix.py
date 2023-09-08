@@ -1,5 +1,8 @@
 from flask import Flask
-from .view_classes import BasicView, RoutePrefixView, RouteBaseView
+
+from .view_classes import BasicView
+from .view_classes import RouteBaseView
+from .view_classes import RoutePrefixView
 
 app = Flask("route_base")
 

@@ -1,6 +1,8 @@
-from flask import Flask, request
-from flask_classful import FlaskView
+from flask import Flask
+from flask import request
 from pytest import raises
+
+from flask_classful import FlaskView
 
 
 class BaseClass:

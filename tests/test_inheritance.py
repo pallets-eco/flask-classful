@@ -1,5 +1,7 @@
 from flask import Flask
-from .view_classes import InheritanceView, DecoratedInheritanceView
+
+from .view_classes import DecoratedInheritanceView
+from .view_classes import InheritanceView
 
 app = Flask("inheritance")
 InheritanceView.register(app)

@@ -1,10 +1,14 @@
 import functools
 import inspect
-from uuid import UUID
-from werkzeug.routing import Rule, Map
-from flask import request, make_response, current_app
-from flask.wrappers import ResponseBase
 import re
+from uuid import UUID
+
+from flask import current_app
+from flask import make_response
+from flask import request
+from flask.wrappers import ResponseBase
+from werkzeug.routing import Map
+from werkzeug.routing import Rule
 
 
 def route(rule, **options):
@@ -51,7 +55,7 @@ def ensure_sync(fn):
     return _ensure_sync(fn)
 
 
-class FlaskView(object):
+class FlaskView:
     """Base view for any class based views implemented with Flask-Classful. Will
     automatically configure routes when registered with a Flask app instance.
     """
@@ -183,8 +187,7 @@ class FlaskView(object):
                         elif len(value._rule_cache[name]) == 1:
                             endpoint = route_name
                         else:
-                            endpoint = "{0!s}_{1:d}".format(route_name, idx)
-                        # print '1 - {0!s}'.format(rule)
+                            endpoint = f"{route_name!s}_{idx:d}"
                         app.add_url_rule(
                             rule, endpoint, proxy, subdomain=subdomain, **options
                         )
@@ -196,8 +199,7 @@ class FlaskView(object):
                     if not cls.trailing_slash and rule != "/":
                         rule = rule.rstrip("/")
                     elif cls.trailing_slash is True and rule.endswith("/") is False:
-                        rule = "{0!s}/".format(rule)
-                    # print '2 - {0!s}'.format(rule)
+                        rule = f"{rule!s}/"
                     app.add_url_rule(
                         rule,
                         route_name,
@@ -216,13 +218,12 @@ class FlaskView(object):
                     if cls.method_dashified is True:
                         name = _dashify_underscore(name)
 
-                    route_str = "/{0!s}/".format(name)
+                    route_str = f"/{name!s}/"
                     if not cls.trailing_slash:
                         route_str = route_str.rstrip("/")
                     rule = cls.build_rule(route_str, value)
                     if cls.trailing_slash is True and rule.endswith("/") is False:
-                        rule = "{0!s}/".format(rule)
-                    # print '3 - {0!s}'.format(rule)
+                        rule = f"{rule!s}/"
                     app.add_url_rule(
                         rule,
                         route_name,
@@ -231,12 +232,10 @@ class FlaskView(object):
                         methods=methods,
                         **rule_options,
                     )
-            except DecoratorCompatibilityError:
+            except DecoratorCompatibilityError as e:
                 raise DecoratorCompatibilityError(
-                    "Incompatible decorator detected on {0!s} in class {1!s}".format(
-                        name, cls.__name__
-                    )
-                )
+                    f"Incompatible decorator detected on {name} in class {cls.__name__}"
+                ) from e
 
         if hasattr(cls, "orig_route_base"):
             cls.route_base = cls.orig_route_base
@@ -407,14 +406,14 @@ class FlaskView(object):
                 if arg not in ignored_rule_args:
                     if not query_params or len(args) - i > len(query_params):
                         # This isn't optional param, so it's not query argument
-                        rule_part = "<{0!s}>".format(arg)
+                        rule_part = f"<{arg!s}>"
                         # try to determine url variable converters
                         # from possible type hints
                         type_str = cls.type_hints.get(annotations.get(arg))
                         if type_str:
-                            rule_part = "<{}:{}>".format(type_str, arg)
+                            rule_part = f"<{type_str}:{arg}>"
                         rule_parts.append(rule_part)
-        result = "/{0!s}".format("/".join(rule_parts))
+        result = f"/{'/'.join(rule_parts)}"
         return re.sub(r"(/)\1+", r"\1", result)
 
     @classmethod
@@ -451,7 +450,7 @@ class FlaskView(object):
 
         :param method_name: the method name to use when building a route name
         """
-        return cls.__name__ + ":{0!s}".format(method_name)
+        return cls.__name__ + f":{method_name!s}"
 
 
 def _dashify_uppercase(name):
@@ -476,11 +475,11 @@ def get_interesting_members(base_class, cls):
     return [
         member
         for member in all_members
-        if not member[0] in base_members
+        if member[0] not in base_members
         and not member[0].startswith("_")
         and not member[0].startswith("before_")
         and not member[0].startswith("after_")
-        and not member[0] in cls.excluded_methods
+        and member[0] not in cls.excluded_methods
     ]
 
 
@@ -546,7 +545,8 @@ def __getattr__(name):
         warnings.warn(
             "The '__version__' attribute is deprecated and will be removed in"
             " Flask-Classful 1.0. Use feature detection, or"
-            ' `importlib.metadata.version("flask-classful")`, instead.'
+            ' `importlib.metadata.version("flask-classful")`, instead.',
+            stacklevel=2,
         )
         return importlib.metadata.version("flask-classful")
 

@@ -1,6 +1,8 @@
-from .view_classes import BasicView
-from flask import Flask
 from unittest.mock import patch
+
+from flask import Flask
+
+from .view_classes import BasicView
 
 
 @patch("flask.Flask.add_url_rule")

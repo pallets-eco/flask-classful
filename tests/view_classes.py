@@ -1,9 +1,12 @@
-import logging
 import asyncio
-
-from flask import jsonify, request
-from flask_classful import FlaskView, route, method
 from functools import wraps
+
+from flask import jsonify
+from flask import request
+
+from flask_classful import FlaskView
+from flask_classful import method
+from flask_classful import route
 
 VALUE1 = "value1"
 
@@ -36,7 +39,7 @@ class BasicView(FlaskView):
         return "Custom Method"
 
     def custom_method_with_params(self, p_one, p_two):
-        return "Custom Method {0!s} {1!s}".format(p_one, p_two)
+        return f"Custom Method {p_one!s} {p_two!s}"
 
     @route("/routed/")
     def routed_method(self):
@@ -127,7 +130,7 @@ class VarBaseView(FlaskView):
 
     @route("/local/<route_local>", methods=["GET"])
     def with_route_arg(self, route, route_local):
-        return "{0!s} {1!s}".format(route, route_local)
+        return f"{route!s} {route_local!s}"
 
 
 class BeforeRequestView(FlaskView):
@@ -334,7 +337,7 @@ class TrailingSlashView(FlaskView):
         return "Custom Method"
 
     def custom_method_with_params(self, p_one, p_two):
-        return "Custom Method {0!s} {1!s}".format(p_one, p_two)
+        return f"Custom Method {p_one!s} {p_two!s}"
 
     @route("/routed/")
     def routed_method(self):
@@ -441,7 +444,7 @@ class DecoratedBoldListView(FlaskView):
 
     def get(self, id):
         """Get an individual resource"""
-        return "Get {0!s}".format(id)
+        return f"Get {id!s}"
 
     def index(self):
         """Get the index"""
@@ -456,7 +459,7 @@ class DecoratedBoldItalicsListView(FlaskView):
 
     def get(self, id):
         """Get an individual resource"""
-        return "Get {0!s}".format(id)
+        return f"Get {id!s}"
 
     def index(self):
         """Get the index"""
@@ -481,7 +484,7 @@ class DecoratedListMemberView(FlaskView):
     @make_paragraph_decorator
     def get(self, id):
         """Get an individual resource"""
-        return "Get {0!s}".format(id)
+        return f"Get {id!s}"
 
     def index(self):
         """Get the index"""
@@ -515,7 +518,7 @@ class DecoratedListFunctionAttributesView(FlaskView):
     @make_bold_decorator
     def get(self, id):
         """Get an individual resource"""
-        return "Get {0!s}".format(id)
+        return f"Get {id!s}"
 
     def index(self):
         """Get the index"""
@@ -534,7 +537,7 @@ class DecoratedListMemberFunctionAttributesView(FlaskView):
     @make_bold_decorator
     def get(self, id):
         """Get an individual resource"""
-        return "Get {0!s}".format(id)
+        return f"Get {id!s}"
 
     @eggs_attribute_decorator("scrambled")
     def index(self):
@@ -545,7 +548,7 @@ class DecoratedListMemberFunctionAttributesView(FlaskView):
 def append_test_class_attribute_decorator(fn):
     @wraps(fn)
     def inner(*args, **kwargs):
-        test_cls_attribute = getattr(fn.class_, "test")
+        test_cls_attribute = fn.class_.test
         return fn(*args, **kwargs) + test_cls_attribute
 
     return inner
@@ -569,7 +572,7 @@ class DecoratedAppendClassAttributeView(FlaskView):
 
 class InspectArgsView(FlaskView):
     def foo(self, arg1, arg2, kwarg1=678):
-        return "foo %s(%s) %s(%s) %s(%s)" % (
+        return "foo {}({}) {}({}) {}({})".format(
             type(arg1).__name__,
             arg1,
             type(arg2).__name__,
@@ -591,7 +594,7 @@ def coerce(**kwargs):
             params = request.args
             newkw = {}
             for k, func in kwargs.items():
-                if not k in params:
+                if k not in params:
                     continue
                 v = params[k]
                 newkw[k] = func(v)
@@ -607,7 +610,7 @@ class NoInspectArgsView(FlaskView):
 
     @coerce(arg1=int, arg2=int, kwarg1=int)
     def foo(self, arg1=1, arg2=2, kwarg1=678):
-        return "foo %s(%s) %s(%s) %s(%s)" % (
+        return "foo {}({}) {}({}) {}({})".format(
             type(arg1).__name__,
             arg1,
             type(arg2).__name__,

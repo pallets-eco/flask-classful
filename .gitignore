@@ -10,3 +10,4 @@ __pycache__/
 /.mypy_cache/
 /.tox/
 /docs/_build/
+/.ruff_cache/

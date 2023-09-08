@@ -1,7 +1,11 @@
 import json
 
-from flask import Flask, Blueprint
-from .view_classes import BasicView, IndexView, JSONifyTestView
+from flask import Blueprint
+from flask import Flask
+
+from .view_classes import BasicView
+from .view_classes import IndexView
+from .view_classes import JSONifyTestView
 
 app = Flask("blueprints")
 bp = Blueprint("bptest", "bptest")

@@ -42,3 +42,22 @@ source = ["flask_classful", "tests"]
 
 [tool.coverage.paths]
 source = ["src", "*/site-packages"]
+
+[tool.ruff]
+src = ["src"]
+fix = true
+show-fixes = true
+show-source = true
+select = [
+    "B",  # flake8-bugbear
+    "E",  # pycodestyle error
+    "F",  # pyflakes
+    "I",  # isort
+    "ISC",  # flake8-implicit-str-concat
+    "UP",  # pyupgrade
+    "W",  # pycodestyle warning
+]
+ignore-init-module-imports = true
+
+[tool.ruff.isort]
+force-single-line = true

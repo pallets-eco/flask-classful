@@ -1,4 +1,5 @@
 from flask import Flask
+
 from flask_classful import FlaskView
 
 
@@ -29,9 +30,9 @@ client = app.test_client()
 
 
 def test_original_method_dashifield():
-    assert False == DashifiedDefaultView.method_dashified
-    assert True == DashifiedAttributeView.method_dashified
-    assert True == DashifiedAttributeOverrideView.method_dashified
+    assert False is DashifiedDefaultView.method_dashified
+    assert True is DashifiedAttributeView.method_dashified
+    assert True is DashifiedAttributeOverrideView.method_dashified
 
 
 def test_some_route():

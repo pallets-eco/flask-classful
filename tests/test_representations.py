@@ -1,6 +1,11 @@
-from flask import Flask, make_response, redirect, request
-from flask_classful import FlaskView
 import json
+
+from flask import Flask
+from flask import make_response
+from flask import redirect
+from flask import request
+
+from flask_classful import FlaskView
 
 
 def output_json(data, code, headers=None):

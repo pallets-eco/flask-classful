@@ -1,14 +1,11 @@
 from flask import Flask
-from flask_classful import (
-    unpack,
-    get_true_argspec,
-    method,
-    route,
-    DecoratorCompatibilityError,
-)
-from .view_classes import BasicView, IndexView
 from pytest import raises
 
+from flask_classful import get_true_argspec
+from flask_classful import unpack
+
+from .view_classes import BasicView
+from .view_classes import IndexView
 
 app = Flask("common")
 BasicView.register(app)
@@ -156,7 +153,7 @@ def test_unpack_tuple():
     assert 404 == code
     assert {} == headers
 
-    response, code, headers = unpack(("response"))
+    response, code, headers = unpack("response")
     assert "response" == response
     assert 200 == code
     assert {} == headers
@@ -166,7 +163,7 @@ def test_unpack_not_tuple():
     """Test unpack not tuple data"""
     response, code, headers = unpack(None)
 
-    assert None == response
+    assert None is response
     assert 200 == code
     assert {} == headers
 
@@ -205,8 +202,8 @@ def test_get_true_argspec_func():
 
         return _inner
 
-    setattr(_method, "__func__", _func(None))
+    _method.__func__ = _func(None)
 
     response = get_true_argspec(_method)
 
-    assert None == response
+    assert None is response

@@ -1,4 +1,5 @@
 from flask import Flask
+
 from .view_classes import BasicView
 
 app = Flask("common")

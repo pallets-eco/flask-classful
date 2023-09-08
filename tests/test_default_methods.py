@@ -1,5 +1,7 @@
 from flask import Flask
-from .view_classes import DefaultMethodsView, NoDefaultMethodsView
+
+from .view_classes import DefaultMethodsView
+from .view_classes import NoDefaultMethodsView
 
 app = Flask("default_methods")
 

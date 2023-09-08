@@ -1,11 +1,12 @@
 from flask import Flask
-from .view_classes import DecoratedView
-from .view_classes import DecoratedBoldListView
+
+from .view_classes import DecoratedAppendClassAttributeView
 from .view_classes import DecoratedBoldItalicsListView
-from .view_classes import DecoratedListMemberView
+from .view_classes import DecoratedBoldListView
 from .view_classes import DecoratedListFunctionAttributesView
 from .view_classes import DecoratedListMemberFunctionAttributesView
-from .view_classes import DecoratedAppendClassAttributeView
+from .view_classes import DecoratedListMemberView
+from .view_classes import DecoratedView
 
 app = Flask("decorated")
 DecoratedView.register(app)

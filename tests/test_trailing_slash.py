@@ -1,13 +1,12 @@
 from flask import Flask
-from .view_classes import (
-    BasicView,
-    TrailingSlashView,
-    InheritedTrailingSlashView,
-    OverrideInheritedTrailingSlashView,
-    EnabledHasTrailingSlashView,
-    EnabledNoTrailingSlashView,
-    IndexView,
-)
+
+from .view_classes import BasicView
+from .view_classes import EnabledHasTrailingSlashView
+from .view_classes import EnabledNoTrailingSlashView
+from .view_classes import IndexView
+from .view_classes import InheritedTrailingSlashView
+from .view_classes import OverrideInheritedTrailingSlashView
+from .view_classes import TrailingSlashView
 
 app = Flask("trailing_slash")
 BasicView.register(app, trailing_slash=False)

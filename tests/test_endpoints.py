@@ -1,5 +1,10 @@
-from flask import Flask, url_for
-from .view_classes import BasicView, IndexView, RouteBaseView, VarBaseView
+from flask import Flask
+from flask import url_for
+
+from .view_classes import BasicView
+from .view_classes import IndexView
+from .view_classes import RouteBaseView
+from .view_classes import VarBaseView
 
 app = Flask("common")
 BasicView.register(app)

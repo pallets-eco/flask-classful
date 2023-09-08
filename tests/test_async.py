@@ -1,13 +1,12 @@
 import flask
 import pytest
 from packaging import version
-from .view_classes import (
-    AsyncView,
-    BeforeRequestAsyncView,
-    BeforeViewAsyncView,
-    AfterRequestAsyncView,
-    AfterViewAsyncView,
-)
+
+from .view_classes import AfterRequestAsyncView
+from .view_classes import AfterViewAsyncView
+from .view_classes import AsyncView
+from .view_classes import BeforeRequestAsyncView
+from .view_classes import BeforeViewAsyncView
 
 app = flask.Flask(__name__)
 AsyncView.register(app)

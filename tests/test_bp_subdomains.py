@@ -1,5 +1,9 @@
-from flask import Flask, Blueprint
-from .view_classes import BasicView, SubdomainAttributeView, SubdomainRouteView
+from flask import Blueprint
+from flask import Flask
+
+from .view_classes import BasicView
+from .view_classes import SubdomainAttributeView
+from .view_classes import SubdomainRouteView
 
 app = Flask("blueprints")
 app.config["SERVER_NAME"] = "test.test"

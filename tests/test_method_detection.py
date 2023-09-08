@@ -1,5 +1,8 @@
-from flask_classful import get_interesting_members, FlaskView
-from .view_classes import VariedMethodsView, SubVariedMethodsView
+from flask_classful import FlaskView
+from flask_classful import get_interesting_members
+
+from .view_classes import SubVariedMethodsView
+from .view_classes import VariedMethodsView
 
 
 def test_special_method_detected():

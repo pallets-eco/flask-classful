@@ -1,6 +1,9 @@
-from flask import Flask
-from .view_classes import WithInitArgument, WithoutInitArgument
 import json
+
+from flask import Flask
+
+from .view_classes import WithInitArgument
+from .view_classes import WithoutInitArgument
 
 app = Flask("init_argument")
 WithInitArgument.register(app, init_argument="fistro de la praderarrr")

@@ -1,13 +1,12 @@
 from flask import Flask
-from .view_classes import (
-    BeforeRequestView,
-    BeforeViewView,
-    AfterRequestView,
-    AfterViewView,
-    DecoratedView,
-    BeforeRequestReturnsView,
-    BeforeViewReturnsView,
-)
+
+from .view_classes import AfterRequestView
+from .view_classes import AfterViewView
+from .view_classes import BeforeRequestReturnsView
+from .view_classes import BeforeRequestView
+from .view_classes import BeforeViewReturnsView
+from .view_classes import BeforeViewView
+from .view_classes import DecoratedView
 
 app = Flask("wrappers")
 BeforeRequestView.register(app)

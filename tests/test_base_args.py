@@ -1,11 +1,13 @@
 import json
-import marshmallow as ma
 
+import marshmallow as ma
 from flask import Flask
-from flask_classful import FlaskView, route
-from marshmallow import Schema, fields
-from webargs.flaskparser import use_args
+from marshmallow import Schema
 from webargs import fields
+from webargs.flaskparser import use_args
+
+from flask_classful import FlaskView
+from flask_classful import route
 
 # we'll make a list to hold some quotes for our app
 quotes = [

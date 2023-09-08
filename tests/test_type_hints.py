@@ -1,6 +1,9 @@
 from uuid import UUID
+
 from flask import Flask
-from flask_classful import FlaskView, route
+
+from flask_classful import FlaskView
+from flask_classful import route
 
 
 class TypingView(FlaskView):
