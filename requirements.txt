@@ -1,8 +1,0 @@
-# test
-pytest
-flask[async]
-
-# code style, coverage
-coverage
-flake8
-pylint
