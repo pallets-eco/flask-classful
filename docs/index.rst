@@ -669,7 +669,7 @@ property, like so::
 Decorating Tips
 ---------------
 
-So if you're like me (and who isn't?), you think that `FlaskView`s are
+So if you're like me (and who isn't?), you think that class-based views are
 frickin' beautiful. But once you've moved in, it's nice to add a little
 personal touch, don't you think?
 
@@ -966,9 +966,7 @@ Here's the code for the JSON Response class::
         response = make_response(dumped, code, headers)
         return response
 
-::
-
-Then go ahead and add this new resource representation to your `FlaskView`::
+Then go ahead and add this new resource representation to your view::
 
     # views.py
 
@@ -1164,6 +1162,7 @@ From v0.13.1 to v0.14.0
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 - The behavior of the trailing slash is changed: redirect by default when no trailing slash, see:
+
     + https://github.com/pallets-eco/flask-classful/issues/47
 
     => If you don't want to see 301 redirect, set `trailing_slash` option to `False`.
@@ -1172,6 +1171,7 @@ From v0.13.1 to v0.14.0
   representation instead of returning the first output from the first registered representation. Allow
   specififying the default representation when no matching with `flask-classful/default` mime type,
   see:
+
     + https://github.com/pallets-eco/flask-classful/issues/72
 
     => You need to specify the default representation.
@@ -1181,6 +1181,7 @@ From v0.10.0 to v0.11.0
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 - The order in which `FlaskView` decorators are applied has been reversed, see:
+
     + https://github.com/pallets-eco/flask-classful/commit/686be6ef6fd09d9c1719fa89763ad09baddf7fd0
     + https://github.com/pallets-eco/flask-classful/issues/49
 
