@@ -47,17 +47,18 @@ def test_delete():
 
 
 def test_custom_method():
-    resp = client.get("/basic/custom_method/",
-                      base_url="http://basic.test.test")
+    resp = client.get("/basic/custom_method/", base_url="http://basic.test.test")
     assert b"Custom Method" == resp.data
 
 
 def test_custom_method_with_params():
-    resp = client.get("/basic/custom_method_with_params/1234/abcd/",
-                      base_url="http://basic.test.test")
+    resp = client.get(
+        "/basic/custom_method_with_params/1234/abcd/", base_url="http://basic.test.test"
+    )
     assert b"Custom Method 1234 abcd" == resp.data
-    resp = client.get("/basic/custom_method_with_params/1234/abcd",
-                      base_url="http://basic.test.test")
+    resp = client.get(
+        "/basic/custom_method_with_params/1234/abcd", base_url="http://basic.test.test"
+    )
     assert resp.status_code == 308
 
 

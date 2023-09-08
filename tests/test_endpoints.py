@@ -30,23 +30,23 @@ def test_custom_endpoint_url():
 
 def test_custom_route_base():
     with app.test_request_context():
-        url = url_for('RouteBaseView:index')
+        url = url_for("RouteBaseView:index")
         assert "/base-routed/" == url
 
 
 def test_variable_route_popped_base():
     with app.test_request_context():
-        url = url_for('VarBaseView:index', route='bar')
-        assert '/var-base-route/bar/' == url
+        url = url_for("VarBaseView:index", route="bar")
+        assert "/var-base-route/bar/" == url
 
 
 def test_variable_route_base():
     with app.test_request_context():
-        url = url_for('VarBaseView:with_base_arg', route='bar')
-        assert '/var-base-route/bar/with_base_arg/' == url
+        url = url_for("VarBaseView:with_base_arg", route="bar")
+        assert "/var-base-route/bar/with_base_arg/" == url
 
 
 def test_variable_route_base_with_local_route_var():
     client = app.test_client()
-    resp = client.get('/var-base-route/bar/local/baz')
+    resp = client.get("/var-base-route/bar/local/baz")
     assert resp.data == b"bar baz"

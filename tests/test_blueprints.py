@@ -98,42 +98,42 @@ def test_bp_custom_http_method():
 
 def test_bp_url_prefix():
     app = Flask("blueprints")
-    foo = Blueprint('foo', __name__)
+    foo = Blueprint("foo", __name__)
     BasicView.register(foo, route_base="/")
-    app.register_blueprint(foo, url_prefix='/foo')
+    app.register_blueprint(foo, url_prefix="/foo")
 
     client = app.test_client()
-    resp = client.get('/foo/')
+    resp = client.get("/foo/")
     assert b"Index" == resp.data
 
 
 def test_jsonify_normal_index():
-    resp = client.get('/jsonify')
+    resp = client.get("/jsonify")
     assert resp.status_code == 200
-    assert json.loads(resp.data.decode('utf-8')) == dict(success=True)
+    assert json.loads(resp.data.decode("utf-8")) == dict(success=True)
 
 
 def test_jsonify_post_custom_status_code():
-    resp = client.post('/jsonify')
+    resp = client.post("/jsonify")
     assert resp.status_code == 201
-    assert json.loads(resp.data.decode('utf-8')) == dict(success=True)
+    assert json.loads(resp.data.decode("utf-8")) == dict(success=True)
 
 
 def test_jsonify_not_found():
-    resp = client.get('/jsonify/not-found')
+    resp = client.get("/jsonify/not-found")
     assert resp.status_code == 404
-    assert json.loads(resp.data.decode('utf-8')) == dict(success=False)
+    assert json.loads(resp.data.decode("utf-8")) == dict(success=False)
 
 
 def test_custom_header():
-    resp = client.get('/jsonify/custom-header')
+    resp = client.get("/jsonify/custom-header")
     assert resp.status_code == 418
-    assert resp.headers['X-TEAPOT'] == '1'
-    assert json.loads(resp.data.decode('utf-8')) == dict(success=True)
+    assert resp.headers["X-TEAPOT"] == "1"
+    assert json.loads(resp.data.decode("utf-8")) == dict(success=True)
 
 
 def test_normal_jsonify():
-    resp = client.get('/jsonify/normal')
+    resp = client.get("/jsonify/normal")
     assert resp.status_code == 200
     assert resp.headers is not None
-    assert json.loads(resp.data.decode('utf-8')) == dict(success=True)
+    assert json.loads(resp.data.decode("utf-8")) == dict(success=True)

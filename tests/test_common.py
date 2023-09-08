@@ -1,5 +1,11 @@
 from flask import Flask
-from flask_classful import unpack, get_true_argspec, method, route, DecoratorCompatibilityError
+from flask_classful import (
+    unpack,
+    get_true_argspec,
+    method,
+    route,
+    DecoratorCompatibilityError,
+)
 from .view_classes import BasicView, IndexView
 from pytest import raises
 
@@ -28,7 +34,7 @@ def test_get():
 def test_put():
     resp = client.put("/basic/1234/")
     assert resp.status_code == 403
-    assert resp.headers['say'] == 'hello'
+    assert resp.headers["say"] == "hello"
     assert b"Put 1234" == resp.data
     resp = client.put("/basic/1234")
     assert resp.status_code == 308
@@ -91,7 +97,7 @@ def test_multi_routed_method():
 def test_no_slash():
     resp = client.get("/basic/noslash")
     assert b"No Slash Method" == resp.data
-    resp = client.get("/basic/noslash/") # matches get(id)
+    resp = client.get("/basic/noslash/")  # matches get(id)
     assert b"Get noslash" == resp.data
 
 
@@ -108,29 +114,34 @@ def test_custom_http_method():
     resp = client.post("/basic/route3")
     assert resp.status_code == 308
 
+
 def test_method_decorator_simple():
     resp = client.post("/basic/methoddecorated/")
     assert b"POST" == resp.data
     resp = client.post("/basic/methoddecorated")
     assert resp.status_code == 308
 
+
 def test_method_decorator_twice():
-    resp = client.post('/basic/methodtwicedecorated/')
+    resp = client.post("/basic/methodtwicedecorated/")
     assert b"POST" == resp.data
-    resp = client.patch('/basic/methodtwicedecorated/')
+    resp = client.patch("/basic/methodtwicedecorated/")
     assert b"PATCH" == resp.data
 
+
 def test_method_route():
-   """Test that the @method decorator does not come into play when a route
-   is set explicitly"""
-   resp = client.post('/basic/methodroute')
-   assert resp.status_code == 405
-   resp = client.get('/basic/methodroute')
-   assert b"GET" == resp.data
+    """Test that the @method decorator does not come into play when a route
+    is set explicitly"""
+    resp = client.post("/basic/methodroute")
+    assert resp.status_code == 405
+    resp = client.get("/basic/methodroute")
+    assert b"GET" == resp.data
+
 
 def test_docstrings():
     proxy_func = app.view_functions["BasicView:index"]
     assert proxy_func.__doc__ == BasicView.index.__doc__
+
 
 def test_unpack_tuple():
     """Test unpack tuple data"""
@@ -140,15 +151,16 @@ def test_unpack_tuple():
     assert 100 == code
     assert "c" == headers
 
-    response, code, headers = unpack(('response', 404))
+    response, code, headers = unpack(("response", 404))
     assert "response" == response
     assert 404 == code
     assert {} == headers
 
-    response, code, headers = unpack(('response'))
+    response, code, headers = unpack(("response"))
     assert "response" == response
     assert 200 == code
     assert {} == headers
+
 
 def test_unpack_not_tuple():
     """Test unpack not tuple data"""
@@ -168,11 +180,12 @@ def test_unpack_not_tuple():
     assert 200 == code
     assert {} == headers
 
-    response, code, headers = unpack(('response', 1, 2, 3, 4, 5))
+    response, code, headers = unpack(("response", 1, 2, 3, 4, 5))
 
-    assert ('response', 1, 2, 3, 4, 5) == response
+    assert ("response", 1, 2, 3, 4, 5) == response
     assert 200 == code
     assert {} == headers
+
 
 def test_get_true_argspec_raise_error():
     """Test get_true_argspec will raise error if method is not correct"""
@@ -189,11 +202,11 @@ def test_get_true_argspec_func():
     def _func(x):
         def _inner():
             return x
+
         return _inner
 
-    setattr(_method, '__func__', _func(None))
+    setattr(_method, "__func__", _func(None))
 
     response = get_true_argspec(_method)
 
     assert None == response
-

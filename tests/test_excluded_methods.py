@@ -4,13 +4,11 @@ from flask_classful import FlaskView
 
 
 class NormalMethodsView(FlaskView):
-
     def copy_form_data(self):
         return "copy form data"
 
 
 class ExcludedMethodsView(FlaskView):
-
     excluded_methods = ["copy_form_data"]
 
     def copy_form_data(self):
@@ -18,7 +16,6 @@ class ExcludedMethodsView(FlaskView):
 
 
 class StaticMethodSetup:
-
     @staticmethod
     def setup():
         # do some sort of crazy expensive calculation on demand here
@@ -48,6 +45,7 @@ def test_normal_methods_copy_form_data():
 def test_excluded_methods_copy_form_data():
     resp = client.get("/excluded-methods/copy_form_data/")
     assert resp.status_code == 404
+
 
 def test_static_method_view():
     resp = client.get("/static-method/setup/")

@@ -6,7 +6,7 @@ from .view_classes import (
     AfterViewView,
     DecoratedView,
     BeforeRequestReturnsView,
-    BeforeViewReturnsView
+    BeforeViewReturnsView,
 )
 
 app = Flask("wrappers")
@@ -50,6 +50,7 @@ def test_decorated_view():
 
     resp = client.get("/decorated/1234")
     assert resp.status_code == 308
+
 
 def test_before_request_returns():
     resp = client.get("/before-request-returns/")

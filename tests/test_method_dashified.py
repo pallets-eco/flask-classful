@@ -3,7 +3,6 @@ from flask_classful import FlaskView
 
 
 class DashifiedDefaultView(FlaskView):
-
     def some_route(self):
         return "some route"
 
@@ -22,7 +21,7 @@ class DashifiedAttributeOverrideView(FlaskView):
         return "yet another route"
 
 
-app = Flask('test-app')
+app = Flask("test-app")
 DashifiedDefaultView.register(app, method_dashified=True)
 DashifiedAttributeView.register(app)
 DashifiedAttributeOverrideView.register(app, method_dashified=False)
@@ -36,15 +35,15 @@ def test_original_method_dashifield():
 
 
 def test_some_route():
-    resp = client.get('/dashified-default/some-route/')
+    resp = client.get("/dashified-default/some-route/")
     assert b"some route" == resp.data
 
 
 def test_another_route():
-    resp = client.get('/dashified-attribute/another-route/')
+    resp = client.get("/dashified-attribute/another-route/")
     assert b"another route" == resp.data
 
 
 def test_yet_another_route():
-    resp = client.get('/dashified-attribute-override/yet_another_route/')
+    resp = client.get("/dashified-attribute-override/yet_another_route/")
     assert b"yet another route" == resp.data

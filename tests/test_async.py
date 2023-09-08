@@ -6,7 +6,7 @@ from .view_classes import (
     BeforeRequestAsyncView,
     BeforeViewAsyncView,
     AfterRequestAsyncView,
-    AfterViewAsyncView
+    AfterViewAsyncView,
 )
 
 app = flask.Flask(__name__)
@@ -23,9 +23,9 @@ skip_reason = "Skipping async views tests for Flask<2..."
 
 @pytest.mark.skipif(condition=skip_test, reason=skip_reason)
 def test_async_view():
-    resp = client.get('/async/')
+    resp = client.get("/async/")
     assert b"GET" == resp.data
-    resp = client.post('/async/')
+    resp = client.post("/async/")
     assert b"POST" == resp.data
 
 

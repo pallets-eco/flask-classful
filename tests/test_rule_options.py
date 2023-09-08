@@ -3,7 +3,7 @@ from flask import Flask
 from unittest.mock import patch
 
 
-@patch('flask.Flask.add_url_rule')
+@patch("flask.Flask.add_url_rule")
 def test_rule_options(rule):
     app = Flask("rules_options", static_folder=None)
     BasicView.register(app, strict_slashes=False)
@@ -12,4 +12,4 @@ def test_rule_options(rule):
     client.get("/basic/")
 
     for args, kwargs in rule.call_args_list:
-        assert kwargs.get('strict_slashes') is False, (args, kwargs)
+        assert kwargs.get("strict_slashes") is False, (args, kwargs)

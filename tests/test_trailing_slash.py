@@ -6,10 +6,10 @@ from .view_classes import (
     OverrideInheritedTrailingSlashView,
     EnabledHasTrailingSlashView,
     EnabledNoTrailingSlashView,
-    IndexView
+    IndexView,
 )
 
-app = Flask('trailing_slash')
+app = Flask("trailing_slash")
 BasicView.register(app, trailing_slash=False)
 TrailingSlashView.register(app)
 InheritedTrailingSlashView.register(app)
@@ -40,6 +40,7 @@ def test_put():
     assert b"Put 1234" == resp.data
     resp = client.put("/basic/1234/")
     assert resp.status_code == 404
+
 
 def test_patch():
     resp = client.patch("/basic/1234")
@@ -82,6 +83,7 @@ def test_routed_method():
     resp = client.get("/basic/routed")
     assert resp.status_code == 308
 
+
 # TrailingSlashView
 def test_trailing_index():
     resp = client.get("/trailing")
@@ -116,6 +118,7 @@ def test_trailing_post():
     assert b"Post" == resp.data
     resp = client.post("/trailing/")
     assert resp.status_code == 404
+
 
 def test_trailing_delete():
     resp = client.delete("/trailing/1234")

@@ -1,7 +1,7 @@
 from flask import Flask
 from .view_classes import InheritanceView, DecoratedInheritanceView
 
-app = Flask('inheritance')
+app = Flask("inheritance")
 InheritanceView.register(app)
 DecoratedInheritanceView.register(app)
 
@@ -9,7 +9,7 @@ client = app.test_client()
 
 
 def test_index():
-    resp = client.get('/inheritance/')
+    resp = client.get("/inheritance/")
     assert b"Index" == resp.data
 
 
@@ -21,7 +21,7 @@ def test_override():
 
 
 def test_inherited():
-    resp = client.post('/inheritance/')
+    resp = client.post("/inheritance/")
     assert b"Post" == resp.data
 
 

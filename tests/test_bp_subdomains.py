@@ -19,8 +19,7 @@ client = app.test_client()
 
 
 def test_bp_attr_subdomain():
-    resp = client.get(
-        "/subdomain-attribute/", base_url="http://sub1.test.test")
+    resp = client.get("/subdomain-attribute/", base_url="http://sub1.test.test")
     assert b"Index" == resp.data
 
 
