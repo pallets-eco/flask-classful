@@ -46,15 +46,6 @@ def method(method, **options):
     return decorator
 
 
-def ensure_sync(fn):
-    """A helper function that provides access to the Flask's ensure_sync method"""
-    # Check for compatibility with Flask < 2.0
-    # If the ensure_sync is not defined in Flask,
-    # it will do nothing
-    _ensure_sync = getattr(current_app, "ensure_sync", lambda f: f)
-    return _ensure_sync(fn)
-
-
 class FlaskView:
     """Base view for any class based views implemented with Flask-Classful. Will
     automatically configure routes when registered with a Flask app instance.
@@ -288,7 +279,7 @@ class FlaskView:
         def make_func(fn):
             @functools.wraps(fn)
             def inner(*args, **kwargs):
-                return ensure_sync(fn)(*args, **kwargs)
+                return current_app.ensure_sync(fn)(*args, **kwargs)
 
             return inner
 
@@ -311,14 +302,16 @@ class FlaskView:
             del forgettable_view_args
 
             if hasattr(i, "before_request"):
-                response = ensure_sync(i.before_request)(name, **request.view_args)
+                response = current_app.ensure_sync(i.before_request)(
+                    name, **request.view_args
+                )
                 if response is not None:
                     return response
 
             before_view_name = "before_" + name
             if hasattr(i, before_view_name):
                 before_view = getattr(i, before_view_name)
-                response = ensure_sync(before_view)(**request.view_args)
+                response = current_app.ensure_sync(before_view)(**request.view_args)
                 if response is not None:
                     return response
 
@@ -362,10 +355,10 @@ class FlaskView:
             after_view_name = "after_" + name
             if hasattr(i, after_view_name):
                 after_view = getattr(i, after_view_name)
-                response = ensure_sync(after_view)(response)
+                response = current_app.ensure_sync(after_view)(response)
 
             if hasattr(i, "after_request"):
-                response = ensure_sync(i.after_request)(name, response)
+                response = current_app.ensure_sync(i.after_request)(name, response)
 
             return response
 
