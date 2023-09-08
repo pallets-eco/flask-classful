@@ -3,8 +3,6 @@ from flask import Flask
 from flask_classful import FlaskView, route
 
 
-# python3 only
-
 class TypingView(FlaskView):
 
     def index(self):
