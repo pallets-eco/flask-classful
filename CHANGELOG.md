@@ -7,7 +7,8 @@ Unreleased
 -   Remove old Python 2 compatibility checks.
 -   The `__version__` attribute is deprecated. Use feature detection, or
     `importlib.metadata.version("flask-classful")`, instead. #155
--   Provide async views support when used with Flask >= 2 #132
+-   The code is a package instead of a single module. #160
+-   Provide async views support when used with Flask >= 2. #132
 
 
 2023-09-07 F.N. Claessen <felix@seita.nl>
