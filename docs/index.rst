@@ -198,7 +198,7 @@ What you see below is a route comprised of a route prefix, and a route base:
 
     /neat_prefix/great_base/
 
-The prefix `/neat_prefix/` is only included if you explicitly specify 
+The prefix `/neat_prefix/` is only included if you explicitly specify
 a prefix for the FlaskView, otherwise no prefix will be applied.
 
 The route base `/great_base/` will always exist, either because it was
@@ -309,7 +309,7 @@ What does this mean for you? Well, it means you can pass any argument that
 on a View to redirect elsewhere? Try calling ``register`` like so::
 
     RedirectView.register(app, redirect_to='my/new/route')
-    
+
 For more information on what you can pass, see Werkzeug's own documentation for
 `werkzeug.routing.Rule <http://werkzeug.pocoo.org/docs/0.12/routing/#werkzeug.routing.Rule>`_.
 
@@ -621,7 +621,7 @@ For example::
 
     class DefaultMethodsView(FlaskView):
         default_methods = ['GET', 'POST']
-        
+
         def my_view(self):
             return "Check out my view!"
 
@@ -952,7 +952,7 @@ the data, add it to the `representations` variable on your `FlaskView`.
 Here's the code for the JSON Response class::
 
     # representations.py
-    
+
     import json
     from flask import make_response
 
@@ -1096,10 +1096,10 @@ Luckily, Classful supports doing just that! Merely add a new class attribute nam
 
     class NoInspectArgsView(FlaskView):
         inspect_args = False
-        
+
         def post(self, id: int):
             pass
-            
+
 In the above example, even though we're using a Type Hint to say that the ``id`` URL Argument
 should be an ``int``, ``Flask Classful`` will ignore this information and continue to pass it to
 you as a string. From there, I'm sure you want to coerce arguments in your own fancy way.
@@ -1139,12 +1139,12 @@ any of them. For example::
     class MyBaseView(FlaskView):
         def foo(self):
             return 'foo'
-            
+
     class MyChildView(MyBaseView):
         pass
-        
+
     MyChildView.register(app, base_class=MyBaseView)
-    
+
 By passing ``MyBaseView`` as the ``base_class`` to the ``register`` call, we will now
 properly ignore ``foo`` and it will not become a route!
 
