@@ -2,8 +2,6 @@ import functools
 import inspect
 from uuid import UUID
 from werkzeug.routing import Rule, Map
-from flask import request, make_response
-from werkzeug.routing import parse_rule
 from flask import request, make_response, current_app
 from flask.wrappers import ResponseBase
 import re

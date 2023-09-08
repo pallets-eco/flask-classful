@@ -9,6 +9,7 @@ test-clean:
 	coverage erase
 
 test-intg:
+	make resolve
 	coverage run --branch --source=. -m pytest
 
 test: | test-clean test-intg

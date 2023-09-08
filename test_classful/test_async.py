@@ -20,6 +20,7 @@ AfterRequestAsyncView.register(app)
 client = app.test_client()
 skip_test = int(flask.__version__[0]) < 2
 
+
 def skip_conditionally(test):
     @wraps(test)
     def skip():

@@ -1,5 +1,6 @@
 # test
 pytest
+flask[async]
 
 # code style, coverage
 coverage
