@@ -2,7 +2,7 @@
 name = "Flask-Classful"
 version = "0.17.0.dev"
 description = "Class based views for Flask"
-readme = "README.rst"
+readme = "README.md"
 license = { file = "LICENSE.md" }
 maintainers = [{ name = "Pallets Community Ecosystem", email = "contact@palletsprojects.com" }]
 classifiers = [
