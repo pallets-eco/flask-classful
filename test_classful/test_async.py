@@ -1,7 +1,6 @@
 import flask
-from functools import wraps
-from nose import SkipTest
-from nose.tools import eq_
+import pytest
+from packaging import version
 from .view_classes import (
     AsyncView,
     BeforeRequestAsyncView,
@@ -18,45 +17,37 @@ AfterViewAsyncView.register(app)
 AfterRequestAsyncView.register(app)
 
 client = app.test_client()
-skip_test = int(flask.__version__[0]) < 2
+skip_test = version.parse(flask.__version__) < version.parse("2")
+skip_reason = "Skipping async views tests for Flask<2..."
 
 
-def skip_conditionally(test):
-    @wraps(test)
-    def skip():
-        if skip_test:
-            raise SkipTest('Skipping async views tests for this Flask version...')
-        test()
-    return skip
-
-
-@skip_conditionally
+@pytest.mark.skipif(condition=skip_test, reason=skip_reason)
 def test_async_view():
     resp = client.get('/async/')
-    eq_(b"GET", resp.data)
+    assert b"GET" == resp.data
     resp = client.post('/async/')
-    eq_(b"POST", resp.data)
+    assert b"POST" == resp.data
 
 
-@skip_conditionally
+@pytest.mark.skipif(condition=skip_test, reason=skip_reason)
 def test_async_before_request():
     resp = client.get("/before-request-async/")
-    eq_(b"Before Request", resp.data)
+    assert b"Before Request" == resp.data
 
 
-@skip_conditionally
+@pytest.mark.skipif(condition=skip_test, reason=skip_reason)
 def test_async_before_view():
     resp = client.get("/before-view-async/")
-    eq_(b"Before View", resp.data)
+    assert b"Before View" == resp.data
 
 
-@skip_conditionally
+@pytest.mark.skipif(condition=skip_test, reason=skip_reason)
 def test_async_after_view():
     resp = client.get("/after-view-async/")
-    eq_(b"After View", resp.data)
+    assert b"After View" == resp.data
 
 
-@skip_conditionally
+@pytest.mark.skipif(condition=skip_test, reason=skip_reason)
 def test_async_after_request():
     resp = client.get("/after-request-async/")
-    eq_(b"After Request", resp.data)
+    assert b"After Request" == resp.data
