@@ -4,6 +4,7 @@ Version 0.17.0
 Unreleased
 
 -   Drop support for Python < 3.8.
+-   Drop support for Flask < 2.0. #159
 -   Remove old Python 2 compatibility checks.
 -   The `__version__` attribute is deprecated. Use feature detection, or
     `importlib.metadata.version("flask-classful")`, instead. #155
