@@ -20,6 +20,7 @@ dependencies = [
 ]
 
 [project.urls]
+Documentation = "https://flask-classful.readthedocs.io"
 Source = "https://github.com/pallets-eco/flask-classful/"
 
 [build-system]
