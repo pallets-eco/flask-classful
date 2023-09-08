@@ -1,4 +1,5 @@
 import logging
+import asyncio
 
 from flask import jsonify, request
 from flask_classful import FlaskView, route, method
@@ -646,3 +647,54 @@ class WithoutInitArgument(FlaskView):
 
     def get(self):
         return jsonify({ "init_argument": self._init_argument }), 200
+
+
+class AsyncView(FlaskView):
+
+    async def get(self):
+        await asyncio.sleep(0)
+        return 'GET'
+
+    async def post(self):
+        await asyncio.sleep(0)
+        return 'POST'
+
+
+class BeforeRequestAsyncView(FlaskView):
+
+    async def before_request(self, name):
+        await asyncio.sleep(0)
+        self.response = "Before Request"
+
+    def index(self):
+        return self.response
+
+
+class BeforeViewAsyncView(FlaskView):
+
+    async def before_index(self):
+        await asyncio.sleep(0)
+        self.response = "Before View"
+
+    def index(self):
+        return self.response
+
+
+class AfterViewAsyncView(FlaskView):
+
+    async def after_index(self, response):
+        await asyncio.sleep(0)
+        return "After View"
+
+    def index(self):
+        return "Index"
+
+
+class AfterRequestAsyncView(FlaskView):
+
+    async def after_request(self, name, response):
+        await asyncio.sleep(0)
+        return "After Request"
+
+    def index(self):
+        return "Index"
