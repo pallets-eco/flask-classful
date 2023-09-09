@@ -635,6 +635,57 @@ route:
 **method**    GET, POST
 ============ ================================
 
+"But I don't want all endpointes use same method!" I hear you cry. Worry not!
+You have two options how to create endpoint with different methods.
+
+Let's see the first one: ::
+    from flask_classful import route
+
+    class MyResourceView(FlaskView):
+
+        def edit(self, id):
+            # this shows some template probably
+
+        @route("update/<id>", methods=["POST"])
+        def update(self, id):
+            # this does some logic
+
+``@route`` is an old friend of ours, but I didn't tell you earlier that it can also set methods, right? Well, now you know. As you can see, ``methods`` can accept multiple values, so you can set multiple methods for one endpoint (but again, but recommanded).
+
+But there's also a second way, that some might consider nicer: ::
+
+    from flask_classful import method
+
+    class MyResourceView(FlaskView):
+
+        def edit(self, id):
+            # this shows some template probably
+
+        @method("post")
+        def update(self, id):
+            # this does some logic
+
+``@method`` is a new decorator (since v0.16), that can be used to set method for one endpoint. So, if you only want to set method, and not custom route, this is the way to go.
+By the way, you can write either ``post`` or ``POST``, that's up to your preference.
+
+What? You ask if you can have multiple methods for same endpoint with this decorator? Didn't you hear about why it's not that great? Ugh, ok, here you are: ::
+
+        @method("get")
+        @method("post")
+        def update(self, id):
+            # this does some logic
+
+Hope you are happy.
+
+Just a bit of warning. Be careful when you decide to combine these two ways. What would you guess happens when you do this? ::
+
+    @method("post")
+    @route("update/<int:id>")
+    def update(self, id):
+        # this does some logic
+
+Well, ``@method("post")`` is ignored, and you only get ``update`` with method ``GET``. So be careful.
+
 Hiding your own methods (they're not *all* special!)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
