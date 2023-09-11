@@ -635,6 +635,52 @@ route:
 **method**    GET, POST
 ============ ================================
 
+"But I don't want all endpoints to use the same method!" I hear you cry. Worry not!
+You have two options how to create endpoints with different methods.
+
+Let's see the first one: ::
+
+    from flask_classful import route
+
+    class MyResourceView(FlaskView):
+
+        @route("do-something-cool", methods=["POST"])
+        def do_something_cool(self):
+            ...
+
+``@route`` is an old friend of ours, but I didn't tell you earlier that it can also set methods, right? Well, now you know. As you can see, ``methods`` can accept multiple values, so you can set multiple methods for one endpoint.
+
+But there's also a second way, that some might consider nicer: ::
+
+    from flask_classful import method
+
+    class MyResourceView(FlaskView):
+
+        @method("post")
+        def do_something_cool(self):
+            ...
+
+``@method`` is a new decorator (since v0.16), that can be used to set a method for one endpoint. So, if you only want to set a method, and not a custom route, this is the way to go.
+By the way, you can write either ``post`` or ``POST``, that's up to your preference.
+
+What? You ask if you can have multiple methods for the same endpoint with this decorator? Ok, here you are: ::
+
+    @method("get")
+    @method("post")
+    def do_or_see_something_cool(self):
+        ...
+
+Hope you are happy.
+
+Just a bit of warning. Be careful when you decide to combine these two ways. What would you guess happens when you do this? ::
+
+    @method("post")
+    @route("my-custom-path/<int:id>")
+    def do_or_see_something_cool(self):
+        ...
+
+Well, ``@method("post")`` is ignored, and you only get ``do_or_see_something_cool`` with method ``GET``. So be careful.
+
 Hiding your own methods (they're not *all* special!)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
