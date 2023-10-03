@@ -167,7 +167,7 @@ sphinxcontrib-serializinghtml==1.1.9
     #   sphinx
 tox==4.11.3
     # via -r dev.in
-urllib3==2.0.4
+urllib3==2.0.6
     # via
     #   -r docs.txt
     #   requests
