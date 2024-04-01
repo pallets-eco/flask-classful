@@ -8,7 +8,7 @@ alabaster==0.7.13
     # via
     #   -r docs.txt
     #   sphinx
-asgiref==3.7.2
+asgiref==3.8.1
     # via -r tests.txt
 babel==2.12.1
     # via
@@ -89,18 +89,18 @@ packaging==23.1
     #   sphinx
     #   tox
     #   webargs
-pip-tools==7.4.0
+pip-tools==7.4.1
     # via -r dev.in
 platformdirs==3.10.0
     # via
     #   tox
     #   virtualenv
-pluggy==1.3.0
+pluggy==1.4.0
     # via
     #   -r tests.txt
     #   pytest
     #   tox
-pre-commit==3.6.2
+pre-commit==3.7.0
     # via -r dev.in
 pygments==2.16.1
     # via
@@ -113,7 +113,7 @@ pyproject-hooks==1.0.0
     # via
     #   build
     #   pip-tools
-pytest==8.0.2
+pytest==8.1.1
     # via -r tests.txt
 pyyaml==6.0.1
     # via pre-commit
