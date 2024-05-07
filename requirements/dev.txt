@@ -52,7 +52,7 @@ furo==2024.4.27
     # via -r docs.txt
 identify==2.5.27
     # via pre-commit
-idna==3.4
+idna==3.7
     # via
     #   -r docs.txt
     #   requests
