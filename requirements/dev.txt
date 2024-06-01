@@ -48,7 +48,7 @@ filelock==3.12.3
     # via
     #   tox
     #   virtualenv
-furo==2024.4.27
+furo==2024.5.6
     # via -r docs.txt
 identify==2.5.27
     # via pre-commit
@@ -100,7 +100,7 @@ pluggy==1.5.0
     #   -r tests.txt
     #   pytest
     #   tox
-pre-commit==3.7.0
+pre-commit==3.7.1
     # via -r dev.in
 pygments==2.16.1
     # via
@@ -113,7 +113,7 @@ pyproject-hooks==1.0.0
     # via
     #   build
     #   pip-tools
-pytest==8.2.0
+pytest==8.2.1
     # via -r tests.txt
 pyyaml==6.0.1
     # via pre-commit
