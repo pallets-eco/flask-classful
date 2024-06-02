@@ -56,7 +56,6 @@ class FlaskView:
     route_base = None
     route_prefix = None
     trailing_slash = True
-    base_args = []
     excluded_methods = (
         []
     )  # specify the class methods to be explicitly excluded from routing creation
@@ -382,13 +381,13 @@ class FlaskView:
         if cls.route_prefix:
             rule_parts.append(cls.route_prefix)
 
-        route_base = cls.get_route_base()
+        route_base, base_args = cls.get_route_base()
         if route_base:
             rule_parts.append(route_base)
         if len(rule) > 0:  # the case of rule='' empty string
             rule_parts.append(rule)
 
-        ignored_rule_args = ["self"] + cls.base_args
+        ignored_rule_args = {"self"} | base_args
 
         if method and getattr(cls, "inspect_args", True):
             argspec = get_true_argspec(method)
@@ -413,19 +412,17 @@ class FlaskView:
     def get_route_base(cls):
         """Returns the route base to use for the current class."""
 
-        if cls.route_base is not None:
-            route_base = cls.route_base
-            if not route_base.startswith("/"):
-                route_base = "/" + route_base
-            base_rule = Rule(route_base)
-            # Add rule to a dummy map and bind that map so that
-            # the Rule's arguments field is populated
-            Map(rules=[base_rule]).bind("")
-            cls.base_args.extend(base_rule.arguments)
-        else:
-            route_base = cls.default_route_base()
+        if cls.route_base is None:
+            return cls.default_route_base(), set()
 
-        return route_base.strip("/")
+        route_base = cls.route_base
+        if not route_base.startswith("/"):
+            route_base = "/" + route_base
+        base_rule = Rule(route_base)
+        # Add rule to a dummy map and bind that map so that
+        # the Rule's arguments field is populated
+        Map(rules=[base_rule]).bind("")
+        return route_base.strip("/"), base_rule.arguments
 
     @classmethod
     def default_route_base(cls):
