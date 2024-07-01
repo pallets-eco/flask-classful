@@ -113,7 +113,7 @@ pyproject-hooks==1.0.0
     # via
     #   build
     #   pip-tools
-pytest==8.2.1
+pytest==8.2.2
     # via -r tests.txt
 pyyaml==6.0.1
     # via pre-commit
