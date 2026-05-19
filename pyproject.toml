@@ -19,6 +19,30 @@ dependencies = [
     "flask>=2.0",
 ]
 
+[dependency-groups]
+build = [
+    "build>=1.2.2.post1",
+]
+dev = [
+    "tox>=4.25.0",
+    "tox-uv>=1.13.1",
+]
+docs = [
+    "furo>=2024.8.6",
+    "sphinx>=7.1.2",
+]
+gha-update = [
+    "gha-update>=0.2.0 ; python_full_version > '3.12'",
+]
+pre-commit = [
+    "pre-commit>=3.5.0",
+]
+tests = [
+    "asgiref>=3.8.1",
+    "pytest>=8.3.5",
+    "webargs>=8.6.0",
+]
+
 [project.urls]
 Documentation = "https://flask-classful.readthedocs.io"
 Source = "https://github.com/pallets-eco/flask-classful/"
@@ -63,6 +87,9 @@ select = [
 [tool.ruff.lint.isort]
 force-single-line = true
 order-by-type = false
+
+[tool.uv]
+default-groups = ["dev", "pre-commit", "tests"]
 
 [tool.gha-update]
 tag-only = [
