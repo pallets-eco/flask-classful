@@ -11,26 +11,20 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        python: ['3.12', '3.11', '3.10', '3.9', '3.8']
+        include:
+          - {python: '3.12'}
+          - {python: '3.11'}
+          - {python: '3.10'}
+          - {python: '3.9'}
+          - {python: '3.8'}
+          - {name: 'Minimum Versions', python: '3.8', tox: 'minimal'}
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
+      - uses: astral-sh/setup-uv@08807647e7069bb48b6ef5acd8ec9567f424441b # v8.1.0
+        with:
+          enable-cache: true
+          prune-cache: false
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
         with:
           python-version: ${{ matrix.python }}
-          allow-prereleases: true
-          cache: pip
-          cache-dependency-path: requirements/tests.txt
-      - run: pip install tox
-      - run: tox run -e py${{ matrix.python }}
-  min:
-    name: Minimum Versions
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - uses: actions/setup-python@39cd14951b08e74b54015e9e001cdefcf80e669f # v5.1.1
-        with:
-          python-version: '3.8'
-          cache: pip
-          cache-dependency-path: requirements/tests.txt
-      - run: pip install tox
-      - run: tox run -e py-min
+      - run: uv run --locked tox run -e py${{ matrix.python }}
