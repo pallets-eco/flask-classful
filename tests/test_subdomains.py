@@ -4,6 +4,8 @@ from .view_classes import BasicView
 
 app = Flask("common")
 app.config["SERVER_NAME"] = "test.test"
+app.subdomain_matching = True
+
 BasicView.register(app, subdomain="basic")
 
 client = app.test_client()

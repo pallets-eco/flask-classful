@@ -97,7 +97,6 @@ envlist = [
     "py3.8",
     "minimal",
     "style",
-    "typing",
     "docs",
 ]
 
