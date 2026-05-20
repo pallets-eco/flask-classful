@@ -7,6 +7,7 @@ from .view_classes import SubdomainRouteView
 
 app = Flask("blueprints")
 app.config["SERVER_NAME"] = "test.test"
+app.subdomain_matching = True
 
 bp = Blueprint("bptest1", "bptest2")
 SubdomainAttributeView.register(bp)

@@ -34,8 +34,7 @@ def make_user_schema(request):
     only = request.args.get("fields", None)
     # Respect partial updates for PATCH requests
     partial = request.method == "PATCH"
-    # Add current request to the schema's context
-    return UserSchema(only=only, partial=partial, context={"request": request})
+    return UserSchema(only=only, partial=partial)
 
 
 class UsersView(FlaskView):
@@ -67,8 +66,7 @@ def make_quote_schema(request):
     only = request.args.get("fields", None)
     # Respect partial updates for PATCH requests
     partial = request.method == "PATCH"
-    # Add current request to the schema's context
-    return QuoteSchema(only=only, partial=partial, context={"request": request})
+    return QuoteSchema(only=only, partial=partial)
 
 
 class QuotesView(FlaskView):

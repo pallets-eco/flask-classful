@@ -19,6 +19,30 @@ dependencies = [
     "flask>=2.0",
 ]
 
+[dependency-groups]
+build = [
+    "build>=1.2.2.post1",
+]
+dev = [
+    "tox>=4.25.0",
+    "tox-uv>=1.13.1",
+]
+docs = [
+    "furo>=2024.8.6",
+    "sphinx>=7.1.2",
+]
+gha-update = [
+    "gha-update>=0.2.0 ; python_full_version > '3.12'",
+]
+pre-commit = [
+    "pre-commit>=3.5.0",
+]
+tests = [
+    "asgiref>=3.8.1",
+    "pytest>=8.3.5",
+    "webargs>=8.6.0",
+]
+
 [project.urls]
 Documentation = "https://flask-classful.readthedocs.io"
 Source = "https://github.com/pallets-eco/flask-classful/"
@@ -63,6 +87,83 @@ select = [
 [tool.ruff.lint.isort]
 force-single-line = true
 order-by-type = false
+
+[tool.tox]
+envlist = [
+    "py3.12",
+    "py3.11",
+    "py3.10",
+    "py3.9",
+    "py3.8",
+    "minimal",
+    "style",
+    "docs",
+]
+
+[tool.tox.env_run_base]
+description = "pytest on latest dependency versions"
+runner = "uv-venv-lock-runner"
+package = "wheel"
+wheel_build_env = ".pkg"
+constrain_package_deps = true
+use_frozen_constraints = true
+dependency_groups = ["tests"]
+env_tmp_dir = "{toxworkdir}/tmp/{envname}"
+commands = [[
+    "pytest", "-v", "--capture=tee-sys", "--tb=short", "--basetemp={env_tmp_dir}",
+    {replace = "posargs", default = [], extend = true},
+]]
+
+[tool.tox.env.docs]
+description = "build docs"
+dependency_groups = ["docs"]
+commands = [["sphinx-build", "-E", "-W", "-b", "html", "docs", "docs/_build/"]]
+
+[tool.tox.env.style]
+description = "run all pre-commit hooks on all files"
+dependency_groups = ["pre-commit"]
+skip_install = true
+commands = [["pre-commit", "run", "--all-files"]]
+
+[tool.tox.env.minimal]
+description = "pytest on minimum dependency versions"
+base_python = ["3.8"]
+commands = [
+    [
+        "uv", "pip", "install",
+        "flask<2.1",
+        "werkzeug<2.3",
+    ],
+    [
+        "pytest", "-v", "--tb=short", "--basetemp={env_tmp_dir}",
+        {replace = "posargs", default = [], extend = true},
+    ],
+]
+
+[tool.tox.env.update-actions]
+description = "update GitHub Actions pins"
+labels = ["update"]
+dependency_groups = ["gha-update"]
+skip_install = true
+commands = [["gha-update"]]
+
+[tool.tox.env.update-pre-commit]
+description = "update pre-commit pins"
+labels = ["update"]
+dependency_groups = ["pre-commit"]
+skip_install = true
+commands = [["pre-commit", "autoupdate", "--freeze", "-j4"]]
+
+[tool.tox.env.update-requirements]
+description = "update uv lock"
+labels = ["update"]
+dependency_groups = []
+no_default_groups = true
+skip_install = true
+commands = [["uv", "lock", {replace = "posargs", default = ["-U"], extend = true}]]
+
+[tool.uv]
+default-groups = ["dev", "pre-commit", "tests"]
 
 [tool.gha-update]
 tag-only = [
